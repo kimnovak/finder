@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="text_margin">16dp</dimen>
+    <dimen name="username_text_size">23sp</dimen>
+    <dimen name="email_text_size">17sp</dimen>
+    <dimen name="user_item_left_margin">30dp</dimen>
 </resources>

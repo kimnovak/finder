@@ -13,14 +13,16 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import ftn.tim2.finder.model.User;
+
 public class UsersRecyclerViewAdapter extends RecyclerView.Adapter<UsersRecyclerViewAdapter.ViewHolder>{
     private static final String TAG = "RecyclerViewAdapter";
 
-    private ArrayList<String> mImageNames = new ArrayList<String>();
+    private ArrayList<User> mUsers = new ArrayList<User>();
     private Context mContext;
 
-    public UsersRecyclerViewAdapter(ArrayList<String> mImageNames, Context mContext) {
-        this.mImageNames = mImageNames;
+    public UsersRecyclerViewAdapter(ArrayList<User> mUsers, Context mContext) {
+        this.mUsers = mUsers;
         this.mContext = mContext;
     }
 
@@ -35,27 +37,30 @@ public class UsersRecyclerViewAdapter extends RecyclerView.Adapter<UsersRecycler
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         Log.d(TAG, "on BindViewHolder: called");
-        holder.name.setText(mImageNames.get(position));
+        holder.username.setText(mUsers.get(position).getUsername());
+        holder.email.setText(mUsers.get(position).getEmail());
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "onClick: clicked on: " + mImageNames.get(position));
-                Toast.makeText(mContext, mImageNames.get(position), Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "onClick: clicked on: " + mUsers.get(position).getUsername());
+                Toast.makeText(mContext, mUsers.get(position).getUsername(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return mImageNames.size();
+        return mUsers.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView name;
+        TextView username;
+        TextView email;
         RelativeLayout parentLayout;
         public ViewHolder(View itemView) {
             super(itemView);
-            name = itemView.findViewById(R.id.image_name);
+            username = itemView.findViewById(R.id.user_item_username);
+            email = itemView.findViewById(R.id.user_item_email);
             parentLayout = itemView.findViewById(R.id.parent_layout);
         }
     }
