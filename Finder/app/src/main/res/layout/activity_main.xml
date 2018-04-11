@@ -16,6 +16,6 @@
         app:layout_constraintTop_toTopOf="parent" />
     <Button
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" android:id="@+id/viewallusersbtn" android:text="prelaz na listu"/>
+        android:layout_height="wrap_content" android:id="@+id/viewallusersbtn" android:text="@string/seeAllUsersBtn"/>
 
 </android.support.constraint.ConstraintLayout>

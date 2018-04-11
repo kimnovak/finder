@@ -20,7 +20,7 @@ public class ViewAllUsersActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_all_users);
-        Log.d(TAG, "view all users activity");
+        Log.d(TAG, "view all users activity - oncreate method");
         addInitialData();
         initRecyclerView();
     }
