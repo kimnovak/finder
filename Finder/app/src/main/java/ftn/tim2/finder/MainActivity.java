@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import ftn.tim2.finder.activities.CommentActivity;
 import ftn.tim2.finder.activities.ViewAllUsersActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -19,6 +20,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, ViewAllUsersActivity.class);
+                startActivity(intent);
+            }
+        });
+        Button commentsBtn = findViewById(R.id.viewallcommentsbtn);
+        commentsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, CommentActivity.class);
                 startActivity(intent);
             }
         });
