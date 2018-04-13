@@ -22,6 +22,8 @@
         </activity>
         <activity android:name=".activities.ProfileDetailsActivity">
         </activity>
+        <activity android:name=".activities.ProfileEditActivity">
+        </activity>
     </application>
 
 </manifest>

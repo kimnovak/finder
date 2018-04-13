@@ -12,39 +12,62 @@
         android:layout_marginBottom="16dp"
         android:layout_marginTop="5dp"
         android:text="Edit Profile"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="24sp"/>
-
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/colorPrimary"
-        android:hint="Name"
-        android:text="FirstName"
+        android:layout_marginLeft="@dimen/activity_vertical_margin"
+        android:layout_marginRight="@dimen/activity_vertical_margin"
+        android:theme="@style/textEditUnderline"
+        android:hint="First Name"
+        android:text="User"
         android:inputType="textPersonName" />
-
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
-        android:backgroundTint="@color/colorPrimary"
-        android:hint="Email"
-        android:inputType="textEmailAddress" />
-
+        android:layout_marginLeft="@dimen/activity_vertical_margin"
+        android:layout_marginRight="@dimen/activity_vertical_margin"
+        android:layout_marginTop="5dp"
+        android:theme="@style/textEditUnderline"
+        android:hint="Last Name"
+        android:inputType="textPersonName" />
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/colorPrimary"
+        android:layout_marginLeft="@dimen/activity_vertical_margin"
+        android:layout_marginRight="@dimen/activity_vertical_margin"
+        android:layout_marginTop="5dp"
+        android:theme="@style/textEditUnderline"
         android:hint="Username"
-        android:inputType="phone" />
-
+        android:inputType="textNoSuggestions" />
     <EditText
         android:layout_width="fill_parent"
-        android:layout_height="150dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
-        android:backgroundTint="@color/colorPrimary"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_vertical_margin"
+        android:layout_marginRight="@dimen/activity_vertical_margin"
+        android:layout_marginTop="5dp"
+        android:theme="@style/textEditUnderline"
+        android:hint="Password"
+        android:text="pass"
+        android:inputType="textPassword" />
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_vertical_margin"
+        android:layout_marginRight="@dimen/activity_vertical_margin"
+        android:layout_marginTop="5dp"
+        android:theme="@style/textEditUnderline"
+        android:hint="Address"
+        android:text="Novi Sad, Serbia"
+        android:inputType="textNoSuggestions" />
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="100dp"
+        android:layout_marginLeft="@dimen/activity_vertical_margin"
+        android:layout_marginRight="@dimen/activity_vertical_margin"
+        android:layout_marginTop="5dp"
+        android:theme="@style/textEditUnderline"
         android:gravity="top"
         android:hint="Description"
         android:fitsSystemWindows="true"
@@ -57,10 +80,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
         android:background="@drawable/button_style_radius"
-        android:elevation="4dp"
-        android:paddingLeft="70dp"
-        android:paddingRight="70dp"
+        android:paddingLeft="35dp"
+        android:paddingRight="35dp"
         android:text="Submit"
         android:textColor="#fff" />
 </LinearLayout>

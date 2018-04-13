@@ -27,4 +27,12 @@
         android:textAlignment="center"
         android:gravity=""/>
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/viewprofileedit"
+        android:text="View Profile Edit"
+        android:textAlignment="center"
+        android:gravity=""/>
+
 </LinearLayout>
