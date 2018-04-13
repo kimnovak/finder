@@ -35,10 +35,10 @@ public class CommentActivity extends AppCompatActivity {
         recyclerView.setAdapter(commentAdapter);
 
 
-        preprateData();
+        prepareData();
     }
 
-    private void preprateData(){
+    private void prepareData(){
         User user = new User("username", "email", "password", "firstName", "lastName");
         Comment comment = new Comment("This is some comment", new Date(), user);
         commentList.add(comment);
