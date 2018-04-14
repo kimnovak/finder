@@ -10,6 +10,7 @@ import ftn.tim2.finder.activities.CommentActivity;
 import ftn.tim2.finder.activities.LoginActivity;
 import ftn.tim2.finder.activities.ProfileDetailsActivity;
 import ftn.tim2.finder.activities.ProfileEditActivity;
+import ftn.tim2.finder.activities.RegistrationActivity;
 import ftn.tim2.finder.activities.ViewAllUsersActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -55,6 +56,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+        Button registrationBtn = findViewById(R.id.registration);
+        registrationBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, RegistrationActivity.class);
                 startActivity(intent);
             }
         });
