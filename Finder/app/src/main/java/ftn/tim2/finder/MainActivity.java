@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 
 import ftn.tim2.finder.activities.CommentActivity;
+import ftn.tim2.finder.activities.LoginActivity;
 import ftn.tim2.finder.activities.ProfileDetailsActivity;
 import ftn.tim2.finder.activities.ProfileEditActivity;
 import ftn.tim2.finder.activities.ViewAllUsersActivity;
@@ -46,6 +47,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, ProfileEditActivity.class);
+                startActivity(intent);
+            }
+        });
+        Button loginBtn = findViewById(R.id.login);
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
             }
         });
