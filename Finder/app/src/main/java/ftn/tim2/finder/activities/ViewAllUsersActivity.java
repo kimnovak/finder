@@ -9,7 +9,7 @@ import android.util.Log;
 import java.util.ArrayList;
 
 import ftn.tim2.finder.R;
-import ftn.tim2.finder.UsersRecyclerViewAdapter;
+import ftn.tim2.finder.adapters.UsersRecyclerViewAdapter;
 import ftn.tim2.finder.model.User;
 
 public class ViewAllUsersActivity extends AppCompatActivity {
