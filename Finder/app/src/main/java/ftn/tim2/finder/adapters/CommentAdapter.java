@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.DateFormat;
 import java.util.List;
 
 import ftn.tim2.finder.R;
@@ -44,9 +45,10 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Comment comment = commentList.get(position);
+        android.text.format.DateFormat dateFormat = new android.text.format.DateFormat();
         holder.userComment.setText(comment.getUser().getUsername());
         holder.content.setText(comment.getContent());
-        holder.dateCreated.setText(comment.getDateCreated().toString());
+        holder.dateCreated.setText(dateFormat.format("yyyy-MM-dd hh:mm", comment.getDateCreated()));
     }
 
     @Override
