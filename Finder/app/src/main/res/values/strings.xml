@@ -28,4 +28,6 @@
     <string name="notif_on_sync_key">notif_on_sync</string>
     <string name="notif_on_sync_summ">Send you notifications about sync</string>
     <string name="notif_on_sync_title">Sync notifications</string>
+
+    <string name="google_maps_api_key">AIzaSyAM8SKt2WuKLLqvoj0gcMgwWogsSy_b9QM</string>
 </resources>

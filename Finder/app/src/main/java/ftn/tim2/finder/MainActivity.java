@@ -10,6 +10,7 @@ import ftn.tim2.finder.activities.CommentActivity;
 import ftn.tim2.finder.activities.ConversationActivity;
 import ftn.tim2.finder.activities.FinderPreferenceActivity;
 import ftn.tim2.finder.activities.LoginActivity;
+import ftn.tim2.finder.activities.MapActivity;
 import ftn.tim2.finder.activities.ProfileDetailsActivity;
 import ftn.tim2.finder.activities.ProfileEditActivity;
 import ftn.tim2.finder.activities.RegistrationActivity;
@@ -82,6 +83,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, ConversationActivity.class);
+                startActivity(intent);
+            }
+        });
+        Button mapBtn = findViewById(R.id.mapbtn);
+        mapBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, MapActivity.class);
                 startActivity(intent);
             }
         });
