@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 
 import ftn.tim2.finder.activities.CommentActivity;
+import ftn.tim2.finder.activities.FinderPreferenceActivity;
 import ftn.tim2.finder.activities.LoginActivity;
 import ftn.tim2.finder.activities.ProfileDetailsActivity;
 import ftn.tim2.finder.activities.ProfileEditActivity;
@@ -64,6 +65,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, RegistrationActivity.class);
+                startActivity(intent);
+            }
+        });
+        Button preferencesBtn = findViewById(R.id.preferences);
+        preferencesBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, FinderPreferenceActivity.class);
                 startActivity(intent);
             }
         });
