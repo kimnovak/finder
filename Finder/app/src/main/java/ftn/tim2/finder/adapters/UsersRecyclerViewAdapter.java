@@ -22,9 +22,18 @@ public class UsersRecyclerViewAdapter extends RecyclerView.Adapter<UsersRecycler
     private ArrayList<User> mUsers = new ArrayList<User>();
     private Context mContext;
 
+    public void setmUsers(ArrayList<User> mUsers) {
+        this.mUsers = mUsers;
+    }
+
     public UsersRecyclerViewAdapter(ArrayList<User> mUsers, Context mContext) {
         this.mUsers = mUsers;
         this.mContext = mContext;
+    }
+
+    @Override
+    public void registerAdapterDataObserver(@NonNull RecyclerView.AdapterDataObserver observer) {
+        super.registerAdapterDataObserver(observer);
     }
 
     @NonNull

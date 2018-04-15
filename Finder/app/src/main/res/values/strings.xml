@@ -3,4 +3,5 @@
     <string name="usernameph">Username</string>
     <string name="emailph">Email</string>
     <string name="seeAllUsersBtn">See All Users</string>
+    <string name="viewFriendsBtn">Friends</string>
 </resources>

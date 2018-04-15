@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import java.util.ArrayList;
 
@@ -35,8 +37,42 @@ public class ViewAllUsersActivity extends AppCompatActivity {
     private void initRecyclerView() {
         Log.d(TAG, "initRecyclerView");
         RecyclerView recyclerView = findViewById(R.id.recyclerusers_view);
-        UsersRecyclerViewAdapter adapter = new UsersRecyclerViewAdapter(mUsers,this);
+        final UsersRecyclerViewAdapter adapter = new UsersRecyclerViewAdapter(mUsers,this);
+        Button viewFriendsBtn = findViewById(R.id.view_friends_button);
+        viewFriendsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArrayList<User> friendList = getFriends();
+                adapter.setmUsers(friendList);
+                adapter.notifyDataSetChanged();
+            }
+        });
+        Button viewAllUsersBtn = findViewById(R.id.view_all_users_button);
+        viewAllUsersBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArrayList<User> users = getAllUsers();
+                adapter.setmUsers(users);
+                adapter.notifyDataSetChanged();
+            }
+        });
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+    }
+
+    private ArrayList<User> getFriends() {
+        ArrayList<User> friendList = new ArrayList<>();
+        friendList.add(new User("Username2", "email2@example.com", "password", "First2", "Last2"));
+        return friendList;
+    }
+
+    private ArrayList<User> getAllUsers() {
+        ArrayList<User> users = new ArrayList<>();
+        for(int i = 0; i <= NUMBER_OF_INITIAL_USERS; i++) {
+            User user = new User("Username" + i, "email" + i + "@example.com", "password", "First" + i, "Last" + i );
+            users.add(user);
+        }
+        return users;
     }
 }

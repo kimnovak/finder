@@ -3,8 +3,8 @@
     android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/parent_layout" android:background="@drawable/users_item_background">
     <ImageView
         android:id="@+id/user_list_image"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="@dimen/user_list_image"
+        android:layout_height="@dimen/user_list_image"
         android:src="@drawable/user"/>
     <android.support.v7.widget.LinearLayoutCompat
         android:layout_width="match_parent"
@@ -27,8 +27,8 @@
             android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginLeft="@dimen/user_item_left_margin">
             <ImageView
                 android:id="@+id/user_list_email"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="@dimen/user_list_email"
+                android:layout_height="@dimen/user_list_email"
                 android:src="@drawable/ic_mail_white_outline_24dp"/>
             <TextView
                 android:layout_width="wrap_content"
