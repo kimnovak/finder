@@ -22,11 +22,11 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        textView = (TextView) findViewById(R.id.tv);
+        //textView = (TextView) findViewById(R.id.tv);
         imageView = (ImageView) findViewById(R.id.iv);
 
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.splashtransition);
-        textView.startAnimation(animation);
+        //textView.startAnimation(animation);
         imageView.startAnimation(animation);
 
         final Intent intent = new Intent(this, MainActivity.class);
