@@ -1,4 +1,4 @@
-package ftn.tim2.finder;
+package ftn.tim2.finder.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import ftn.tim2.finder.R;
 import ftn.tim2.finder.model.User;
 
 public class UsersRecyclerViewAdapter extends RecyclerView.Adapter<UsersRecyclerViewAdapter.ViewHolder>{
@@ -21,9 +22,18 @@ public class UsersRecyclerViewAdapter extends RecyclerView.Adapter<UsersRecycler
     private ArrayList<User> mUsers = new ArrayList<User>();
     private Context mContext;
 
+    public void setmUsers(ArrayList<User> mUsers) {
+        this.mUsers = mUsers;
+    }
+
     public UsersRecyclerViewAdapter(ArrayList<User> mUsers, Context mContext) {
         this.mUsers = mUsers;
         this.mContext = mContext;
+    }
+
+    @Override
+    public void registerAdapterDataObserver(@NonNull RecyclerView.AdapterDataObserver observer) {
+        super.registerAdapterDataObserver(observer);
     }
 
     @NonNull

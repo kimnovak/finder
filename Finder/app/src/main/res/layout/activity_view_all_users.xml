@@ -1,14 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:orientation="horizontal" android:id="@+id/users_filter_layout">
+
+        <Button
+            android:id="@+id/view_all_users_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="@dimen/filter_buttons_weight"
+            android:background="@drawable/users_item_background"
+            android:text="@string/seeAllUsersBtn"
+            android:textColor="@color/white"
+            android:textSize="@dimen/email_text_size" />
+
+        <Button
+            android:id="@+id/view_friends_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="@dimen/filter_buttons_weight"
+            android:background="@drawable/users_item_background"
+            android:text="@string/viewFriendsBtn"
+            android:textColor="@color/white"
+            android:textSize="@dimen/email_text_size"
+            android:textStyle="bold" />
+    </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/recyclerusers_view"
+        android:layout_below="@id/users_filter_layout"
         />
 
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>
