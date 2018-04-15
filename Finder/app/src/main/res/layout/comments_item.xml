@@ -15,7 +15,7 @@
         android:id="@+id/userImage"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@drawable/ic_android_24dp"
+        android:src="@mipmap/ic_test_user"
         android:layout_alignParentTop="true"
         android:layout_margin="@dimen/activity_horizontal_margin"/>
 
