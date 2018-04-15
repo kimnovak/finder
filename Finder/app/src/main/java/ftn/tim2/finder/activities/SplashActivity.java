@@ -33,7 +33,7 @@ public class SplashActivity extends AppCompatActivity {
         Thread timer = new Thread() {
             public void run() {
                 try {
-                    sleep(5000);
+                    sleep(1600);
                 } catch (InterruptedException ex) {
                     ex.printStackTrace();
                 }

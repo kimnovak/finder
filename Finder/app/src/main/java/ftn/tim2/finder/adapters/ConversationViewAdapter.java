@@ -41,7 +41,7 @@ public class ConversationViewAdapter extends RecyclerView.Adapter<ConversationVi
          holder.tv_name.setText(conversations.get(position).getReceiever().getFirstName() + " " +
                                 conversations.get(position).getReceiever().getLastName());
          holder.tv_email.setText(conversations.get(position).getReceiever().getEmail());
-         holder.img.setImageResource(0); //messages.get(position).getSender().get
+         //holder.img.setImageResource(0); //messages.get(position).getSender().get
 
     }
 
