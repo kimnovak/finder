@@ -5,6 +5,7 @@ import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -32,6 +33,7 @@ public class CommentActivity extends AppCompatActivity {
         RecyclerView.LayoutManager myLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(myLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         recyclerView.setAdapter(commentAdapter);
 
 
@@ -48,6 +50,12 @@ public class CommentActivity extends AppCompatActivity {
 
         Comment comment3 = new Comment("This is third comment", new Date(), user);
         commentList.add(comment3);
+
+        Comment comment4 = new Comment("Some text text, some comment....", new Date(), user);
+        commentList.add(comment4);
+
+        Comment comment5 = new Comment("Last comment", new Date(), user);
+        commentList.add(comment5);
 
         commentAdapter.notifyDataSetChanged();
     }

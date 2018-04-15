@@ -1,49 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?android:attr/selectableItemBackground"
     android:clickable="true"
     android:focusable="true"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/row_padding_vertical"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/row_padding_vertical">
+    android:orientation="horizontal"
+    android:padding="5dp"
+    android:layout_marginTop="10dp">
 
     <ImageView
         android:id="@+id/userImage"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@mipmap/ic_test_user"
-        android:layout_alignParentTop="true"
-        android:layout_margin="@dimen/activity_horizontal_margin"/>
+        android:src="@mipmap/ic_test_user"/>
 
-    <TextView
-        android:id="@+id/userComment"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:paddingLeft="10dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/userImage"
-        android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:textColor="@color/colorPrimary"
-        android:textSize="16dp"
-        android:textStyle="bold"
-        android:text="ANAAAAAAAAAAAA"/>
-
-    <TextView
-        android:id="@+id/content"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/userComment"
-        android:layout_toRightOf="@id/userImage"
-        android:text="OO J KOMAFKONFOF"/>
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/userComment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16dp"
+            android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
 
     <TextView
         android:id="@+id/dateCreated"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
         android:textColor="@color/colorPrimary"
-        android:text="21.03.312231."/>
+        android:gravity="right"/>
 
-</RelativeLayout>
+</LinearLayout>
