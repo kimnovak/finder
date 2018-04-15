@@ -24,7 +24,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="Places radius"
+        android:title="Users lookup radius"
         android:key="radius_settings">
 
         <ListPreference
@@ -44,15 +44,21 @@
 
         <CheckBoxPreference
             android:defaultValue="false"
-            android:key="@string/notif_on_my_review_key"
-            android:summary="@string/notif_on_my_review_summ"
-            android:title="@string/notif_on_my_review" />
+            android:key="@string/notif_on_new_message_key"
+            android:summary="@string/notif_on_new_message_summ"
+            android:title="@string/notif_on_new_message" />
 
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="@string/notif_on_my_comment_key"
             android:summary="@string/notif_on_my_comment_summ"
             android:title="@string/notif_on_my_comment" />
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="@string/notif_on_new_rate_key"
+            android:summary="@string/notif_on_new_rate_summ"
+            android:title="@string/notif_on_new_rate" />
 
         <CheckBoxPreference
             android:defaultValue="false"
