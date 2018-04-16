@@ -52,4 +52,16 @@
         android:id="@+id/preferences"
         android:text="Preferences"/>
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Conversations"
+        android:id="@+id/conversation"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Map"
+        android:id="@+id/mapbtn"/>
+
 </LinearLayout>

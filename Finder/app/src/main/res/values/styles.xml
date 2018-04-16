@@ -9,8 +9,8 @@
     </style>
 
     <style name="textEditUnderline" parent="Widget.AppCompat.EditText">
-        <item name="colorControlActivated">@color/colorPrimaryDark</item>
-        <item name="colorControlNormal">@color/colorPrimary</item>
+        <item name="colorControlActivated">@color/grayDark</item>
+        <item name="colorControlNormal">@color/grayLight</item>
     </style>
 
     <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">

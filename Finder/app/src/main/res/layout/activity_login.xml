@@ -30,19 +30,19 @@
         
         <EditText
             android:drawablePadding="10dp"
-            android:drawableLeft="@drawable/ic_person_outline_black_24dp"
+            android:drawableLeft="@drawable/ic_person_outline_black"
             android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:hint="USERNAME"/>
         <EditText
             android:drawablePadding="10dp"
-            android:drawableLeft="@drawable/ic_lock_outline_black_24dp"
+            android:drawableLeft="@drawable/ic_lock_outline"
             android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:hint="PASSWORD"
             android:inputType="textPassword"/>
         <Button
-            android:drawableRight="@drawable/ic_send_white_24dp"
+            android:drawableRight="@drawable/ic_send_white"
             android:layout_marginTop="40dp"
             android:layout_width="140dp"
             android:layout_height="wrap_content"
