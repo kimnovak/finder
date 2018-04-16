@@ -16,13 +16,13 @@
             <ImageView
                 android:layout_width="120dp"
                 android:layout_height="120dp"
-                android:src="@drawable/user"
+                android:src="@mipmap/ic_test_user"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="10dp" />
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:src="@drawable/ic_edit_24dp"
+                android:src="@drawable/ic_edit"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="5dp" />
             <TextView

@@ -16,10 +16,10 @@
 
         <ImageView
             android:id="@+id/iv"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:layout_gravity="center"
-            android:src="@drawable/applogo" />
+            android:src="@mipmap/ic_app_logo" />
 
         <!--<TextView-->
             <!--android:id="@+id/tv"-->
