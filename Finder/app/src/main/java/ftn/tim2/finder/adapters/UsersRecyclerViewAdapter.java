@@ -1,7 +1,9 @@
 package ftn.tim2.finder.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +16,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import ftn.tim2.finder.R;
+import ftn.tim2.finder.activities.ProfileDetailsActivity;
 import ftn.tim2.finder.model.User;
 
 public class UsersRecyclerViewAdapter extends RecyclerView.Adapter<UsersRecyclerViewAdapter.ViewHolder>{
@@ -54,6 +57,8 @@ public class UsersRecyclerViewAdapter extends RecyclerView.Adapter<UsersRecycler
             public void onClick(View v) {
                 Log.d(TAG, "onClick: clicked on: " + mUsers.get(position).getUsername());
                 Toast.makeText(mContext, mUsers.get(position).getUsername(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(mContext, ProfileDetailsActivity.class);
+                ActivityCompat.startActivity(mContext, intent, null);
             }
         });
     }

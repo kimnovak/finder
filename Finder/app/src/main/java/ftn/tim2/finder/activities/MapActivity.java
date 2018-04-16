@@ -1,6 +1,7 @@
 package ftn.tim2.finder.activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -11,6 +12,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 
 import android.Manifest;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -64,7 +67,7 @@ public class MapActivity extends AppCompatActivity {
     }
 
     private void initMap() {
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        final SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
@@ -79,6 +82,13 @@ public class MapActivity extends AppCompatActivity {
                         public boolean onMarkerClick(Marker marker) {
                             marker.showInfoWindow();
                             return false;
+                        }
+                    });
+                    mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                        @Override
+                        public void onInfoWindowClick(Marker marker) {
+                            Intent intent = new Intent(MapActivity.this, ProfileDetailsActivity.class);
+                            startActivity(intent);
                         }
                     });
                 }
@@ -136,6 +146,7 @@ public class MapActivity extends AppCompatActivity {
         }
         return users;
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
