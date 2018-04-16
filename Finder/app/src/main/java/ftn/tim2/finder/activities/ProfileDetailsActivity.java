@@ -1,6 +1,7 @@
 package ftn.tim2.finder.activities;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -34,5 +35,15 @@ public class ProfileDetailsActivity extends AppCompatActivity {
             }
         });
         rateDialog.show();
+    }
+
+    public void seeMessages(View v){
+        Intent intent = new Intent(this, ConversationActivity.class);
+        startActivity(intent);
+    }
+
+    public void seeComments(View v){
+        Intent intent = new Intent(this, CommentActivity.class);
+        startActivity(intent);
     }
 }
