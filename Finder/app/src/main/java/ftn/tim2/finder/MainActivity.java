@@ -1,10 +1,14 @@
 package ftn.tim2.finder;
 
 import android.content.Intent;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
+
+import java.util.ArrayList;
 
 import ftn.tim2.finder.activities.CommentActivity;
 import ftn.tim2.finder.activities.ConversationActivity;
@@ -15,13 +19,28 @@ import ftn.tim2.finder.activities.ProfileDetailsActivity;
 import ftn.tim2.finder.activities.ProfileEditActivity;
 import ftn.tim2.finder.activities.RegistrationActivity;
 import ftn.tim2.finder.activities.ViewAllUsersActivity;
+import ftn.tim2.finder.model.NavigationItem;
 
 public class MainActivity extends AppCompatActivity {
+
+    private ArrayList<NavigationItem> navigationItems = new ArrayList<NavigationItem>();
+    private CharSequence mDrawerTitle;
+    private CharSequence mTitle;
+    private DrawerLayout drawerLayout;
+    private ListView drawerList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        prepareMenu(navigationItems);
+
+        mTitle = mDrawerTitle = getTitle();
+        //drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+        //drawerList = (ListView) findViewById(R.id.navList);
+
+
         Button btn = findViewById(R.id.viewallusersbtn);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,5 +113,15 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    private void prepareMenu(ArrayList<NavigationItem> navigationItems ){
+        navigationItems.add(new NavigationItem(getString(R.string.home), R.drawable.ic_home));
+        navigationItems.add(new NavigationItem(getString(R.string.profile), R.drawable.ic_account));
+        navigationItems.add(new NavigationItem(getString(R.string.messages), R.drawable.ic_message));
+        navigationItems.add(new NavigationItem(getString(R.string.friends), R.drawable.ic_people));
+        navigationItems.add(new NavigationItem(getString(R.string.account), R.drawable.ic_account));
+        navigationItems.add(new NavigationItem(getString(R.string.settings), R.drawable.ic_settings));
+        navigationItems.add(new NavigationItem(getString(R.string.exit), R.drawable.ic_exit));
     }
 }

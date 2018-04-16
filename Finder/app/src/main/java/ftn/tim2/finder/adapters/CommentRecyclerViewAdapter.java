@@ -7,14 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.text.DateFormat;
 import java.util.List;
 
 import ftn.tim2.finder.R;
 import ftn.tim2.finder.model.Comment;
 
 
-public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder> {
+public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<CommentRecyclerViewAdapter.ViewHolder> {
 
     private List<Comment> commentList;
 
@@ -30,7 +29,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         }
     }
 
-    public CommentAdapter(List<Comment> commentList) {
+    public CommentRecyclerViewAdapter(List<Comment> commentList) {
         this.commentList = commentList;
     }
 

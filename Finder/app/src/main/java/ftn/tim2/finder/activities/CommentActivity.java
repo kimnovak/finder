@@ -1,7 +1,6 @@
 package ftn.tim2.finder.activities;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -14,7 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 import ftn.tim2.finder.R;
-import ftn.tim2.finder.adapters.CommentAdapter;
+import ftn.tim2.finder.adapters.CommentRecyclerViewAdapter;
 import ftn.tim2.finder.model.Comment;
 import ftn.tim2.finder.model.User;
 
@@ -22,14 +21,14 @@ public class CommentActivity extends AppCompatActivity {
 
     private List<Comment> commentList = new ArrayList<>();
     private RecyclerView recyclerView;
-    private CommentAdapter commentAdapter;
+    private CommentRecyclerViewAdapter commentAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comments);
         recyclerView = findViewById(R.id.recycler_comments_view);
-        commentAdapter = new CommentAdapter(commentList);
+        commentAdapter = new CommentRecyclerViewAdapter(commentList);
         RecyclerView.LayoutManager myLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(myLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
