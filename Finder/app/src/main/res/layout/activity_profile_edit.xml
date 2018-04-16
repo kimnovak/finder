@@ -1,55 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/grayLight">
+    android:background="@color/white">
 
-    <RelativeLayout
+
+    <LinearLayout
+        android:id="@+id/headerCard"
         android:layout_width="match_parent"
-        android:layout_height="220dp">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="220dp"
-            android:background="@color/colorPrimary"
-            android:orientation="vertical">
-            <ImageView
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:src="@mipmap/ic_test_user"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp" />
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/ic_edit"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="5dp" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="FirstName LastName"
-                android:textColor="#fff"
-                android:textStyle="bold"
-                android:textSize="20sp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="3dp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="\@username"
-                android:textColor="#fff"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:layout_gravity="center_horizontal" />
-        </LinearLayout>
-    </RelativeLayout>
+        android:layout_height="210dp"
+        android:background="@color/colorPrimary"
+        android:orientation="vertical">
+        <ImageView
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:src="@mipmap/ic_test_user"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="FirstName LastName"
+            android:textColor="#fff"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="2dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="\@username"
+            android:textColor="#fff"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_gravity="center_horizontal" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_gravity="center"
+        android:layout_below="@+id/headerCard"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_marginTop="10dp">
@@ -61,6 +54,7 @@
             android:theme="@style/textEditUnderline"
             android:hint="First Name"
             android:text="User"
+            android:textSize="16dp"
             android:inputType="textPersonName" />
         <EditText
             android:layout_width="fill_parent"
@@ -69,6 +63,7 @@
             android:layout_marginRight="@dimen/activity_vertical_margin"
             android:theme="@style/textEditUnderline"
             android:hint="Last Name"
+            android:textSize="16dp"
             android:inputType="textPersonName" />
         <EditText
             android:layout_width="fill_parent"
@@ -77,6 +72,7 @@
             android:layout_marginRight="@dimen/activity_vertical_margin"
             android:theme="@style/textEditUnderline"
             android:hint="Username"
+            android:textSize="16dp"
             android:inputType="textNoSuggestions" />
         <EditText
             android:layout_width="fill_parent"
@@ -86,6 +82,7 @@
             android:theme="@style/textEditUnderline"
             android:hint="Password"
             android:text="pass"
+            android:textSize="16dp"
             android:inputType="textPassword" />
         <EditText
             android:layout_width="fill_parent"
@@ -95,6 +92,7 @@
             android:theme="@style/textEditUnderline"
             android:hint="Address"
             android:text="Novi Sad, Serbia"
+            android:textSize="16dp"
             android:inputType="textNoSuggestions" />
         <EditText
             android:layout_width="fill_parent"
@@ -108,16 +106,8 @@
             android:inputType="textMultiLine"
             android:padding="5dp"
             android:singleLine="false"
+            android:textSize="16dp"
             android:theme="@style/textEditUnderline" />
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:background="@drawable/button_style_radius"
-            android:paddingLeft="35dp"
-            android:paddingRight="35dp"
-            android:text="Submit"
-            android:textColor="#fff" />
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

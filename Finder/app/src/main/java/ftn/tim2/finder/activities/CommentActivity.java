@@ -45,17 +45,21 @@ public class CommentActivity extends AppCompatActivity {
         Comment comment = new Comment("This is some comment", new Date(), user);
         commentList.add(comment);
 
-        Comment comment2 = new Comment("This is second comment", new Date(), user);
-        commentList.add(comment2);
+        comment = new Comment("This is second comment", new Date(), user);
+        commentList.add(comment);
 
-        Comment comment3 = new Comment("This is third comment", new Date(), user);
-        commentList.add(comment3);
+        comment = new Comment("This is third comment", new Date(), user);
+        commentList.add(comment);
 
-        Comment comment4 = new Comment("Some text text, some comment....", new Date(), user);
-        commentList.add(comment4);
+        comment = new Comment("Some text text, some comment....", new Date(), user);
+        commentList.add(comment);
 
-        Comment comment5 = new Comment("Last comment", new Date(), user);
-        commentList.add(comment5);
+        comment = new Comment("Last comment", new Date(), user);
+        commentList.add(comment);
+
+        comment = new Comment("Last comment", new Date(), user);
+        commentList.add(comment);
+
 
         commentAdapter.notifyDataSetChanged();
     }

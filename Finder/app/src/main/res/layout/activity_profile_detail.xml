@@ -5,18 +5,18 @@
     android:layout_height="match_parent"
     android:background="@color/grayLight"
     android:orientation="vertical">
-    
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="300dp">
+        android:layout_height="250dp">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="210dp"
             android:background="@color/colorPrimary"
             android:orientation="vertical">
             <ImageView
-                android:layout_width="120dp"
-                android:layout_height="120dp"
+                android:layout_width="110dp"
+                android:layout_height="110dp"
                 android:src="@mipmap/ic_test_user"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="10dp"/>
@@ -26,23 +26,23 @@
                 android:text="FirstName LastName"
                 android:textColor="#fff"
                 android:textStyle="bold"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="3dp"/>
+                android:layout_marginTop="2dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="\@username"
                 android:textColor="#fff"
                 android:textStyle="bold"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:layout_gravity="center_horizontal" />
         </LinearLayout>
         <android.support.v7.widget.CardView
             android:layout_width="310dp"
-            android:layout_height="90dp"
+            android:layout_height="70dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="200dp">
+            android:layout_marginTop="175dp">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -59,14 +59,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Followers"
-                        android:textSize="20sp"/>
+                        android:textSize="18sp"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="123"
                         android:textStyle="bold"
                         android:textSize="20sp"
-                        android:paddingTop="10dp"
+                        android:paddingTop="5dp"
                         android:textColor="@color/colorPrimary"/>
                 </LinearLayout>
                 <LinearLayout
@@ -79,14 +79,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Following"
-                        android:textSize="20sp"/>
+                        android:textSize="18sp"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="201"
                         android:textStyle="bold"
                         android:textSize="20sp"
-                        android:paddingTop="10dp"
+                        android:paddingTop="5dp"
                         android:textColor="@color/colorPrimary"/>
                 </LinearLayout>
             </LinearLayout>
@@ -98,18 +98,18 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_gravity="center"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="30dp">
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="90dp"
+            android:layout_height="44dp"
             android:text="Follow"
             android:textColor="#fff"
             android:layout_gravity="center_horizontal"
             android:layout_marginRight="10dp"
             android:background="@drawable/button_style_radius"/>
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="90dp"
+            android:layout_height="44dp"
             android:text="Message"
             android:textColor="#fff"
             android:layout_gravity="center_horizontal"
@@ -122,7 +122,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_gravity="center"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="30dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -142,7 +142,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="5dp">
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
@@ -158,7 +159,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="5dp">
             <ImageView
                 android:onClick="showRatePopup"
                 android:id="@+id/rate"
@@ -176,7 +178,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="5dp">
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
@@ -192,7 +195,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="5dp">
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
