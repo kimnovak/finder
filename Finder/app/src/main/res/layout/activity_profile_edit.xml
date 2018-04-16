@@ -7,11 +7,13 @@
 
 
     <LinearLayout
+        android:gravity="center"
         android:id="@+id/headerCard"
         android:layout_width="match_parent"
         android:layout_height="210dp"
         android:background="@color/colorPrimary"
         android:orientation="vertical">
+
         <ImageView
             android:layout_width="110dp"
             android:layout_height="110dp"
@@ -39,66 +41,49 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_gravity="center"
+        android:gravity="center_horizontal"
         android:layout_below="@+id/headerCard"
+        android:layout_marginTop="20dp"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="10dp">
+        android:layout_marginRight="@dimen/activity_horizontal_margin">
         <EditText
-            android:layout_width="fill_parent"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/activity_vertical_margin"
-            android:layout_marginRight="@dimen/activity_vertical_margin"
-            android:theme="@style/textEditUnderline"
             android:hint="First Name"
             android:text="User"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:inputType="textPersonName" />
         <EditText
-            android:layout_width="fill_parent"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/activity_vertical_margin"
-            android:layout_marginRight="@dimen/activity_vertical_margin"
-            android:theme="@style/textEditUnderline"
             android:hint="Last Name"
             android:textSize="16dp"
             android:inputType="textPersonName" />
         <EditText
-            android:layout_width="fill_parent"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/activity_vertical_margin"
-            android:layout_marginRight="@dimen/activity_vertical_margin"
-            android:theme="@style/textEditUnderline"
             android:hint="Username"
             android:textSize="16dp"
             android:inputType="textNoSuggestions" />
         <EditText
-            android:layout_width="fill_parent"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/activity_vertical_margin"
-            android:layout_marginRight="@dimen/activity_vertical_margin"
-            android:theme="@style/textEditUnderline"
             android:hint="Password"
             android:text="pass"
             android:textSize="16dp"
             android:inputType="textPassword" />
         <EditText
-            android:layout_width="fill_parent"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/activity_vertical_margin"
-            android:layout_marginRight="@dimen/activity_vertical_margin"
-            android:theme="@style/textEditUnderline"
             android:hint="Address"
             android:text="Novi Sad, Serbia"
             android:textSize="16dp"
             android:inputType="textNoSuggestions" />
         <EditText
-            android:layout_width="fill_parent"
+            android:layout_width="300dp"
             android:layout_height="80dp"
-            android:layout_marginLeft="@dimen/activity_vertical_margin"
-            android:layout_marginRight="@dimen/activity_vertical_margin"
             android:breakStrategy="balanced"
             android:fitsSystemWindows="true"
             android:gravity="top"
@@ -106,8 +91,7 @@
             android:inputType="textMultiLine"
             android:padding="5dp"
             android:singleLine="false"
-            android:textSize="16dp"
-            android:theme="@style/textEditUnderline" />
+            android:textSize="16dp" />
     </LinearLayout>
 
 </RelativeLayout>

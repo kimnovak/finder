@@ -2,7 +2,7 @@
     <string name="app_name">Finder</string>
     <string name="usernameph">Username</string>
     <string name="emailph">Email</string>
-    <string name="seeAllUsersBtn">See All Users</string>
+    <string name="seeAllUsersBtn">All Users</string>
     <string name="viewFriendsBtn">Friends</string>
 
     <string name="pref_sync_title">Allow Sync</string>

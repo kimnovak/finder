@@ -57,9 +57,6 @@ public class CommentActivity extends AppCompatActivity {
         comment = new Comment("Last comment", new Date(), user);
         commentList.add(comment);
 
-        comment = new Comment("Last comment", new Date(), user);
-        commentList.add(comment);
-
 
         commentAdapter.notifyDataSetChanged();
     }

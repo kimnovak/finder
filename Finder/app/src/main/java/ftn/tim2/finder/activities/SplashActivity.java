@@ -29,7 +29,7 @@ public class SplashActivity extends AppCompatActivity {
         //textView.startAnimation(animation);
         imageView.startAnimation(animation);
 
-        final Intent intent = new Intent(this, MainActivity.class);
+        final Intent intent = new Intent(this, LoginActivity.class);
         Thread timer = new Thread() {
             public void run() {
                 try {

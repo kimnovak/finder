@@ -6,8 +6,9 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="210dp"
         android:orientation="vertical"
         android:padding="50dp"
         android:background="@color/colorPrimary">
@@ -15,11 +16,20 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="30sp"
-            android:text="Welcome to Finder"
+            android:textSize="20sp"
+            android:text="Welcome To Finder"
             android:textStyle="bold"
             android:textColor="#fff"
             android:layout_gravity="center"/>
+
+        <ImageView
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_app_logo"
+            android:layout_marginLeft="@dimen/activity_vertical_margin"
+            android:layout_marginRight="@dimen/activity_vertical_margin"/>
     </LinearLayout>
 
     <LinearLayout
@@ -29,32 +39,36 @@
         android:orientation="vertical">
 
         <EditText
-            android:layout_width="350dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
+            android:textSize="16sp"
             android:hint="First name"/>
         <EditText
-            android:layout_width="350dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
+            android:textSize="16sp"
             android:hint="Last name"/>
         <EditText
-            android:layout_width="350dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:hint="Email"
+            android:textSize="16sp"
             android:inputType="textEmailAddress"/>
         <EditText
-            android:layout_width="350dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
+            android:textSize="16sp"
             android:hint="Username"/>
         <EditText
-            android:layout_width="350dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:hint="Password"
+            android:textSize="16sp"
             android:inputType="textPassword"/>
         <Button
-            android:drawableRight="@drawable/ic_send_white"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="20dp"
             android:layout_width="140dp"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:background="@drawable/button_style_radius"
             android:text="Registrate"
             android:textColor="#fff"/>
@@ -63,6 +77,7 @@
             android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Back to login"/>
+            android:text="Back to login"
+            android:onClick="backToLogin"/>
     </LinearLayout>
 </LinearLayout>

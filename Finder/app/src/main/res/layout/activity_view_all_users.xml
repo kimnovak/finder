@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <LinearLayout
@@ -13,17 +12,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="@dimen/filter_buttons_weight"
-            android:background="@drawable/users_item_background"
+            android:background="@color/colorPrimary"
             android:text="@string/seeAllUsersBtn"
             android:textColor="@color/white"
-            android:textSize="@dimen/email_text_size" />
+            android:textSize="@dimen/email_text_size"
+            android:layout_marginRight="1dp"/>
 
         <Button
             android:id="@+id/view_friends_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="@dimen/filter_buttons_weight"
-            android:background="@drawable/users_item_background"
+            android:background="@color/colorPrimary"
             android:text="@string/viewFriendsBtn"
             android:textColor="@color/white"
             android:textSize="@dimen/email_text_size"
