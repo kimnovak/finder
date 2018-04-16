@@ -1,16 +1,18 @@
 package ftn.tim2.finder.model;
 
+import java.util.Date;
+
 public class Message {
 
     private String message;
     private User sender;
     private User receiver;
-    private long createdAt;
+    private Date createdAt;
 
     public Message() {
     }
 
-    public Message(String message, User sender, User receiver, long createdAt) {
+    public Message(String message, User sender, User receiver, Date createdAt) {
         this.message = message;
         this.sender = sender;
         this.receiver = receiver;
@@ -41,11 +43,11 @@ public class Message {
         this.receiver = receiver;
     }
 
-    public long getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(long createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 }

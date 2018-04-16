@@ -48,6 +48,8 @@
         </activity>
         <activity android:name=".activities.MapActivity">
         </activity>
+        <activity android:name=".activities.MessageActivity">
+        </activity>
     </application>
 
 </manifest>

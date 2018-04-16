@@ -38,7 +38,7 @@ public class ProfileDetailsActivity extends AppCompatActivity {
     }
 
     public void seeMessages(View v){
-        Intent intent = new Intent(this, ConversationActivity.class);
+        Intent intent = new Intent(this, MessageActivity.class);
         startActivity(intent);
     }
 
