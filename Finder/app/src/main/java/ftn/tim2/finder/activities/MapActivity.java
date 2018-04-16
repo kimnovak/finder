@@ -95,7 +95,6 @@ public class MapActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task task) {
                         if(task.isSuccessful()) {
-                            Toast.makeText(MapActivity.this, "we located you", Toast.LENGTH_SHORT).show();
                             Location currentLocation = (Location) task.getResult();
                             moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), DEFAULT_ZOOM);
                         }else {
