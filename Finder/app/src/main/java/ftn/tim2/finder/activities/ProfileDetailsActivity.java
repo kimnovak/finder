@@ -47,6 +47,11 @@ public class ProfileDetailsActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void editProfile(View v) {
+        Intent intent = new Intent(ProfileDetailsActivity.this, ProfileEditActivity.class);
+        startActivity(intent);
+    }
+
     public void home(View v){
         Intent intent = new Intent(ProfileDetailsActivity.this, MapActivity.class);
         startActivity(intent);

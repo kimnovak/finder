@@ -5,7 +5,7 @@
     android:layout_height="50dp"
     android:layout_alignParentBottom="true"
     android:layout_gravity="bottom"
-    android:background="@color/colorPrimary"
+    android:background="@drawable/layout_shadow"
     android:elevation="4dp">
 
     <LinearLayout
@@ -28,7 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clickable="false"
-                android:src="@drawable/ic_home" />
+                android:src="@drawable/ic_home_toolbar" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
@@ -44,7 +44,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clickable="false"
-                android:src="@drawable/ic_people" />
+                android:src="@drawable/ic_people_toolbar" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
@@ -60,7 +60,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clickable="false"
-                android:src="@drawable/ic_messages" />
+                android:src="@drawable/ic_message_toolbar" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
@@ -76,7 +76,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clickable="false"
-                android:src="@drawable/ic_settings" />
+                android:src="@drawable/ic_settings_toolbar" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
@@ -92,7 +92,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clickable="false"
-                android:src="@drawable/ic_account" />
+                android:src="@drawable/ic_account_toolbar" />
         </LinearLayout>
 
     </LinearLayout>

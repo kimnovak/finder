@@ -1,17 +1,25 @@
 package ftn.tim2.finder.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
 import ftn.tim2.finder.R;
+import ftn.tim2.finder.activities.MessageActivity;
+import ftn.tim2.finder.activities.ProfileDetailsActivity;
 import ftn.tim2.finder.model.Conversation;
 
 public class ConversationViewAdapter extends RecyclerView.Adapter<ConversationViewAdapter.ViewHolder> {
@@ -38,11 +46,17 @@ public class ConversationViewAdapter extends RecyclerView.Adapter<ConversationVi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-         holder.tv_name.setText(conversations.get(position).getReceiever().getFirstName() + " " +
-                                conversations.get(position).getReceiever().getLastName());
-         holder.tv_email.setText(conversations.get(position).getReceiever().getEmail());
-         //holder.img.setImageResource(0); //messages.get(position).getSender().get
-
+        holder.tv_name.setText(conversations.get(position).getReceiever().getFirstName() + " " +
+                            conversations.get(position).getReceiever().getLastName());
+        holder.tv_email.setText(conversations.get(position).getReceiever().getEmail());
+        //holder.img.setImageResource(0); //messages.get(position).getSender().get
+        holder.parentLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, MessageActivity.class);
+                ActivityCompat.startActivity(context, intent, null);
+            }
+        });
     }
 
     @Override
@@ -55,6 +69,7 @@ public class ConversationViewAdapter extends RecyclerView.Adapter<ConversationVi
         private TextView tv_name;
         private TextView tv_email;
         private ImageView img;
+        private LinearLayout parentLayout;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -62,6 +77,7 @@ public class ConversationViewAdapter extends RecyclerView.Adapter<ConversationVi
             tv_name = itemView.findViewById(R.id.name_message);
             tv_email = itemView.findViewById(R.id.email_message);
             img = itemView.findViewById(R.id.img_message);
+            parentLayout = itemView.findViewById(R.id.parent_layout_conversation);
         }
     }
 
