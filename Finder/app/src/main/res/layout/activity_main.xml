@@ -1,67 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".MainActivity">
-
-    <Button
+    
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" android:id="@+id/viewallusersbtn" android:text="@string/seeAllUsersBtn"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/viewallcommentsbtn"
-        android:text="See all comments"
-        android:textAlignment="center"
-        android:gravity=""/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:id="@+id/viewallusersbtn" android:text="@string/seeAllUsersBtn"/>
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/viewprofile"
-        android:text="View Profile"
-        android:textAlignment="center"
-        android:gravity=""/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/viewallcommentsbtn"
+            android:text="See all comments"
+            android:textAlignment="center"
+            android:gravity=""/>
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/viewprofileedit"
-        android:text="View Profile Edit"
-        android:textAlignment="center"
-        android:gravity=""/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/viewprofile"
+            android:text="View Profile"
+            android:textAlignment="center"
+            android:gravity=""/>
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/login"
-        android:text="Login"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/viewprofileedit"
+            android:text="View Profile Edit"
+            android:textAlignment="center"
+            android:gravity=""/>
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/registration"
-        android:text="Registration"/>
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/preferences"
-        android:text="Preferences"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/login"
+            android:text="Login"/>
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Conversations"
-        android:id="@+id/conversation"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/registration"
+            android:text="Registration"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/preferences"
+            android:text="Preferences"/>
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Map"
-        android:id="@+id/mapbtn"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Conversations"
+            android:id="@+id/conversation"/>
 
-</LinearLayout>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Map"
+            android:id="@+id/mapbtn"/>
+
+    </LinearLayout>
+
+    <include layout="@layout/bottom_toolbar"/>
+
+</RelativeLayout>
