@@ -94,4 +94,6 @@
             android:textSize="16dp" />
     </LinearLayout>
 
+    <include layout="@layout/bottom_toolbar"/>
+
 </RelativeLayout>

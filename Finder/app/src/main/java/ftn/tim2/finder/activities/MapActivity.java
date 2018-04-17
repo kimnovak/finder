@@ -167,6 +167,31 @@ public class MapActivity extends AppCompatActivity {
             }
         }
     }
+
+    public void home(View v){
+        Intent intent = new Intent(MapActivity.this, MapActivity.class);
+        startActivity(intent);
+    }
+
+    public void people(View v){
+        Intent intent = new Intent(MapActivity.this, ViewAllUsersActivity.class);
+        startActivity(intent);
+    }
+
+    public void messages(View v){
+        Intent intent = new Intent(MapActivity.this, ConversationActivity.class);
+        startActivity(intent);
+    }
+
+    public void settings(View v){
+        Intent intent = new Intent(MapActivity.this, FinderPreferenceActivity.class);
+        startActivity(intent);
+    }
+
+    public void account(View v){
+        Intent intent = new Intent(MapActivity.this, ProfileDetailsActivity.class);
+        startActivity(intent);
+    }
 }
 
 
