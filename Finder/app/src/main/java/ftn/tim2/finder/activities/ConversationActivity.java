@@ -71,7 +71,7 @@ public class ConversationActivity extends AppCompatActivity {
     }
 
     public void account(View v){
-        Intent intent = new Intent(ConversationActivity.this, ProfileEditActivity.class);
+        Intent intent = new Intent(ConversationActivity.this, ProfileDetailsActivity.class);
         startActivity(intent);
     }
 }

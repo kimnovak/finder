@@ -1,5 +1,6 @@
 package ftn.tim2.finder.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -74,5 +75,30 @@ public class ViewAllUsersActivity extends AppCompatActivity {
             users.add(user);
         }
         return users;
+    }
+
+    public void home(View v){
+        Intent intent = new Intent(ViewAllUsersActivity.this, MapActivity.class);
+        startActivity(intent);
+    }
+
+    public void people(View v){
+        Intent intent = new Intent(ViewAllUsersActivity.this, ViewAllUsersActivity.class);
+        startActivity(intent);
+    }
+
+    public void messages(View v){
+        Intent intent = new Intent(ViewAllUsersActivity.this, ConversationActivity.class);
+        startActivity(intent);
+    }
+
+    public void settings(View v){
+        Intent intent = new Intent(ViewAllUsersActivity.this, FinderPreferenceActivity.class);
+        startActivity(intent);
+    }
+
+    public void account(View v){
+        Intent intent = new Intent(ViewAllUsersActivity.this, ProfileDetailsActivity.class);
+        startActivity(intent);
     }
 }

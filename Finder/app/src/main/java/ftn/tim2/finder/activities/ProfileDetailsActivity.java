@@ -46,4 +46,29 @@ public class ProfileDetailsActivity extends AppCompatActivity {
         Intent intent = new Intent(this, CommentActivity.class);
         startActivity(intent);
     }
+
+    public void home(View v){
+        Intent intent = new Intent(ProfileDetailsActivity.this, MapActivity.class);
+        startActivity(intent);
+    }
+
+    public void people(View v){
+        Intent intent = new Intent(ProfileDetailsActivity.this, ViewAllUsersActivity.class);
+        startActivity(intent);
+    }
+
+    public void messages(View v){
+        Intent intent = new Intent(ProfileDetailsActivity.this, ConversationActivity.class);
+        startActivity(intent);
+    }
+
+    public void settings(View v){
+        Intent intent = new Intent(ProfileDetailsActivity.this, FinderPreferenceActivity.class);
+        startActivity(intent);
+    }
+
+    public void account(View v){
+        Intent intent = new Intent(ProfileDetailsActivity.this, ProfileDetailsActivity.class);
+        startActivity(intent);
+    }
 }
