@@ -40,10 +40,10 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="2dp"/>
                     <ImageView
+                        android:id="@+id/profile_star"
                         android:layout_gravity="center"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:onClick="showRatePopup"
                         android:src="@drawable/ic_star_yellow"
                         android:layout_marginLeft="5dp"/>
                 </LinearLayout>
@@ -57,10 +57,10 @@
                     android:layout_gravity="center_horizontal" />
             </LinearLayout>
             <ImageView
+                android:id="@+id/profile_edit"
                 android:layout_alignParentRight="true"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:onClick="editProfile"
                 android:src="@drawable/ic_edit"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp"/>
@@ -137,13 +137,13 @@
                 android:drawableTop="@drawable/ic_follow"
                 android:layout_marginRight="15dp"/>
             <Button
-                android:onClick="seeMessages"
+                android:id="@+id/profile_message"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:background="@drawable/circle_button"
                 android:layout_gravity="center_horizontal"
                 android:paddingTop="15dp"
-                android:drawableTop="@drawable/ic_mail_outline" />
+                android:drawableTop="@drawable/ic_message" />
             <Button
                 android:id="@+id/profile_comment"
                 android:layout_width="60dp"

@@ -85,8 +85,8 @@ public class MapActivity extends AppCompatActivity {
                     mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                         @Override
                         public void onInfoWindowClick(Marker marker) {
-                            Intent intent = new Intent(MapActivity.this, ProfileDetailsActivity.class);
-                            startActivity(intent);
+                            //Intent intent = new Intent(MapActivity.this, ProfileDetailsActivity.class);
+                            //startActivity(intent);
                         }
                     });
                 }

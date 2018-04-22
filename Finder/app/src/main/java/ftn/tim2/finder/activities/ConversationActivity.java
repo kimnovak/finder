@@ -50,28 +50,4 @@ public class ConversationActivity extends AppCompatActivity {
         conversations.add(new Conversation(sender, receiver2, null));
     }
 
-    public void home(View v){
-        Intent intent = new Intent(ConversationActivity.this, MapActivity.class);
-        startActivity(intent);
-    }
-
-    public void people(View v){
-        Intent intent = new Intent(ConversationActivity.this, ViewAllUsersActivity.class);
-        startActivity(intent);
-    }
-
-    public void messages(View v){
-        Intent intent = new Intent(ConversationActivity.this, ConversationActivity.class);
-        startActivity(intent);
-    }
-
-    public void settings(View v){
-        Intent intent = new Intent(ConversationActivity.this, FinderPreferenceActivity.class);
-        startActivity(intent);
-    }
-
-    public void account(View v){
-        Intent intent = new Intent(ConversationActivity.this, ProfileDetailsActivity.class);
-        startActivity(intent);
-    }
 }
