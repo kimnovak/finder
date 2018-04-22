@@ -1,6 +1,5 @@
 package ftn.tim2.finder.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -13,7 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 
 import android.Manifest;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -48,7 +46,7 @@ public class MapActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map);
+        setContentView(R.layout.fragment_map);
         getLocationPermission();
     }
 
@@ -168,30 +166,6 @@ public class MapActivity extends AppCompatActivity {
         }
     }
 
-    public void home(View v){
-        Intent intent = new Intent(MapActivity.this, MapActivity.class);
-        startActivity(intent);
-    }
-
-    public void people(View v){
-        Intent intent = new Intent(MapActivity.this, ViewAllUsersActivity.class);
-        startActivity(intent);
-    }
-
-    public void messages(View v){
-        Intent intent = new Intent(MapActivity.this, ConversationActivity.class);
-        startActivity(intent);
-    }
-
-    public void settings(View v){
-        Intent intent = new Intent(MapActivity.this, FinderPreferenceActivity.class);
-        startActivity(intent);
-    }
-
-    public void account(View v){
-        Intent intent = new Intent(MapActivity.this, ProfileDetailsActivity.class);
-        startActivity(intent);
-    }
 }
 
 

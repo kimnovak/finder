@@ -145,7 +145,7 @@
                 android:paddingTop="15dp"
                 android:drawableTop="@drawable/ic_mail_outline" />
             <Button
-                android:onClick="seeComments"
+                android:id="@+id/profile_comment"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:background="@drawable/circle_button"
@@ -249,7 +249,5 @@
         </LinearLayout>
 
     </LinearLayout>
-
-    <include layout="@layout/bottom_toolbar"/>
 
 </RelativeLayout>

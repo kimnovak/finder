@@ -1,52 +1,60 @@
 package ftn.tim2.finder;
 
-import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
+import android.view.MenuItem;
 
-import ftn.tim2.finder.activities.CommentActivity;
-import ftn.tim2.finder.activities.ConversationActivity;
 import ftn.tim2.finder.activities.FinderPreferenceActivity;
-import ftn.tim2.finder.activities.LoginActivity;
-import ftn.tim2.finder.activities.MapActivity;
-import ftn.tim2.finder.activities.ProfileDetailsActivity;
-import ftn.tim2.finder.activities.ProfileEditActivity;
-import ftn.tim2.finder.activities.RegistrationActivity;
-import ftn.tim2.finder.activities.ViewAllUsersActivity;
+import ftn.tim2.finder.fragments.ConversationFragment;
+import ftn.tim2.finder.fragments.MapFragment;
+import ftn.tim2.finder.fragments.ProfileDetailsFragment;
+import ftn.tim2.finder.fragments.SettingsFragment;
+import ftn.tim2.finder.fragments.UserFragment;
 
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map);
+        setContentView(R.layout.activity_main);
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Fragment selectedFragment = null;
+                switch (item.getItemId()) {
+                    case R.id.home_toolbar:
+                        selectedFragment = new MapFragment();
+                        break;
+                    case R.id.users_toolbar:
+                        selectedFragment = new UserFragment();
+                        break;
+                    case R.id.conversation_toolbar:
+                        selectedFragment = new ConversationFragment();
+                        break;
+                    case R.id.settings_toolbar:
+                        //selectedFragment = new FinderPreferenceActivity();
+                        break;
+                    case R.id.account_toolbar:
+                        selectedFragment = new ProfileDetailsFragment();
+                        break;
+                }
+
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.content_frame, selectedFragment);
+                transaction.commit();
+                return true;
+            }
+        });
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.content_frame, new MapFragment());
+        transaction.commit();
     }
 
-    public void home(View v){
-        Intent intent = new Intent(MainActivity.this, MapActivity.class);
-        startActivity(intent);
-    }
-
-    public void people(View v){
-        Intent intent = new Intent(MainActivity.this, ViewAllUsersActivity.class);
-        startActivity(intent);
-    }
-
-    public void messages(View v){
-        Intent intent = new Intent(MainActivity.this, ConversationActivity.class);
-        startActivity(intent);
-    }
-
-    public void settings(View v){
-        Intent intent = new Intent(MainActivity.this, FinderPreferenceActivity.class);
-        startActivity(intent);
-    }
-
-    public void account(View v){
-        Intent intent = new Intent(MainActivity.this, ProfileDetailsActivity.class);
-        startActivity(intent);
-    }
 }

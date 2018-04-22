@@ -18,7 +18,7 @@ public class ProfileDetailsActivity extends AppCompatActivity {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile_detail);
+        setContentView(R.layout.fragment_profile_detail);
         rateDialog = new Dialog(this);
     }
 
@@ -42,38 +42,15 @@ public class ProfileDetailsActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /*
     public void seeComments(View v){
         Intent intent = new Intent(this, CommentActivity.class);
         startActivity(intent);
-    }
+    }*/
 
     public void editProfile(View v) {
         Intent intent = new Intent(ProfileDetailsActivity.this, ProfileEditActivity.class);
         startActivity(intent);
     }
 
-    public void home(View v){
-        Intent intent = new Intent(ProfileDetailsActivity.this, MapActivity.class);
-        startActivity(intent);
-    }
-
-    public void people(View v){
-        Intent intent = new Intent(ProfileDetailsActivity.this, ViewAllUsersActivity.class);
-        startActivity(intent);
-    }
-
-    public void messages(View v){
-        Intent intent = new Intent(ProfileDetailsActivity.this, ConversationActivity.class);
-        startActivity(intent);
-    }
-
-    public void settings(View v){
-        Intent intent = new Intent(ProfileDetailsActivity.this, FinderPreferenceActivity.class);
-        startActivity(intent);
-    }
-
-    public void account(View v){
-        Intent intent = new Intent(ProfileDetailsActivity.this, ProfileDetailsActivity.class);
-        startActivity(intent);
-    }
 }
