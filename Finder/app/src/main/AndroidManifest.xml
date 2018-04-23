@@ -38,10 +38,6 @@
         </activity>
         <activity android:name=".activities.FinderPreferenceActivity">
         </activity>
-        <activity android:name=".activities.ConversationActivity">
-        </activity>
-        <activity android:name=".activities.MapActivity">
-        </activity>
         <activity android:name=".activities.MessageActivity">
         </activity>
     </application>
