@@ -1,8 +1,7 @@
 package ftn.tim2.finder.adapters;
 
-import android.app.Activity;
-import android.app.PendingIntent;
 import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -17,10 +16,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import ftn.tim2.finder.MainActivity;
 import ftn.tim2.finder.R;
 import ftn.tim2.finder.fragments.ProfileDetailsFragment;
-import ftn.tim2.finder.fragments.UserFragment;
 import ftn.tim2.finder.model.User;
 
 public class UsersRecyclerViewAdapter extends RecyclerView.Adapter<UsersRecyclerViewAdapter.ViewHolder>{
@@ -75,6 +72,11 @@ public class UsersRecyclerViewAdapter extends RecyclerView.Adapter<UsersRecycler
         ProfileDetailsFragment profileDetailsFragment = new ProfileDetailsFragment();
         FragmentManager fragmentManager = mFragment.getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("myAccount", false);
+        profileDetailsFragment.setArguments(bundle);
+
         transaction.replace(R.id.content_frame, profileDetailsFragment);
         transaction.commit();
     }

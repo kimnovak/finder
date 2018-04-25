@@ -38,9 +38,6 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.conversation_toolbar:
                         selectedFragment = new ConversationFragment();
                         break;
-                    case R.id.settings_toolbar:
-                        //selectedFragment = new FinderPreferenceActivity();
-                        break;
                     case R.id.account_toolbar:
                         selectedFragment = new ProfileDetailsFragment();
                         break;

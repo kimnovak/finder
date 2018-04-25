@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import ftn.tim2.finder.R;
+import ftn.tim2.finder.activities.FinderPreferenceActivity;
 import ftn.tim2.finder.activities.MessageActivity;
 import ftn.tim2.finder.activities.ProfileEditActivity;
 
@@ -24,12 +25,19 @@ public class ProfileDetailsFragment extends Fragment {
     private View v;
     private Dialog rateDialog;
 
+    private boolean showMyAccount;
+
     public ProfileDetailsFragment() {
+        showMyAccount = true;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (getArguments() != null) {
+            showMyAccount = getArguments().getBoolean("myAccount");
+        }
 
         rateDialog = new Dialog(getContext());
     }
@@ -38,6 +46,13 @@ public class ProfileDetailsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_profile_detail, container, false);
+
+
+        if (showMyAccount) {
+            hideMyAccountOptions();
+        } else {
+            hideMyAccountPreferences();
+        }
 
         Button profile_comment_btn = v.findViewById(R.id.profile_comment);
         profile_comment_btn.setOnClickListener(new View.OnClickListener() {
@@ -52,6 +67,14 @@ public class ProfileDetailsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 seeMessages();
+            }
+        });
+
+        Button finder_preferences_btn = v.findViewById(R.id.profile_settings);
+        finder_preferences_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPreferences();
             }
         });
 
@@ -74,6 +97,17 @@ public class ProfileDetailsFragment extends Fragment {
         return v;
     }
 
+    public void hideMyAccountOptions() {
+        v.findViewById(R.id.profile_message).setVisibility(View.GONE);
+        v.findViewById(R.id.profile_star).setVisibility(View.GONE);
+        v.findViewById(R.id.follow).setVisibility(View.GONE);
+    }
+
+    public void hideMyAccountPreferences() {
+        v.findViewById(R.id.profile_settings).setVisibility(View.GONE);
+        v.findViewById(R.id.profile_edit).setVisibility(View.GONE);
+    }
+
     private void showRatePopup(){
         TextView closeRate;
         Button rateBtn;
@@ -87,6 +121,11 @@ public class ProfileDetailsFragment extends Fragment {
             }
         });
         rateDialog.show();
+    }
+
+    private void showPreferences() {
+        Intent intent = new Intent(getContext(), FinderPreferenceActivity.class);
+        startActivity(intent);
     }
 
     private void seeMessages() {
