@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +16,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.firebase.auth.FirebaseAuth;
+
 import ftn.tim2.finder.R;
 import ftn.tim2.finder.activities.FinderPreferenceActivity;
+import ftn.tim2.finder.activities.LoginActivity;
 import ftn.tim2.finder.activities.MessageActivity;
 import ftn.tim2.finder.activities.ProfileEditActivity;
 
@@ -26,6 +33,8 @@ public class ProfileDetailsFragment extends Fragment {
     private Dialog rateDialog;
 
     private boolean showMyAccount;
+
+    private FirebaseAuth firebaseAuth;
 
     public ProfileDetailsFragment() {
         showMyAccount = true;
@@ -47,6 +56,11 @@ public class ProfileDetailsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_profile_detail, container, false);
 
+        firebaseAuth = FirebaseAuth.getInstance();
+        if(firebaseAuth.getCurrentUser() == null){
+            Intent intent = new Intent(getContext(), LoginActivity.class);
+            startActivity(intent);
+        }
 
         if (showMyAccount) {
             hideMyAccountOptions();
@@ -75,6 +89,14 @@ public class ProfileDetailsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 showPreferences();
+            }
+        });
+
+        TextView sign_out = v.findViewById(R.id.signOut);
+        sign_out.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signOut();
             }
         });
 
@@ -143,6 +165,12 @@ public class ProfileDetailsFragment extends Fragment {
 
     private void editProfile() {
         Intent intent = new Intent(getContext(), ProfileEditActivity.class);
+        startActivity(intent);
+    }
+
+    private void signOut(){
+        firebaseAuth.signOut();
+        Intent intent = new Intent(getContext(), LoginActivity.class);
         startActivity(intent);
     }
 }
