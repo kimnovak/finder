@@ -51,11 +51,11 @@ public class ConversationFragment extends Fragment {
     }
 
     private void initData() {
-        User sender = new User("Username", "email@example.com", "password", "First", "Last" );
+        User sender = new User("1","Username", "email@example.com", "password", "First", "Last" );
 
-        User receiver = new User("Receiver1", "email1@example.com", "password", "First", "Last" );
-        User receiver1 = new User("Receiver2", "email2@example.com", "password", "First1", "Last1" );
-        User receiver2 = new User("Receiver3", "email3@example.com", "password", "First2", "Last2" );
+        User receiver = new User("1","Receiver1", "email1@example.com", "password", "First", "Last" );
+        User receiver1 = new User("1","Receiver2", "email2@example.com", "password", "First1", "Last1" );
+        User receiver2 = new User("1","Receiver3", "email3@example.com", "password", "First2", "Last2" );
 
         conversations.add(new Conversation(sender, receiver, null));
         conversations.add(new Conversation(sender, receiver1, null));

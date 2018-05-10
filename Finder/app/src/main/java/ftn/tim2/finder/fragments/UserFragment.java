@@ -49,7 +49,7 @@ public class UserFragment extends Fragment {
 
     private void addInitialData() {
         for(int i = 0; i <= NUMBER_OF_INITIAL_USERS; i++) {
-            User user = new User("Username" + i, "email" + i + "@example.com", "password", "First" + i, "Last" + i );
+            User user = new User("1", "Username" + i, "email" + i + "@example.com", "password", "First" + i, "Last" + i );
             mUsers.add(user);
         }
     }
@@ -83,14 +83,14 @@ public class UserFragment extends Fragment {
 
     private ArrayList<User> getFriends() {
         ArrayList<User> friendList = new ArrayList<>();
-        friendList.add(new User("Username2", "email2@example.com", "password", "First2", "Last2"));
+        friendList.add(new User("1", "Username2", "email2@example.com", "password", "First2", "Last2"));
         return friendList;
     }
 
     private ArrayList<User> getAllUsers() {
         ArrayList<User> users = new ArrayList<>();
         for(int i = 0; i <= NUMBER_OF_INITIAL_USERS; i++) {
-            User user = new User("Username" + i, "email" + i + "@example.com", "password", "First" + i, "Last" + i );
+            User user = new User("1", "Username" + i, "email" + i + "@example.com", "password", "First" + i, "Last" + i );
             users.add(user);
         }
         return users;

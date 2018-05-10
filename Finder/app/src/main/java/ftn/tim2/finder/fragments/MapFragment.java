@@ -155,7 +155,7 @@ public class MapFragment extends Fragment {
     private ArrayList<User> getUsers() {
         ArrayList<User> users = new ArrayList<User>();
         for(int i = 0; i <= NUMBER_OF_INITIAL_USERS; i++) {
-            User user = new User("Username" + i, "email" + i + "@example.com", "password", "First" + i, "Last" + i );
+            User user = new User("1", "Username" + i, "email" + i + "@example.com", "password", "First" + i, "Last" + i );
             users.add(user);
         }
         return users;

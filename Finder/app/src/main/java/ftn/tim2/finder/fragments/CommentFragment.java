@@ -56,7 +56,7 @@ public class CommentFragment extends Fragment {
     }
 
     private void prepareData(){
-        User user = new User("username", "email", "password", "firstName", "lastName");
+        User user = new User("1", "username", "email", "password", "firstName", "lastName");
         Comment comment = new Comment("This is some comment", new Date(), user);
         commentList.add(comment);
 

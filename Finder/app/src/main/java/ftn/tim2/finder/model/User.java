@@ -1,6 +1,7 @@
 package ftn.tim2.finder.model;
 
 public class User {
+    private String id;
     private String username;
     private String email;
     private String password;
@@ -11,13 +12,18 @@ public class User {
 
     }
 
-    public User(String username, String email, String password, String firstName, String lastName) {
+    public User(String id, String username, String email, String password, String firstName, String lastName) {
+        this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
     }
+
+    public String getId() { return id; }
+
+    public void setId(String id) { this.id = id; }
 
     public String getUsername() {
         return username;
