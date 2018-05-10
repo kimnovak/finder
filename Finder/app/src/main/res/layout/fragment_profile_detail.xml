@@ -31,9 +31,9 @@
                     android:orientation="horizontal"
                     android:gravity="center">
                     <TextView
+                        android:id="@+id/name_profile"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="FirstName LastName"
                         android:textColor="#fff"
                         android:textStyle="bold"
                         android:textSize="18sp"
@@ -48,9 +48,9 @@
                         android:layout_marginLeft="5dp"/>
                 </LinearLayout>
                 <TextView
+                    android:id="@+id/username_profile"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="\@username"
                     android:textColor="#fff"
                     android:textStyle="bold"
                     android:textSize="16sp"

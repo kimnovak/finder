@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,25 +15,31 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import ftn.tim2.finder.R;
 import ftn.tim2.finder.activities.FinderPreferenceActivity;
 import ftn.tim2.finder.activities.LoginActivity;
 import ftn.tim2.finder.activities.MessageActivity;
 import ftn.tim2.finder.activities.ProfileEditActivity;
+import ftn.tim2.finder.model.User;
 
 public class ProfileDetailsFragment extends Fragment {
 
     private View v;
     private Dialog rateDialog;
+    private TextView nameProfile;
+    private TextView usernameProfile;
 
     private boolean showMyAccount;
 
     private FirebaseAuth firebaseAuth;
+    private DatabaseReference databaseUsers;
 
     public ProfileDetailsFragment() {
         showMyAccount = true;
@@ -62,11 +67,30 @@ public class ProfileDetailsFragment extends Fragment {
             startActivity(intent);
         }
 
+        databaseUsers = FirebaseDatabase.getInstance().getReference("users");
+
+        databaseUsers.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.child(firebaseAuth.getCurrentUser().getUid()).getValue(User.class);
+                nameProfile.setText(user.getFirstName() + " " + user.getLastName());
+                usernameProfile.setText(user.getUsername());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
+            }
+        });
+
         if (showMyAccount) {
             hideMyAccountOptions();
         } else {
             hideMyAccountPreferences();
         }
+
+        nameProfile = v.findViewById(R.id.name_profile);
+        usernameProfile = v.findViewById(R.id.username_profile);
 
         Button profile_comment_btn = v.findViewById(R.id.profile_comment);
         profile_comment_btn.setOnClickListener(new View.OnClickListener() {
