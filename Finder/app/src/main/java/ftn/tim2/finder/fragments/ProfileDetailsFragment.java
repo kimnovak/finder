@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,14 @@ public class ProfileDetailsFragment extends Fragment {
     private Dialog rateDialog;
     private TextView nameProfile;
     private TextView usernameProfile;
+    private TextView emailProfile;
+    private TextView addressProfile;
+    private TextView rateProfile;
+    private TextView registrationDateProfile;
+    private TextView descriptionProfile;
+    private TextView followersProfile;
+    private TextView followingProfile;
+    private static final String TAG = "ProfileDetailsFragment";
 
     private boolean showMyAccount;
 
@@ -74,12 +83,35 @@ public class ProfileDetailsFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.child(firebaseAuth.getCurrentUser().getUid()).getValue(User.class);
                 nameProfile.setText(user.getFirstName() + " " + user.getLastName());
-                usernameProfile.setText(user.getUsername());
+                usernameProfile.setText("@" + user.getUsername());
+                emailProfile.setText(user.getEmail());
+                if(!user.getUserProfile().getCountry().isEmpty()){
+                    addressProfile.setText(user.getUserProfile().getCity() + ", " + user.getUserProfile().getCountry());
+                }
+                else{
+                    addressProfile.setText("");
+                }
+                rateProfile.setText(new Double(user.getUserProfile().getRate()).toString());
+                android.text.format.DateFormat dateFormat = new android.text.format.DateFormat();
+                registrationDateProfile.setText(dateFormat.format("yyyy-MM-dd", user.getUserProfile().getRegistrationDate()));
+                descriptionProfile.setText(user.getUserProfile().getDescription());
+                if(user.getUserProfile().getFollowers() != null){
+                    followersProfile.setText(user.getUserProfile().getFollowers().size());
+                }
+                else{
+                    followersProfile.setText("0");
+                }
+                if(user.getUserProfile().getFollowing() != null){
+                    followingProfile.setText(user.getUserProfile().getFollowing().size());
+                }
+                else{
+                    followingProfile.setText("0");
+                }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                System.out.println("The read failed: " + databaseError.getCode());
+                Log.d(TAG, "The read failed: " + databaseError.getCode());
             }
         });
 
@@ -91,6 +123,13 @@ public class ProfileDetailsFragment extends Fragment {
 
         nameProfile = v.findViewById(R.id.name_profile);
         usernameProfile = v.findViewById(R.id.username_profile);
+        emailProfile = v.findViewById(R.id.email_profile);
+        addressProfile = v.findViewById(R.id.address_profile);
+        rateProfile = v.findViewById(R.id.rate_profile);
+        registrationDateProfile = v.findViewById(R.id.reg_date_profile);
+        descriptionProfile = v.findViewById(R.id.description_profile);
+        followersProfile = v.findViewById(R.id.followers_profile);
+        followingProfile = v.findViewById(R.id.following_profile);
 
         Button profile_comment_btn = v.findViewById(R.id.profile_comment);
         profile_comment_btn.setOnClickListener(new View.OnClickListener() {

@@ -7,6 +7,7 @@ public class User {
     private String password;
     private String firstName;
     private String lastName;
+    private UserProfile userProfile;
 
     public User() {
 
@@ -21,9 +22,13 @@ public class User {
         this.lastName = lastName;
     }
 
-    public String getId() { return id; }
+    public String getId() {
+        return id;
+    }
 
-    public void setId(String id) { this.id = id; }
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getUsername() {
         return username;
@@ -63,5 +68,13 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public UserProfile getUserProfile() {
+        return userProfile;
+    }
+
+    public void setUserProfile(UserProfile userProfile) {
+        this.userProfile = userProfile;
     }
 }

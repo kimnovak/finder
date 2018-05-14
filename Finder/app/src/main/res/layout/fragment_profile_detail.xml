@@ -98,6 +98,7 @@
                             android:text="Followers"
                             android:textSize="18sp"/>
                         <TextView
+                            android:id="@+id/followers_profile"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="123"
@@ -118,6 +119,7 @@
                             android:text="Following"
                             android:textSize="18sp"/>
                         <TextView
+                            android:id="@+id/following_profile"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="201"
@@ -188,6 +190,7 @@
                     android:layout_height="30dp"
                     android:src="@drawable/ic_mail_outline"/>
                 <TextView
+                    android:id="@+id/email_profile"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="firstlast@gmail.com"
@@ -205,6 +208,7 @@
                     android:layout_height="30dp"
                     android:src="@drawable/ic_location_city"/>
                 <TextView
+                    android:id="@+id/address_profile"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Novi Sad, Serbia"
@@ -223,6 +227,7 @@
                     android:layout_height="30dp"
                     android:src="@drawable/ic_stars"/>
                 <TextView
+                    android:id="@+id/rate_profile"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="4.7"
@@ -240,6 +245,7 @@
                     android:layout_height="30dp"
                     android:src="@drawable/ic_date_range"/>
                 <TextView
+                    android:id="@+id/reg_date_profile"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="12.08.2017"
@@ -257,6 +263,7 @@
                     android:layout_height="30dp"
                     android:src="@drawable/ic_description"/>
                 <TextView
+                    android:id="@+id/description_profile"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="This is some description. Here I'm describing my profile....."

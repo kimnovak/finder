@@ -43,7 +43,7 @@
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:textSize="16sp"
-            android:hint="Username"/>
+            android:hint="Email"/>
         <EditText
             android:id="@+id/password_login"
             android:layout_width="300dp"
