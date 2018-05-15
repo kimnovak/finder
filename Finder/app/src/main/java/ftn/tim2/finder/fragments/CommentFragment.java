@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import ftn.tim2.finder.R;
@@ -56,7 +57,7 @@ public class CommentFragment extends Fragment {
     }
 
     private void prepareData(){
-        User user = new User("1", "username", "email", "password", "firstName", "lastName");
+        User user = new User("1", "username", "email", "password", "firstName", "lastName", new HashMap<String, String>());
         Comment comment = new Comment("This is some comment", new Date(), user);
         commentList.add(comment);
 

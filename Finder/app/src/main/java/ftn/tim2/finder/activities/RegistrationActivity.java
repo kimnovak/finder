@@ -10,7 +10,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -21,6 +20,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Date;
+import java.util.HashMap;
 
 import ftn.tim2.finder.MainActivity;
 import ftn.tim2.finder.R;
@@ -81,7 +81,7 @@ public class RegistrationActivity extends AppCompatActivity {
                     if(task.isSuccessful()){
                         //String id = databaseUsers.push().getKey();
                         User user = new User(firebaseAuth.getCurrentUser().getUid(), username, email,
-                                password, firstName, lastName);
+                                password, firstName, lastName, new HashMap<String, String>());
 
                         UserProfile userProfile = new UserProfile("", "", new Date(), 0, "", "");
                         user.setUserProfile(userProfile);
