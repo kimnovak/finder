@@ -36,6 +36,7 @@ public class UserFragment extends Fragment {
     private final int NUMBER_OF_INITIAL_USERS = 5;
     private DatabaseReference databaseUsers;
     private ArrayList<User> mFriends;
+    private UsersRecyclerViewAdapter adapt;
 
     public UserFragment() {
         mUsers = new ArrayList<>();
@@ -92,6 +93,7 @@ public class UserFragment extends Fragment {
         RecyclerView recyclerView = v.findViewById(R.id.recyclerusers_view);
         final UsersRecyclerViewAdapter adapter = new UsersRecyclerViewAdapter(mUsers, getContext(), this);
         adapter.notifyDataSetChanged();
+        adapt = adapter;
         Button viewFriendsBtn = v.findViewById(R.id.view_friends_button);
         viewFriendsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,7 +134,8 @@ public class UserFragment extends Fragment {
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-
+                Log.d(TAG, "Friend removed");
+                removeFriend(dataSnapshot.getValue().toString());
             }
 
             @Override
@@ -194,7 +197,23 @@ public class UserFragment extends Fragment {
         }
         if(friend != null) {
             mFriends.add(friend);
+            adapt.notifyDataSetChanged();
         }
+
+    }
+
+    private void removeFriend(String id) {
+        User friend = null;
+        for(User user: mFriends) {
+            if(user.getId().equals(id)) {
+                friend = user;
+                break;
+            }
+        }
+        if(friend != null) {
+            mFriends.remove(friend);
+        }
+        adapt.notifyDataSetChanged();
     }
 
     @Override
