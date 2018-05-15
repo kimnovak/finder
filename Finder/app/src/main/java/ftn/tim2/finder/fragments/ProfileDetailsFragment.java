@@ -43,6 +43,14 @@ public class ProfileDetailsFragment extends Fragment {
     private TextView descriptionProfile;
     private TextView followersProfile;
     private TextView followingProfile;
+
+    private Button profile_comment_btn;
+    private Button profile_messages_btn;
+    private Button finder_preferences_btn;
+    private ImageView edit_profile_img;
+    private TextView sign_out;
+    private ImageView profile_star_img;
+
     private static final String TAG = "ProfileDetailsFragment";
 
     private boolean showMyAccount;
@@ -81,32 +89,7 @@ public class ProfileDetailsFragment extends Fragment {
         databaseUsers.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.child(firebaseAuth.getCurrentUser().getUid()).getValue(User.class);
-                nameProfile.setText(user.getFirstName() + " " + user.getLastName());
-                usernameProfile.setText("@" + user.getUsername());
-                emailProfile.setText(user.getEmail());
-                if(!user.getUserProfile().getCountry().isEmpty()){
-                    addressProfile.setText(user.getUserProfile().getCity() + ", " + user.getUserProfile().getCountry());
-                }
-                else{
-                    addressProfile.setText("");
-                }
-                rateProfile.setText(new Double(user.getUserProfile().getRate()).toString());
-                android.text.format.DateFormat dateFormat = new android.text.format.DateFormat();
-                registrationDateProfile.setText(dateFormat.format("yyyy-MM-dd", user.getUserProfile().getRegistrationDate()));
-                descriptionProfile.setText(user.getUserProfile().getDescription());
-                if(user.getUserProfile().getFollowers() != null){
-                    followersProfile.setText(user.getUserProfile().getFollowers().size());
-                }
-                else{
-                    followersProfile.setText("0");
-                }
-                if(user.getUserProfile().getFollowing() != null){
-                    followingProfile.setText(user.getUserProfile().getFollowing().size());
-                }
-                else{
-                    followingProfile.setText("0");
-                }
+                showData(dataSnapshot);
             }
 
             @Override
@@ -121,6 +104,12 @@ public class ProfileDetailsFragment extends Fragment {
             hideMyAccountPreferences();
         }
 
+        prepareData(v);
+
+        return v;
+    }
+
+    private void prepareData(View v) {
         nameProfile = v.findViewById(R.id.name_profile);
         usernameProfile = v.findViewById(R.id.username_profile);
         emailProfile = v.findViewById(R.id.email_profile);
@@ -131,7 +120,7 @@ public class ProfileDetailsFragment extends Fragment {
         followersProfile = v.findViewById(R.id.followers_profile);
         followingProfile = v.findViewById(R.id.following_profile);
 
-        Button profile_comment_btn = v.findViewById(R.id.profile_comment);
+        profile_comment_btn = v.findViewById(R.id.profile_comment);
         profile_comment_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -139,7 +128,7 @@ public class ProfileDetailsFragment extends Fragment {
             }
         });
 
-        Button profile_messages_btn = v.findViewById(R.id.profile_message);
+        profile_messages_btn = v.findViewById(R.id.profile_message);
         profile_messages_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -147,7 +136,7 @@ public class ProfileDetailsFragment extends Fragment {
             }
         });
 
-        Button finder_preferences_btn = v.findViewById(R.id.profile_settings);
+        finder_preferences_btn = v.findViewById(R.id.profile_settings);
         finder_preferences_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -155,7 +144,7 @@ public class ProfileDetailsFragment extends Fragment {
             }
         });
 
-        TextView sign_out = v.findViewById(R.id.signOut);
+        sign_out = v.findViewById(R.id.signOut);
         sign_out.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -163,7 +152,7 @@ public class ProfileDetailsFragment extends Fragment {
             }
         });
 
-        ImageView edit_profile_img = v.findViewById(R.id.profile_edit);
+        edit_profile_img = v.findViewById(R.id.profile_edit);
         edit_profile_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -171,15 +160,41 @@ public class ProfileDetailsFragment extends Fragment {
             }
         });
 
-        ImageView profile_star_img = v.findViewById(R.id.profile_star);
+        profile_star_img = v.findViewById(R.id.profile_star);
         profile_star_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showRatePopup();
             }
         });
+    }
 
-        return v;
+    private void showData(DataSnapshot dataSnapshot) {
+        User user = dataSnapshot.child(firebaseAuth.getCurrentUser().getUid()).getValue(User.class);
+        nameProfile.setText(user.getFirstName() + " " + user.getLastName());
+        usernameProfile.setText("@" + user.getUsername());
+        emailProfile.setText(user.getEmail());
+        addressProfile.setText(user.getUserProfile().getCity());
+        if(!user.getUserProfile().getCity().isEmpty() && !user.getUserProfile().getCountry().isEmpty()){
+            addressProfile.append(", ");
+        }
+        addressProfile.append(user.getUserProfile().getCountry());
+        rateProfile.setText(new Double(user.getUserProfile().getRate()).toString());
+        android.text.format.DateFormat dateFormat = new android.text.format.DateFormat();
+        registrationDateProfile.setText(dateFormat.format("yyyy-MM-dd", user.getUserProfile().getRegistrationDate()));
+        descriptionProfile.setText(user.getUserProfile().getDescription());
+        if(user.getUserProfile().getFollowers() != null){
+            followersProfile.setText(user.getUserProfile().getFollowers().size());
+        }
+        else{
+            followersProfile.setText("0");
+        }
+        if(user.getUserProfile().getFollowing() != null){
+            followingProfile.setText(user.getUserProfile().getFollowing().size());
+        }
+        else{
+            followingProfile.setText("0");
+        }
     }
 
     public void hideMyAccountOptions() {

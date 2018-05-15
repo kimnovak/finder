@@ -30,10 +30,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import ftn.tim2.finder.MainActivity;
 import ftn.tim2.finder.R;
 
-public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
-
-    SignInButton signInButton;
-    GoogleApiClient mGoogleSignInClient;
+public class LoginActivity extends AppCompatActivity{
 
     private EditText emailLogin;
     private EditText passwordLogin;
@@ -56,25 +53,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }
-
-        // Configure Google Sign In
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                //.requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-
-        mGoogleSignInClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this, this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
-
-        signInButton = findViewById(R.id.googleSignIn);
-        signInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                googleSignIn();
-            }
-        });
 
         emailLogin = findViewById(R.id.email_login);
         passwordLogin = findViewById(R.id.password_login);
@@ -112,42 +90,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 });
     }
 
-    public void googleSignIn() {
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleSignInClient);
-        startActivityForResult(signInIntent, RC_SIGN_IN);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            handleSignInResult(result);
-        }
-    }
-
-    private void handleSignInResult(GoogleSignInResult result) {
-        if(result.isSuccess()){
-            GoogleSignInAccount account = result.getSignInAccount();
-            Log.d(TAG, "Handle Sign in result:" + result.isSuccess());
-            Log.d(TAG, "Account:" + account.getDisplayName());
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-        }
-        else{
-            Log.d(TAG, "FAILED");
-        }
-    }
-
     public void goToRegistration(View v) {
         Intent intent = new Intent(this, RegistrationActivity.class);
         startActivity(intent);
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.d(TAG, "onConnectionFailed" + connectionResult);
     }
 }
