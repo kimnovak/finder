@@ -20,6 +20,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
+
 import ftn.tim2.finder.MainActivity;
 import ftn.tim2.finder.R;
 import ftn.tim2.finder.model.User;
@@ -78,7 +80,7 @@ public class RegistrationActivity extends AppCompatActivity {
                     if(task.isSuccessful()){
                         //String id = databaseUsers.push().getKey();
                         User user = new User(firebaseAuth.getCurrentUser().getUid(), username, email,
-                                password, firstName, lastName);
+                                password, firstName, lastName, new HashMap<String, String>());
                         databaseUsers.child(firebaseAuth.getCurrentUser().getUid()).setValue(user);
 
                         Log.d(TAG, "Registration successful!");

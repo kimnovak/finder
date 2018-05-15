@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -33,11 +35,11 @@ public class UserFragment extends Fragment {
     private ArrayList<User> mUsers;
     private final int NUMBER_OF_INITIAL_USERS = 5;
     private DatabaseReference databaseUsers;
-    private ArrayList<User> users;
+    private ArrayList<User> mFriends;
 
     public UserFragment() {
         mUsers = new ArrayList<>();
-        users = new ArrayList<User>();
+        mFriends = new ArrayList<>();
     }
 
     @Override
@@ -53,6 +55,7 @@ public class UserFragment extends Fragment {
         v = inflater.inflate(R.layout.fragment_users, container, false);
         Log.d(TAG, "view all users activity - oncreateview method");
         initializeUsers(v);
+
         //initRecyclerView(v);
 
         return v;
@@ -71,6 +74,7 @@ public class UserFragment extends Fragment {
                     addUser(user);
                 }
                 initRecyclerView(view);
+                getFriends();
             }
 
             @Override
@@ -112,9 +116,36 @@ public class UserFragment extends Fragment {
     }
 
     private ArrayList<User> getFriends() {
-        ArrayList<User> friendList = new ArrayList<>();
-        friendList.add(new User("1", "Username2", "email2@example.com", "password", "First2", "Last2"));
-        return friendList;
+        Log.d(TAG, "get Friends");
+        String currentUserId =  FirebaseAuth.getInstance().getCurrentUser().getUid();
+        databaseUsers.child(currentUserId).child("friends").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Log.d(TAG, "new Friend added");
+                addFriend(dataSnapshot.getValue().toString());
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        return mFriends;
     }
 
     private void getAllUsers() {
@@ -146,6 +177,24 @@ public class UserFragment extends Fragment {
             }
         }
         mUsers.add(user);
+    }
+
+    private void addFriend(String id) {
+        for(User f: mFriends) {
+            if(f.getId().equals(id)) {
+                return;
+            }
+        }
+        User friend = null;
+        for(User user: mUsers) {
+            if(user.getId().equals(id)) {
+                friend = user;
+                break;
+            }
+        }
+        if(friend != null) {
+            mFriends.add(friend);
+        }
     }
 
     @Override

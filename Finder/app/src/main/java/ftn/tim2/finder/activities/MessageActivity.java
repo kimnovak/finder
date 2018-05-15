@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import ftn.tim2.finder.R;
@@ -38,7 +39,7 @@ public class MessageActivity extends AppCompatActivity {
     }
 
     private void prepareData(){
-        User user = new User("1", "username", "email", "password", "firstName", "lastName");
+        User user = new User("1", "username", "email", "password", "firstName", "lastName", new HashMap<String, String>());
         Message message = new Message("First", user, user, new Date());
         messageList.add(message);
 
