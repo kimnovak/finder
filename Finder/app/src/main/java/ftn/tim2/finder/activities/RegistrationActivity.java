@@ -79,7 +79,6 @@ public class RegistrationActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful()){
-                        //String id = databaseUsers.push().getKey();
                         User user = new User(firebaseAuth.getCurrentUser().getUid(), username, email,
                                 password, firstName, lastName, new HashMap<String, String>());
 
