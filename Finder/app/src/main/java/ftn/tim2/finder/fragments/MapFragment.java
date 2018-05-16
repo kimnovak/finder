@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,9 +29,16 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import ftn.tim2.finder.R;
 import ftn.tim2.finder.model.User;
@@ -38,7 +46,7 @@ import ftn.tim2.finder.model.User;
 public class MapFragment extends Fragment {
 
     View v;
-
+    private static final String TAG = "ViewAllUsersActivity";
     private Boolean mLocationPermissionsGranted = false;
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
@@ -47,6 +55,9 @@ public class MapFragment extends Fragment {
     private final int NUMBER_OF_INITIAL_USERS = 5;
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationProviderClient;
+    private DatabaseReference databaseUsers;
+    private List<Marker> mMarkers;
+    private ArrayList<User> users;
 
     public MapFragment() {
     }
@@ -54,6 +65,9 @@ public class MapFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        databaseUsers = FirebaseDatabase.getInstance().getReference("users");
+        mMarkers = new ArrayList<>();
+        users = new ArrayList<User>();
     }
 
     @Nullable
@@ -92,7 +106,7 @@ public class MapFragment extends Fragment {
                         mMap.setMyLocationEnabled(true);
                     }
                     mMap.getUiSettings().setMyLocationButtonEnabled(false);
-                    addMarkers();
+                    getUsers();
                     mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                         @Override
                         public boolean onMarkerClick(Marker marker) {
@@ -121,6 +135,10 @@ public class MapFragment extends Fragment {
                     public void onComplete(@NonNull Task task) {
                         if(task.isSuccessful()) {
                             Location currentLocation = (Location) task.getResult();
+                            String currentUserId =  FirebaseAuth.getInstance().getCurrentUser().getUid();
+                            databaseUsers.child(currentUserId).child("location").child("latitude").setValue(currentLocation.getLatitude());
+                            databaseUsers.child(currentUserId).child("location").child("longitude").setValue(currentLocation.getLongitude());
+                            Log.d(TAG, currentLocation.getLatitude() + " " + currentLocation.getLongitude());
                             moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), DEFAULT_ZOOM);
                         }else {
                             Toast.makeText(getContext(), "unable to get current location", Toast.LENGTH_SHORT).show();
@@ -137,29 +155,53 @@ public class MapFragment extends Fragment {
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
     }
 
-    private void addMarkers() {
-        ArrayList<User> users = getUsers();
-        int i = 1;
-        for(User user : users) {
-            mMap.addMarker(new MarkerOptions()
+    private void addMarker(User user) {
+        Log.d(TAG, "addMarkers");
+        if(user.getLocation() != null) {
+            Marker marker = mMap.addMarker(new MarkerOptions()
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_user))
                     .anchor(0.0f, 1.0f) // Anchors the marker on the bottom left
                     .title(user.getUsername())
                     .snippet(user.getEmail())
                     // formula da ih lepo rasporedi po mapi u blizini korisnika koji ima koordinate 19.8335 45.2671
                     //TODO: zameniti koordinatama korisnika
-                    .position(new LatLng(i % 2 ==0 ? 45.2671f + i/700f : 45.2671f - i/700f, i > 2 ? 19.8335f - i/700f : 19.8335f + i/700f )));
-            i++;
+                    .position(new LatLng(user.getLocation().getLatitude(), user.getLocation().getLongitude())));
+            mMarkers.add(marker);
         }
     }
 
-    private ArrayList<User> getUsers() {
-        ArrayList<User> users = new ArrayList<User>();
-        for(int i = 0; i <= NUMBER_OF_INITIAL_USERS; i++) {
-            User user = new User("1", "Username" + i, "email" + i + "@example.com", "password", "First" + i, "Last" + i, new HashMap<String, String>());
-            users.add(user);
-        }
-        return users;
+    private void getUsers() {
+
+        databaseUsers.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Log.d(TAG, dataSnapshot.getValue().toString());
+                User user = dataSnapshot.getValue(User.class);
+                users.add(user);
+                addMarker(user);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     private void seeProfile(){
