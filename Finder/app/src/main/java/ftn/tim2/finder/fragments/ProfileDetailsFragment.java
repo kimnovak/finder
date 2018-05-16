@@ -52,23 +52,17 @@ public class ProfileDetailsFragment extends Fragment {
     private ImageView profile_star_img;
 
     private static final String TAG = "ProfileDetailsFragment";
-
-    private boolean showMyAccount;
+    private String ID;
 
     private FirebaseAuth firebaseAuth;
     private DatabaseReference databaseUsers;
 
     public ProfileDetailsFragment() {
-        showMyAccount = true;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            showMyAccount = getArguments().getBoolean("myAccount");
-        }
 
         rateDialog = new Dialog(getContext());
     }
@@ -84,6 +78,15 @@ public class ProfileDetailsFragment extends Fragment {
             startActivity(intent);
         }
 
+        if(getArguments() != null && getArguments().containsKey("user_ID")){
+            ID = getArguments().getString("user_ID");
+            hideMyAccountPreferences();
+        }
+        else{
+            ID = firebaseAuth.getCurrentUser().getUid();
+            hideMyAccountOptions();
+        }
+
         databaseUsers = FirebaseDatabase.getInstance().getReference("users");
 
         databaseUsers.addValueEventListener(new ValueEventListener() {
@@ -97,12 +100,6 @@ public class ProfileDetailsFragment extends Fragment {
                 Log.d(TAG, "The read failed: " + databaseError.getCode());
             }
         });
-
-        if (showMyAccount) {
-            hideMyAccountOptions();
-        } else {
-            hideMyAccountPreferences();
-        }
 
         prepareData(v);
 
@@ -170,7 +167,7 @@ public class ProfileDetailsFragment extends Fragment {
     }
 
     private void showData(DataSnapshot dataSnapshot) {
-        User user = dataSnapshot.child(firebaseAuth.getCurrentUser().getUid()).getValue(User.class);
+        User user = dataSnapshot.child(ID).getValue(User.class);
         nameProfile.setText(user.getFirstName() + " " + user.getLastName());
         usernameProfile.setText("@" + user.getUsername());
         emailProfile.setText(user.getEmail());
