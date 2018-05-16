@@ -10,6 +10,7 @@ public class User {
     private String firstName;
     private String lastName;
     private UserProfile userProfile;
+    private Location location;
     private Map<String, String> friends;
 
     public User() {
@@ -24,7 +25,6 @@ public class User {
         this.firstName = firstName;
         this.lastName = lastName;
         this.friends = friends;
-
     }
 
     public String getId() {
@@ -89,5 +89,13 @@ public class User {
 
     public void setFriends(Map<String, String> friends) {
         this.friends = friends;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 }
