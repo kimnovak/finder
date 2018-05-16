@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.ArrayList;
 
 import ftn.tim2.finder.R;
@@ -26,6 +28,7 @@ public class UsersRecyclerViewAdapter extends RecyclerView.Adapter<UsersRecycler
     private ArrayList<User> mUsers = new ArrayList<User>();
     private Context mContext;
     private Fragment mFragment;
+    private FirebaseAuth firebaseAuth;
 
     public void setmUsers(ArrayList<User> mUsers) {
         this.mUsers = mUsers;
@@ -47,6 +50,7 @@ public class UsersRecyclerViewAdapter extends RecyclerView.Adapter<UsersRecycler
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_users_item, parent, false);
         ViewHolder holder = new ViewHolder(view);
+        firebaseAuth = FirebaseAuth.getInstance();
         return holder;
     }
 
@@ -58,7 +62,7 @@ public class UsersRecyclerViewAdapter extends RecyclerView.Adapter<UsersRecycler
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                seeProfile();
+                seeProfile(mUsers.get(position).getId());
             }
         });
     }
@@ -68,14 +72,16 @@ public class UsersRecyclerViewAdapter extends RecyclerView.Adapter<UsersRecycler
         return mUsers.size();
     }
 
-    private void seeProfile() {
+    private void seeProfile(String id) {
         ProfileDetailsFragment profileDetailsFragment = new ProfileDetailsFragment();
         FragmentManager fragmentManager = mFragment.getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
-        Bundle bundle = new Bundle();
-        bundle.putBoolean("myAccount", false);
-        profileDetailsFragment.setArguments(bundle);
+        if(!firebaseAuth.getCurrentUser().getUid().equals(id)) {
+            Bundle bundle = new Bundle();
+            bundle.putString("user_ID", id);
+            profileDetailsFragment.setArguments(bundle);
+        }
 
         transaction.replace(R.id.content_frame, profileDetailsFragment);
         transaction.commit();

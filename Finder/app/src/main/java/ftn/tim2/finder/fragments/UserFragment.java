@@ -71,7 +71,7 @@ public class UserFragment extends Fragment {
                 // Result will be holded Here
                 for (DataSnapshot dsp : dataSnapshot.getChildren()) {
                     User user = dsp.getValue(User.class);
-                    Log.d(TAG, user.getFirstName());
+//                    Log.d(TAG, user.getFirstName());
                     addUser(user);
                 }
                 initRecyclerView(view);
