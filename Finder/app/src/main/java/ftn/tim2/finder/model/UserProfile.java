@@ -3,6 +3,7 @@ package ftn.tim2.finder.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class UserProfile {
 
@@ -14,6 +15,7 @@ public class UserProfile {
     private List<User> following;
     private String city;
     private String country;
+    private Map<String, Comment> comments;
 
     public UserProfile() {
     }
@@ -91,5 +93,13 @@ public class UserProfile {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public Map<String, Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Map<String, Comment> comments) {
+        this.comments = comments;
     }
 }

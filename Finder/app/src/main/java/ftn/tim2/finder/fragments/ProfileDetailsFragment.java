@@ -234,6 +234,11 @@ public class ProfileDetailsFragment extends Fragment {
         CommentFragment commentFragment = new CommentFragment();
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+        Bundle bundle = new Bundle();
+        bundle.putString("user_ID", ID);
+        commentFragment.setArguments(bundle);
+
         transaction.replace(R.id.content_frame, commentFragment);
         transaction.commit();
     }

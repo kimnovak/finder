@@ -9,6 +9,8 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -47,6 +50,8 @@ public class CommentFragment extends Fragment {
     private FirebaseAuth firebaseAuth;
     private DatabaseReference databaseComments;
     private DatabaseReference databaseUsers;
+    private static final String TAG = "CommentFragment";
+
 
     public CommentFragment() {
         commentList = new ArrayList<>();
@@ -93,22 +98,50 @@ public class CommentFragment extends Fragment {
         });
         comment_content = v.findViewById(R.id.comment_content);
 
-        commentAdapter.notifyDataSetChanged();
-    }
-
-    private void postComment() {
-        databaseUsers.child(firebaseAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseUsers.child(getArguments().getString("user_ID")).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class);
-                Comment comment = new Comment(comment_content.getText().toString().trim(), new Date(), user);
-                String id = databaseComments.push().getKey();
-                databaseComments.child(id).setValue(comment);
+                commentList.clear();
+                User usersProfile = dataSnapshot.getValue(User.class);
+                if(usersProfile.getUserProfile().getComments() != null) {
+                    for (String key : usersProfile.getUserProfile().getComments().keySet()) {
+                        commentList.add(usersProfile.getUserProfile().getComments().get(key));
+                    }
+                }
+                commentAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+                Log.d(TAG, "The read failed: " + databaseError.getCode());
+            }
+        });
+    }
 
+    private void postComment() {
+        if(TextUtils.isEmpty(comment_content.getText().toString().trim())){
+            return;
+        }
+        databaseUsers.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User commenter = dataSnapshot.child(firebaseAuth.getCurrentUser().getUid()).getValue(User.class);
+                Comment comment = new Comment(comment_content.getText().toString().trim(), new Date(), commenter);
+                String id = databaseComments.push().getKey();
+                databaseComments.child(id).setValue(comment);
+
+                User usersProfile = dataSnapshot.child(getArguments().getString("user_ID")).getValue(User.class);
+                if(usersProfile.getUserProfile().getComments() == null){
+                    usersProfile.getUserProfile().setComments(new HashMap<String, Comment>());
+                }
+                usersProfile.getUserProfile().getComments().put(id, comment);
+                databaseUsers.child(getArguments().getString("user_ID")).child("userProfile").child("comments").setValue(usersProfile.getUserProfile().getComments());
+                comment_content.setText("");
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d(TAG, "The read failed: " + databaseError.getCode());
             }
         });
     }
