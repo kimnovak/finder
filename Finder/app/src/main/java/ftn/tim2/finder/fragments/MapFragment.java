@@ -189,8 +189,22 @@ public class MapFragment extends Fragment {
         }
     }
 
-    private void getUsers() {
+    private void removeMarker(String username) {
+        Log.d(TAG, username);
+        Marker markerToRemove = null;
+        for(Marker marker: mMarkers) {
+            if(marker.getTitle().equals(username)) {
+                markerToRemove = marker;
+                break;
+            }
+        }
+        markerToRemove.setVisible(false);
+        if(markerToRemove != null) {
+            mMarkers.remove(markerToRemove);
+        }
+    }
 
+    private void getUsers() {
         databaseUsers.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -214,7 +228,8 @@ public class MapFragment extends Fragment {
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-
+                User user = dataSnapshot.getValue(User.class);
+                removeMarker(user.getUsername());
             }
 
             @Override
