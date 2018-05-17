@@ -58,6 +58,7 @@ public class MapFragment extends Fragment {
     private DatabaseReference databaseUsers;
     private List<Marker> mMarkers;
     private ArrayList<User> users;
+    private User selectedUser;
 
     public MapFragment() {
     }
@@ -111,6 +112,7 @@ public class MapFragment extends Fragment {
                         @Override
                         public boolean onMarkerClick(Marker marker) {
                             marker.showInfoWindow();
+                            setSelectedUser(marker.getTitle());
                             return false;
                         }
                     });
@@ -123,6 +125,15 @@ public class MapFragment extends Fragment {
                 }
             }
         });
+    }
+
+    private void setSelectedUser(String username) {
+        for(User u: users) {
+            if(u.getUsername().equals(username)) {
+                selectedUser = u;
+                break;
+            }
+        }
     }
 
     private void getDeviceLocation() {
@@ -177,8 +188,7 @@ public class MapFragment extends Fragment {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Log.d(TAG, dataSnapshot.getValue().toString());
                 User user = dataSnapshot.getValue(User.class);
-                users.add(user);
-                addMarker(user);
+                addUser(user);
             }
 
             @Override
@@ -201,13 +211,26 @@ public class MapFragment extends Fragment {
 
             }
         });
-
     }
+
+    private void addUser(User user) {
+        for(User u: users) {
+            if(u.getEmail().equals(user.getEmail()) || FirebaseAuth.getInstance().getCurrentUser().getUid().equals(user.getId())) {
+                return;
+            }
+        }
+        users.add(user);
+        addMarker(user);
+    }
+
 
     private void seeProfile(){
         ProfileDetailsFragment profileDetailsFragment = new ProfileDetailsFragment();
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
+        Bundle bundle = new Bundle();
+        bundle.putString("user_ID", selectedUser.getId());
+        profileDetailsFragment.setArguments(bundle);
         transaction.replace(R.id.content_frame, profileDetailsFragment);
         transaction.commit();
     }
