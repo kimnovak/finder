@@ -181,6 +181,14 @@ public class MapFragment extends Fragment {
         }
     }
 
+    private void moveMarker(String username, LatLng newPosition) {
+        for(Marker marker: mMarkers) {
+            if(marker.getTitle().equals(username)) {
+                marker.setPosition(newPosition);
+            }
+        }
+    }
+
     private void getUsers() {
 
         databaseUsers.addChildEventListener(new ChildEventListener() {
@@ -193,6 +201,14 @@ public class MapFragment extends Fragment {
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                //ako je promenjen ulogovan korisnik pomeri kameru
+                //ako je promenjen neko drugi pomeri marker na novu lokaciju
+                User user = dataSnapshot.getValue(User.class);
+                if(user.getId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                    moveCamera(new LatLng(user.getLocation().getLatitude(), user.getLocation().getLongitude()), DEFAULT_ZOOM);
+                } else {
+                    moveMarker(user.getUsername(), new LatLng(user.getLocation().getLatitude(), user.getLocation().getLongitude()));
+                }
 
             }
 
