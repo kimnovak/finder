@@ -11,13 +11,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
-
+import com.bumptech.glide.Glide;
 import ftn.tim2.finder.R;
 import ftn.tim2.finder.fragments.ProfileDetailsFragment;
 import ftn.tim2.finder.model.User;
@@ -59,6 +60,9 @@ public class UsersRecyclerViewAdapter extends RecyclerView.Adapter<UsersRecycler
         Log.d(TAG, "on BindViewHolder: called");
         holder.username.setText(mUsers.get(position).getUsername());
         holder.email.setText(mUsers.get(position).getEmail());
+        if(!mUsers.get(position).getUserProfile().getImage().isEmpty()) {
+            Glide.with(mContext).load(mUsers.get(position).getUserProfile().getImage()).into(holder.userImage);
+        }
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,11 +94,13 @@ public class UsersRecyclerViewAdapter extends RecyclerView.Adapter<UsersRecycler
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView username;
         TextView email;
+        ImageView userImage;
         RelativeLayout parentLayout;
         public ViewHolder(View itemView) {
             super(itemView);
             username = itemView.findViewById(R.id.user_item_username);
             email = itemView.findViewById(R.id.user_item_email);
+            userImage = itemView.findViewById(R.id.user_list_image);
             parentLayout = itemView.findViewById(R.id.parent_layout);
         }
     }
