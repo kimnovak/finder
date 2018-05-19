@@ -2,9 +2,7 @@ package ftn.tim2.finder.fragments;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -53,9 +51,11 @@ public class ProfileDetailsFragment extends Fragment {
     private ImageView imageProfile;
 
     private Button profile_follow_btn;
+    private Button profile_unfollow_btn;
     private Button profile_comment_btn;
     private Button profile_messages_btn;
     private Button finder_preferences_btn;
+
     private ImageView edit_profile_img;
     private TextView sign_out;
     private ImageView profile_star_img;
@@ -130,6 +130,14 @@ public class ProfileDetailsFragment extends Fragment {
         followingProfile = v.findViewById(R.id.following_profile);
         imageProfile = v.findViewById(R.id.image_profile);
 
+        profile_unfollow_btn = v.findViewById(R.id.unfollow);
+        profile_unfollow_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                unfollow();
+            }
+        });
+
         profile_follow_btn = v.findViewById((R.id.follow));
         profile_follow_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -185,6 +193,8 @@ public class ProfileDetailsFragment extends Fragment {
                 showRatePopup();
             }
         });
+
+
     }
 
     private void showData(DataSnapshot dataSnapshot) {
@@ -213,9 +223,19 @@ public class ProfileDetailsFragment extends Fragment {
         else{
             followingProfile.setText("0");
         }
-
         if(isAdded() && !user.getUserProfile().getImage().isEmpty()) {
             Glide.with(this).load(user.getUserProfile().getImage()).into(imageProfile);
+        }
+        if(currentUser == null) {
+            if (user.getUserProfile().getFollowers() != null) {
+                if (user.getUserProfile().getFollowers().contains(firebaseAuth.getCurrentUser().getUid())) {
+                    profile_follow_btn.setVisibility(View.GONE);
+                } else {
+                    profile_unfollow_btn.setVisibility(View.GONE);
+                }
+            } else {
+                profile_unfollow_btn.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -252,18 +272,22 @@ public class ProfileDetailsFragment extends Fragment {
 
     private void follow() {
         Log.d(TAG, "follow");
-       readCurrentUserFromDB();
+       readCurrentUserFromDB(true);
     }
 
-    private void readCurrentUserFromDB() {
+    private void readCurrentUserFromDB(boolean follow) {
         Log.d(TAG, "read current user");
         String currentUserId = firebaseAuth.getCurrentUser().getUid();
+        final boolean tofollow = follow;
         databaseUsers.child(currentUserId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 currentUser = dataSnapshot.getValue(User.class);
-                Log.d(TAG, currentUser.getUsername());
-                followProfileOwner();
+                if(tofollow) {
+                    followProfileOwner();
+                }else {
+                    unfollowProfileOwner();
+                }
             }
 
             @Override
@@ -299,9 +323,26 @@ public class ProfileDetailsFragment extends Fragment {
             }
             following.add(user.getId());
             currentUser.getUserProfile().setFollowing(following);
-            databaseUsers.child(currentUser.getId()).child("userProfile").child("following");
             databaseUsers.child(currentUser.getId()).child("userProfile").child("following").setValue(following);
+            profile_follow_btn.setVisibility(View.GONE);
+            profile_unfollow_btn.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void unfollow() {
+        readCurrentUserFromDB(false);
+    }
+
+    private void unfollowProfileOwner() {
+        Log.d(TAG, "unfollow profile owner");
+        List<String> following = currentUser.getUserProfile().getFollowing();
+        following.remove(user.getId());
+        databaseUsers.child(currentUser.getId()).child("userProfile").child("following").setValue(following);
+        List<String> followers = user.getUserProfile().getFollowers();
+        followers.remove(currentUser.getId());
+        databaseUsers.child(user.getId()).child("userProfile").child("followers").setValue(followers);
+        profile_unfollow_btn.setVisibility(View.GONE);
+        profile_follow_btn.setVisibility(View.VISIBLE);
     }
 
 
