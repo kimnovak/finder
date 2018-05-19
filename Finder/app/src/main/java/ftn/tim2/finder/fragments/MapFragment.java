@@ -59,6 +59,7 @@ public class MapFragment extends Fragment {
     private List<Marker> mMarkers;
     private ArrayList<User> users;
     private User selectedUser;
+    private String currentUserId;
 
     public MapFragment() {
     }
@@ -86,6 +87,7 @@ public class MapFragment extends Fragment {
         if(ContextCompat.checkSelfPermission(getContext(), FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             if(ContextCompat.checkSelfPermission(getContext(), COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 mLocationPermissionsGranted = true;
+                currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 initMap();
             } else {
                 ActivityCompat.requestPermissions(getActivity(), permissions, LOCATION_PERMISSION_REQUEST_CODE);
@@ -146,11 +148,15 @@ public class MapFragment extends Fragment {
                     public void onComplete(@NonNull Task task) {
                         if(task.isSuccessful()) {
                             Location currentLocation = (Location) task.getResult();
-                            String currentUserId =  FirebaseAuth.getInstance().getCurrentUser().getUid();
-                            databaseUsers.child(currentUserId).child("location").child("latitude").setValue(currentLocation.getLatitude());
-                            databaseUsers.child(currentUserId).child("location").child("longitude").setValue(currentLocation.getLongitude());
-                            Log.d(TAG, currentLocation.getLatitude() + " " + currentLocation.getLongitude());
-                            moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), DEFAULT_ZOOM);
+                            if(currentUserId != null) {
+                                databaseUsers.child(currentUserId).child("location").child("latitude").setValue(currentLocation.getLatitude());
+                                databaseUsers.child(currentUserId).child("location").child("longitude").setValue(currentLocation.getLongitude());
+                                Log.d(TAG, currentLocation.getLatitude() + " " + currentLocation.getLongitude());
+                                moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), DEFAULT_ZOOM);
+                            } else {
+                                LatLng defaultLocation = new LatLng(45.2691, 19.8374983);
+                                moveCamera(defaultLocation, DEFAULT_ZOOM);
+                            }
                         }else {
                             Toast.makeText(getContext(), "unable to get current location", Toast.LENGTH_SHORT).show();
                         }
