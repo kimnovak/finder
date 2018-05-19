@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -195,11 +196,8 @@ public class ProfileDetailsFragment extends Fragment {
         android.text.format.DateFormat dateFormat = new android.text.format.DateFormat();
         registrationDateProfile.setText(dateFormat.format("yyyy-MM-dd", user.getUserProfile().getRegistrationDate()));
         descriptionProfile.setText(user.getUserProfile().getDescription());
-        Log.d(TAG, "pre get followers");
         if(user.getUserProfile().getFollowers() != null){
-            Log.d(TAG, "pre size");
             followersProfile.setText(String.valueOf(user.getUserProfile().getFollowers().size()));
-            Log.d(TAG, "posle size");
         }
         else{
             followersProfile.setText("0");
@@ -270,35 +268,30 @@ public class ProfileDetailsFragment extends Fragment {
         Log.d(TAG, "follow profile owner");
         if(!currentUser.getId().equals(user.getId())) {
             List<String> followers = null;
-            Log.d(TAG, "if");
             if(user.getUserProfile().getFollowers() == null) {
                 followers = new ArrayList<String>();
-                Log.d(TAG, "null");
             }else {
                 followers = user.getUserProfile().getFollowers();
             }
-            followers.add(currentUser.getId());
-            user.getUserProfile().setFollowers(followers);
-            Log.d(TAG, "before database");
-            databaseUsers.child(user.getId()).child("userProfile").child("followers").setValue(followers);
-            Log.d(TAG, "after database");
+            if(!followers.contains(currentUser.getId())) {
+                followers.add(currentUser.getId());
+                user.getUserProfile().setFollowers(followers);
+                databaseUsers.child(user.getId()).child("userProfile").child("followers").setValue(followers);
+            } else {
+                Toast toast = Toast.makeText(getContext(), "You're already following " + user.getUsername(), Toast.LENGTH_SHORT);
+                toast.show();
+                return;
+            }
             List<String> following = null;
             if(currentUser.getUserProfile().getFollowing() == null) {
-                Log.d(TAG, "following null");
                 following = new ArrayList<String>();
             } else {
                 following = currentUser.getUserProfile().getFollowing();
             }
             following.add(user.getId());
-            Log.d(TAG, "following pre database");
             currentUser.getUserProfile().setFollowing(following);
-            Log.d(TAG, currentUser.getId());
-            Log.d(TAG, following.toString());
-            Log.d(TAG, String.valueOf(following.size()));
             databaseUsers.child(currentUser.getId()).child("userProfile").child("following");
-            Log.d(TAG, "izmedju");
             databaseUsers.child(currentUser.getId()).child("userProfile").child("following").setValue(following);
-            Log.d(TAG, "after following database");
         }
     }
 
