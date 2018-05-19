@@ -23,6 +23,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ftn.tim2.finder.R;
 import ftn.tim2.finder.activities.FinderPreferenceActivity;
 import ftn.tim2.finder.activities.LoginActivity;
@@ -44,6 +47,7 @@ public class ProfileDetailsFragment extends Fragment {
     private TextView followersProfile;
     private TextView followingProfile;
 
+    private Button profile_follow_btn;
     private Button profile_comment_btn;
     private Button profile_messages_btn;
     private Button finder_preferences_btn;
@@ -56,6 +60,9 @@ public class ProfileDetailsFragment extends Fragment {
 
     private FirebaseAuth firebaseAuth;
     private DatabaseReference databaseUsers;
+    private User currentUser;
+    private User user;
+
 
     public ProfileDetailsFragment() {
     }
@@ -117,6 +124,14 @@ public class ProfileDetailsFragment extends Fragment {
         followersProfile = v.findViewById(R.id.followers_profile);
         followingProfile = v.findViewById(R.id.following_profile);
 
+        profile_follow_btn = v.findViewById((R.id.follow));
+        profile_follow_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                follow();
+            }
+        });
+
         profile_comment_btn = v.findViewById(R.id.profile_comment);
         profile_comment_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -167,7 +182,7 @@ public class ProfileDetailsFragment extends Fragment {
     }
 
     private void showData(DataSnapshot dataSnapshot) {
-        User user = dataSnapshot.child(ID).getValue(User.class);
+        user = dataSnapshot.child(ID).getValue(User.class);
         nameProfile.setText(user.getFirstName() + " " + user.getLastName());
         usernameProfile.setText("@" + user.getUsername());
         emailProfile.setText(user.getEmail());
@@ -180,14 +195,17 @@ public class ProfileDetailsFragment extends Fragment {
         android.text.format.DateFormat dateFormat = new android.text.format.DateFormat();
         registrationDateProfile.setText(dateFormat.format("yyyy-MM-dd", user.getUserProfile().getRegistrationDate()));
         descriptionProfile.setText(user.getUserProfile().getDescription());
+        Log.d(TAG, "pre get followers");
         if(user.getUserProfile().getFollowers() != null){
-            followersProfile.setText(user.getUserProfile().getFollowers().size());
+            Log.d(TAG, "pre size");
+            followersProfile.setText(String.valueOf(user.getUserProfile().getFollowers().size()));
+            Log.d(TAG, "posle size");
         }
         else{
             followersProfile.setText("0");
         }
         if(user.getUserProfile().getFollowing() != null){
-            followingProfile.setText(user.getUserProfile().getFollowing().size());
+            followingProfile.setText(String.valueOf(user.getUserProfile().getFollowing().size()));
         }
         else{
             followingProfile.setText("0");
@@ -224,6 +242,66 @@ public class ProfileDetailsFragment extends Fragment {
         Intent intent = new Intent(getContext(), FinderPreferenceActivity.class);
         startActivity(intent);
     }
+
+    private void follow() {
+        Log.d(TAG, "follow");
+       readCurrentUserFromDB();
+    }
+
+    private void readCurrentUserFromDB() {
+        Log.d(TAG, "read current user");
+        String currentUserId = firebaseAuth.getCurrentUser().getUid();
+        databaseUsers.child(currentUserId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                currentUser = dataSnapshot.getValue(User.class);
+                Log.d(TAG, currentUser.getUsername());
+                followProfileOwner();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void followProfileOwner() {
+        Log.d(TAG, "follow profile owner");
+        if(!currentUser.getId().equals(user.getId())) {
+            List<String> followers = null;
+            Log.d(TAG, "if");
+            if(user.getUserProfile().getFollowers() == null) {
+                followers = new ArrayList<String>();
+                Log.d(TAG, "null");
+            }else {
+                followers = user.getUserProfile().getFollowers();
+            }
+            followers.add(currentUser.getId());
+            user.getUserProfile().setFollowers(followers);
+            Log.d(TAG, "before database");
+            databaseUsers.child(user.getId()).child("userProfile").child("followers").setValue(followers);
+            Log.d(TAG, "after database");
+            List<String> following = null;
+            if(currentUser.getUserProfile().getFollowing() == null) {
+                Log.d(TAG, "following null");
+                following = new ArrayList<String>();
+            } else {
+                following = currentUser.getUserProfile().getFollowing();
+            }
+            following.add(user.getId());
+            Log.d(TAG, "following pre database");
+            currentUser.getUserProfile().setFollowing(following);
+            Log.d(TAG, currentUser.getId());
+            Log.d(TAG, following.toString());
+            Log.d(TAG, String.valueOf(following.size()));
+            databaseUsers.child(currentUser.getId()).child("userProfile").child("following");
+            Log.d(TAG, "izmedju");
+            databaseUsers.child(currentUser.getId()).child("userProfile").child("following").setValue(following);
+            Log.d(TAG, "after following database");
+        }
+    }
+
 
     private void seeMessages() {
         Intent intent = new Intent(getContext(), MessageActivity.class);

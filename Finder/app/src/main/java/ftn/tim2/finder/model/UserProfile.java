@@ -11,8 +11,8 @@ public class UserProfile {
     private String image;
     private Date registrationDate;
     private double rate;
-    private List<User> followers;
-    private List<User> following;
+    private List<String> followers;
+    private List<String> following;
     private String city;
     private String country;
     private Map<String, Comment> comments;
@@ -63,19 +63,19 @@ public class UserProfile {
         this.rate = rate;
     }
 
-    public List<User> getFollowers() {
+    public List<String> getFollowers() {
         return followers;
     }
 
-    public void setFollowers(List<User> followers) {
+    public void setFollowers(List<String> followers) {
         this.followers = followers;
     }
 
-    public List<User> getFollowing() {
+    public List<String> getFollowing() {
         return following;
     }
 
-    public void setFollowing(List<User> following) {
+    public void setFollowing(List<String> following) {
         this.following = following;
     }
 
