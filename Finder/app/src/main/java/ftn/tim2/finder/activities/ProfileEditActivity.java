@@ -1,21 +1,37 @@
 package ftn.tim2.finder.activities;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.IOException;
 
 import ftn.tim2.finder.R;
 import ftn.tim2.finder.model.User;
@@ -29,13 +45,17 @@ public class ProfileEditActivity extends AppCompatActivity{
     private EditText cityEdit;
     private EditText countryEdit;
     private EditText descriptionEdit;
+    private ImageView imageEdit;
     private static final String TAG = "ProfileEditActivity";
+    private static final int GALLERY_INTENT = 2;
 
     private TextView nameEditLabel;
     private TextView usernameEditLabel;
+    private ProgressDialog progressDialog;
 
     private FirebaseAuth firebaseAuth;
     private DatabaseReference databaseUsers;
+    private StorageReference storageReference;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,6 +69,7 @@ public class ProfileEditActivity extends AppCompatActivity{
         }
 
         databaseUsers = FirebaseDatabase.getInstance().getReference("users");
+        storageReference = FirebaseStorage.getInstance().getReference();
 
         databaseUsers.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -103,11 +124,51 @@ public class ProfileEditActivity extends AppCompatActivity{
         cityEdit = findViewById(R.id.city_edit);
         countryEdit = findViewById(R.id.country_edit);
         descriptionEdit = findViewById(R.id.description_edit);
+        imageEdit = findViewById(R.id.image_edit);
 
         nameEditLabel = findViewById(R.id.name_edit_label);
         usernameEditLabel = findViewById(R.id.username_edit_label);
+
+        progressDialog = new ProgressDialog(this);
+
+        imageEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType("image/*");
+
+                startActivityForResult(intent, GALLERY_INTENT);
+            }
+        });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == GALLERY_INTENT && resultCode == RESULT_OK){
+            progressDialog.setMessage("Uploading...");
+            progressDialog.show();
+
+            final Uri uri = data.getData();
+            final StorageReference filepath = storageReference.child("Photos").child(firebaseAuth.getCurrentUser().getUid()).child(uri.getLastPathSegment());
+            filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Toast.makeText(ProfileEditActivity.this, "Image successfully changed!", Toast.LENGTH_SHORT).show();
+                    Glide.with(getApplicationContext()).load(uri).into(imageEdit);
+                    databaseUsers.child(firebaseAuth.getCurrentUser().getUid()).child("userProfile").child("image").setValue(taskSnapshot.getDownloadUrl().toString());
+                    progressDialog.dismiss();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(ProfileEditActivity.this, "Upload failed! Please try again.", Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
+                }
+            });
+        }
+    }
 
     private void showData(DataSnapshot dataSnapshot) {
         User user = dataSnapshot.child(firebaseAuth.getCurrentUser().getUid()).getValue(User.class);
@@ -121,5 +182,9 @@ public class ProfileEditActivity extends AppCompatActivity{
 
         nameEditLabel.setText(user.getFirstName() + " " + user.getLastName());
         usernameEditLabel.setText("@" + user.getUsername());
+
+        if(!user.getUserProfile().getImage().isEmpty()) {
+            Glide.with(getApplicationContext()).load(user.getUserProfile().getImage()).into(imageEdit);
+        }
     }
 }

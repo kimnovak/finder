@@ -2,7 +2,9 @@ package ftn.tim2.finder.fragments;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -47,6 +50,7 @@ public class ProfileDetailsFragment extends Fragment {
     private TextView descriptionProfile;
     private TextView followersProfile;
     private TextView followingProfile;
+    private ImageView imageProfile;
 
     private Button profile_follow_btn;
     private Button profile_comment_btn;
@@ -124,6 +128,7 @@ public class ProfileDetailsFragment extends Fragment {
         descriptionProfile = v.findViewById(R.id.description_profile);
         followersProfile = v.findViewById(R.id.followers_profile);
         followingProfile = v.findViewById(R.id.following_profile);
+        imageProfile = v.findViewById(R.id.image_profile);
 
         profile_follow_btn = v.findViewById((R.id.follow));
         profile_follow_btn.setOnClickListener(new View.OnClickListener() {
@@ -207,6 +212,10 @@ public class ProfileDetailsFragment extends Fragment {
         }
         else{
             followingProfile.setText("0");
+        }
+
+        if(isAdded() && !user.getUserProfile().getImage().isEmpty()) {
+            Glide.with(this).load(user.getUserProfile().getImage()).into(imageProfile);
         }
     }
 
