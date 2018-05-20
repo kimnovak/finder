@@ -4,15 +4,26 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ftn.tim2.finder.R;
 import ftn.tim2.finder.adapters.ConversationViewAdapter;
@@ -26,6 +37,11 @@ public class ConversationFragment extends Fragment {
     private RecyclerView recyclerView;
     private ConversationViewAdapter conversationViewAdapter;
     private List<Conversation> conversations;
+
+    private FirebaseAuth firebaseAuth;
+    private DatabaseReference databaseUsers;
+
+    private static final String TAG = "ConversationFragment";
 
     public ConversationFragment() {
         conversations = new ArrayList<>();
@@ -41,25 +57,41 @@ public class ConversationFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_conversations, container, false);
 
-        initData();
-
         recyclerView = v.findViewById(R.id.conversation_recyclerview);
         conversationViewAdapter = new ConversationViewAdapter(getContext(), conversations);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(conversationViewAdapter);
 
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        databaseUsers = FirebaseDatabase.getInstance().getReference("users");
+
+        prepareData();
+
         return v;
     }
 
-    private void initData() {
-        User sender = new User("1","Username", "email@example.com", "password", "First", "Last", new HashMap<String, String>());
+    private void prepareData() {
+        databaseUsers.child(firebaseAuth.getCurrentUser().getUid())
+                .child("userProfile")
+                .child("conversations")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot convSnapshot: dataSnapshot.getChildren()) {
+                            Conversation conversation = convSnapshot.getValue(Conversation.class);
 
-        User receiver = new User("1","Receiver1", "email1@example.com", "password", "First", "Last", new HashMap<String, String>() );
-        User receiver1 = new User("1","Receiver2", "email2@example.com", "password", "First1", "Last1", new HashMap<String, String>() );
-        User receiver2 = new User("1","Receiver3", "email3@example.com", "password", "First2", "Last2", new HashMap<String, String>() );
+                            conversations.add(conversation);
+                        }
 
-        conversations.add(new Conversation(sender, receiver, null));
-        conversations.add(new Conversation(sender, receiver1, null));
-        conversations.add(new Conversation(sender, receiver2, null));
+                        conversationViewAdapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.d(TAG, "The read failed: " + databaseError.getCode());
+                    }
+                });
+
     }
 }

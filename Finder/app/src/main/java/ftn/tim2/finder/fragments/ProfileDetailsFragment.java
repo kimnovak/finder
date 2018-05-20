@@ -348,6 +348,7 @@ public class ProfileDetailsFragment extends Fragment {
 
     private void seeMessages() {
         Intent intent = new Intent(getContext(), MessageActivity.class);
+        intent.putExtra("USER_ID", getArguments().getString("user_ID"));
         startActivity(intent);
     }
 

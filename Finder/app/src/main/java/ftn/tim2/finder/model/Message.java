@@ -5,17 +5,17 @@ import java.util.Date;
 public class Message {
 
     private String message;
-    private User sender;
-    private User receiver;
+    private String senderId;
+    private String receiverId;
     private Date createdAt;
 
     public Message() {
     }
 
-    public Message(String message, User sender, User receiver, Date createdAt) {
+    public Message(String message, String senderId, String receiverId, Date createdAt) {
         this.message = message;
-        this.sender = sender;
-        this.receiver = receiver;
+        this.senderId = senderId;
+        this.receiverId = receiverId;
         this.createdAt = createdAt;
     }
 
@@ -27,20 +27,20 @@ public class Message {
         this.message = message;
     }
 
-    public User getSender() {
-        return sender;
+    public String getSenderId() {
+        return senderId;
     }
 
-    public void setSender(User sender) {
-        this.sender = sender;
+    public void setSenderId(String senderId) {
+        this.senderId = senderId;
     }
 
-    public User getReceiver() {
-        return receiver;
+    public String getReceiverId() {
+        return receiverId;
     }
 
-    public void setReceiver(User receiver) {
-        this.receiver = receiver;
+    public void setReceiverId(String receiverId) {
+        this.receiverId = receiverId;
     }
 
     public Date getCreatedAt() {

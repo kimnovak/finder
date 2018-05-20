@@ -1,7 +1,5 @@
 package ftn.tim2.finder.adapters;
 
-import android.content.Context;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +7,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.List;
-import java.util.Random;
 
 import ftn.tim2.finder.R;
 import ftn.tim2.finder.model.Message;
@@ -20,10 +19,12 @@ public class MessageListAdapter extends RecyclerView.Adapter {
     private static final int VIEW_TYPE_MESSAGE_SENT = 1;
     private static final int VIEW_TYPE_MESSAGE_RECEIVED = 2;
 
+    private String receiverName;
     private List<Message> mMessageList;
 
-    public MessageListAdapter(List<Message> messageList) {
+    public MessageListAdapter(List<Message> messageList, String receiverName) {
         mMessageList = messageList;
+        this.receiverName = receiverName;
     }
 
     private class ReceivedMessageHolder extends RecyclerView.ViewHolder {
@@ -43,7 +44,8 @@ public class MessageListAdapter extends RecyclerView.Adapter {
             messageText.setText(message.getMessage());
             android.text.format.DateFormat dateFormat = new android.text.format.DateFormat();
             timeText.setText(dateFormat.format("hh:mm", message.getCreatedAt()));
-            nameText.setText(message.getSender().getUsername());
+            //nameText.setText(message.getSender().getUsername());
+            nameText.setText(receiverName);
 
             //Utils.displayRoundImageFromUrl(mContext, message.getSender().getProfileUrl(), profileImage);
         }
@@ -76,17 +78,15 @@ public class MessageListAdapter extends RecyclerView.Adapter {
     // Determines the appropriate ViewType according to the sender of the message.
     @Override
     public int getItemViewType(int position) {
-        Message message = (Message) mMessageList.get(position);
+        Message message = mMessageList.get(position);
 
-//        if (message.getSender().getUserId().equals(Finder.getCurrentUser().getUserId())) {
-//            // If the current user is the sender of the message
-//            return VIEW_TYPE_MESSAGE_SENT;
-//        } else {
-//            // If some other user sent the message
-//            return VIEW_TYPE_MESSAGE_RECEIVED;
-//        }
-        Random rand = new Random();
-        return rand.nextInt(2) + 1;
+        if (message.getSenderId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+            // If the current user is the sender of the message
+            return VIEW_TYPE_MESSAGE_SENT;
+        } else {
+           // If some other user sent the message
+           return VIEW_TYPE_MESSAGE_RECEIVED;
+        }
     }
 
     // Inflates the appropriate layout according to the ViewType.
