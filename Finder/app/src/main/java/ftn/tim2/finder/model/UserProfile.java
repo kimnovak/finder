@@ -16,6 +16,7 @@ public class UserProfile {
     private String city;
     private String country;
     private Map<String, Comment> comments;
+    private Map<String, Conversation> conversations;
 
     public UserProfile() {
     }
@@ -102,4 +103,8 @@ public class UserProfile {
     public void setComments(Map<String, Comment> comments) {
         this.comments = comments;
     }
+
+    public Map<String, Conversation> getConversations() { return conversations; }
+
+    public void setConversations(Map<String, Conversation> conversations) { this.conversations = conversations; }
 }
