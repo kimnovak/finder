@@ -42,14 +42,17 @@ public class ConversationViewAdapter extends RecyclerView.Adapter<ConversationVi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        holder.tv_name.setText(conversations.get(position).getReceiever().getFirstName() + " " +
-                            conversations.get(position).getReceiever().getLastName());
-        holder.tv_email.setText(conversations.get(position).getReceiever().getEmail());
+        final Conversation conversation = conversations.get(position);
+
+        holder.tv_name.setText(conversation.getParticipant().getFirstName() + " " +
+                conversation.getParticipant().getLastName());
+        holder.tv_email.setText(conversation.getParticipant().getEmail());
         //holder.img.setImageResource(0); //messages.get(position).getSender().get
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, MessageActivity.class);
+                intent.putExtra("USER_ID",conversation.getParticipant().getId());
                 ActivityCompat.startActivity(context, intent, null);
             }
         });
