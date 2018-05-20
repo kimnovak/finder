@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.SearchView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -22,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import ftn.tim2.finder.R;
@@ -39,6 +41,7 @@ public class UserFragment extends Fragment {
     private ArrayList<User> mFollowers;
     private ArrayList<User> mFollowing;
     private UsersRecyclerViewAdapter adapt;
+    private int selectedTab = 0;
 
     public UserFragment() {
         mUsers = new ArrayList<>();
@@ -61,6 +64,26 @@ public class UserFragment extends Fragment {
         initializeUsers(v);
 
         //initRecyclerView(v);
+
+        final SearchView search = (SearchView) v.findViewById(R.id.search_users_button);
+
+        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Log.d(TAG, query);
+                findUsers(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if(newText == null || newText.isEmpty()) {
+                    clearFilter();
+                }
+                return false;
+            }
+        });
+
 
         return v;
     }
@@ -108,15 +131,18 @@ public class UserFragment extends Fragment {
                     getAllUsers();
                     adapter.setmUsers(mUsers);
                     adapter.notifyDataSetChanged();
+                    selectedTab = 0;
                 } else if(tab.getPosition() == 1) {
                     //show followers
                     getFollowers();
                     adapter.setmUsers(mFollowers);
                     adapter.notifyDataSetChanged();
+                    selectedTab = 1;
                 } else if(tab.getPosition() == 2) {
                     getFollowing();
                     adapter.setmUsers(mFollowing);
                     adapter.notifyDataSetChanged();
+                    selectedTab = 2;
                 }
             }
 
@@ -133,6 +159,43 @@ public class UserFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+    }
+    private void findUsers(String query) {
+        ArrayList<User> filteredUsers = new ArrayList<User>();
+        if(selectedTab == 0) {
+            for(User u: mUsers) {
+                if(u.getUsername().contains(query)) {
+                    filteredUsers.add(u);
+                }
+            }
+        } else if(selectedTab == 1) {
+            for(User f: mFollowers) {
+                if(f.getUsername().contains(query)) {
+                    filteredUsers.add(f);
+                }
+            }
+        } else if(selectedTab == 2) {
+            for(User f: mFollowing) {
+                if(f.getUsername().contains(query)) {
+                    filteredUsers.add(f);
+                }
+            }
+        }
+        adapt.setmUsers(filteredUsers);
+        adapt.notifyDataSetChanged();
+    }
+
+    private void clearFilter() {
+        ArrayList<User> filteredUsers = new ArrayList<User>();
+        if(selectedTab == 0) {
+            filteredUsers = mUsers;
+        } else if(selectedTab == 1) {
+            filteredUsers = mFollowers;
+        } else if(selectedTab == 2) {
+            filteredUsers = mFollowing;
+        }
+        adapt.setmUsers(filteredUsers);
+        adapt.notifyDataSetChanged();
     }
 
     private ArrayList<User> getFollowers() {
