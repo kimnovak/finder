@@ -1,40 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <LinearLayout
+
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/users_tab"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" android:orientation="horizontal" android:id="@+id/users_filter_layout">
+        android:layout_height="wrap_content"
+        app:tabPaddingEnd="0dp"
+        app:tabPaddingStart="0dp"
+        app:tabGravity="fill"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="@color/colorPrimary"
+        app:tabTextColor="@color/colorPrimaryDark">
 
-        <Button
-            android:id="@+id/view_all_users_button"
+        <android.support.design.widget.TabItem
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="@dimen/filter_buttons_weight"
-            android:background="@color/colorPrimary"
-            android:text="@string/seeAllUsersBtn"
-            android:textColor="@color/white"
-            android:textSize="@dimen/email_text_size"
-            android:layout_marginRight="1dp"/>
+            android:text="ALL USERS" />
 
-        <Button
-            android:id="@+id/view_friends_button"
+        <android.support.design.widget.TabItem
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="@dimen/filter_buttons_weight"
-            android:background="@color/colorPrimary"
-            android:text="@string/viewFriendsBtn"
-            android:textColor="@color/white"
-            android:textSize="@dimen/email_text_size"
-            android:textStyle="bold" />
-    </LinearLayout>
+            android:text="FOLLOWERS" />
+
+        <android.support.design.widget.TabItem
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="FOLLOWING" />
+
+    </android.support.design.widget.TabLayout>
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/recyclerusers_view"
-        android:layout_below="@id/users_filter_layout"
+        android:layout_below="@id/users_tab"
         />
 
     <SearchView

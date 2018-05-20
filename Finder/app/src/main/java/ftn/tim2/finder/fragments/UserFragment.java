@@ -3,6 +3,7 @@ package ftn.tim2.finder.fragments;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -35,12 +36,14 @@ public class UserFragment extends Fragment {
     private ArrayList<User> mUsers;
     private final int NUMBER_OF_INITIAL_USERS = 5;
     private DatabaseReference databaseUsers;
-    private ArrayList<User> mFriends;
+    private ArrayList<User> mFollowers;
+    private ArrayList<User> mFollowing;
     private UsersRecyclerViewAdapter adapt;
 
     public UserFragment() {
         mUsers = new ArrayList<>();
-        mFriends = new ArrayList<>();
+        mFollowers = new ArrayList<>();
+        mFollowing = new ArrayList<>();
     }
 
     @Override
@@ -75,7 +78,8 @@ public class UserFragment extends Fragment {
                     addUser(user);
                 }
                 initRecyclerView(view);
-                getFriends();
+                getFollowers();
+                getFollowing();
             }
 
             @Override
@@ -89,27 +93,41 @@ public class UserFragment extends Fragment {
 
 
     private void initRecyclerView(View v) {
-        Log.d(TAG, "initRecyclerView");
+        Log.d(TAG, "initRecyclerVieww");
         RecyclerView recyclerView = v.findViewById(R.id.recyclerusers_view);
         final UsersRecyclerViewAdapter adapter = new UsersRecyclerViewAdapter(mUsers, getContext(), this);
         adapter.notifyDataSetChanged();
         adapt = adapter;
-        Button viewFriendsBtn = v.findViewById(R.id.view_friends_button);
-        viewFriendsBtn.setOnClickListener(new View.OnClickListener() {
+        TabLayout tabLayout = v.findViewById(R.id.users_tab);
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public void onClick(View v) {
-                ArrayList<User> friendList = getFriends();
-                adapter.setmUsers(friendList);
-                adapter.notifyDataSetChanged();
+            public void onTabSelected(TabLayout.Tab tab) {
+                Log.d(TAG, String.valueOf(tab.getPosition()));
+                if(tab.getPosition() == 0) {
+                    //show all users
+                    getAllUsers();
+                    adapter.setmUsers(mUsers);
+                    adapter.notifyDataSetChanged();
+                } else if(tab.getPosition() == 1) {
+                    //show followers
+                    getFollowers();
+                    adapter.setmUsers(mFollowers);
+                    adapter.notifyDataSetChanged();
+                } else if(tab.getPosition() == 2) {
+                    getFollowing();
+                    adapter.setmUsers(mFollowing);
+                    adapter.notifyDataSetChanged();
+                }
             }
-        });
-        Button viewAllUsersBtn = v.findViewById(R.id.view_all_users_button);
-        viewAllUsersBtn.setOnClickListener(new View.OnClickListener() {
+
             @Override
-            public void onClick(View v) {
-                getAllUsers();
-                adapter.setmUsers(mUsers);
-                adapter.notifyDataSetChanged();
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
             }
         });
         recyclerView.setAdapter(adapter);
@@ -117,14 +135,14 @@ public class UserFragment extends Fragment {
 
     }
 
-    private ArrayList<User> getFriends() {
-        Log.d(TAG, "get Friends");
+    private ArrayList<User> getFollowers() {
+        Log.d(TAG, "get Followers");
         String currentUserId =  FirebaseAuth.getInstance().getCurrentUser().getUid();
-        databaseUsers.child(currentUserId).child("friends").addChildEventListener(new ChildEventListener() {
+        databaseUsers.child(currentUserId).child("userProfile").child("followers").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Log.d(TAG, "new Friend added");
-                addFriend(dataSnapshot.getValue().toString());
+                addFollower(dataSnapshot.getValue().toString());
             }
 
             @Override
@@ -135,7 +153,7 @@ public class UserFragment extends Fragment {
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
                 Log.d(TAG, "Friend removed");
-                removeFriend(dataSnapshot.getValue().toString());
+                removeFollower(dataSnapshot.getValue().toString());
             }
 
             @Override
@@ -148,7 +166,40 @@ public class UserFragment extends Fragment {
 
             }
         });
-        return mFriends;
+        return mFollowers;
+    }
+
+    private ArrayList<User> getFollowing() {
+        Log.d(TAG, "get Followers");
+        String currentUserId =  FirebaseAuth.getInstance().getCurrentUser().getUid();
+        databaseUsers.child(currentUserId).child("userProfile").child("following").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                addFollowing(dataSnapshot.getValue().toString());
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                Log.d(TAG, "Friend removed");
+                removeFollowing(dataSnapshot.getValue().toString());
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        return mFollowing;
     }
 
     private void getAllUsers() {
@@ -182,36 +233,69 @@ public class UserFragment extends Fragment {
         mUsers.add(user);
     }
 
-    private void addFriend(String id) {
-        for(User f: mFriends) {
+    private void addFollower(String id) {
+        for(User f: mFollowers) {
             if(f.getId().equals(id)) {
                 return;
             }
         }
-        User friend = null;
+        User follower = null;
         for(User user: mUsers) {
             if(user.getId().equals(id)) {
-                friend = user;
+                follower = user;
                 break;
             }
         }
-        if(friend != null) {
-            mFriends.add(friend);
+        if(follower != null) {
+            mFollowers.add(follower);
             adapt.notifyDataSetChanged();
         }
-
     }
 
-    private void removeFriend(String id) {
-        User friend = null;
-        for(User user: mFriends) {
+    private void addFollowing(String id) {
+        for(User f: mFollowing) {
+            if(f.getId().equals(id)) {
+                return;
+            }
+        }
+        User following = null;
+        for(User user: mUsers) {
             if(user.getId().equals(id)) {
-                friend = user;
+                following = user;
                 break;
             }
         }
-        if(friend != null) {
-            mFriends.remove(friend);
+        if(following != null) {
+            mFollowing.add(following);
+            adapt.notifyDataSetChanged();
+        }
+    }
+
+
+    private void removeFollower(String id) {
+        User follower = null;
+        for(User user: mFollowers) {
+            if(user.getId().equals(id)) {
+                follower = user;
+                break;
+            }
+        }
+        if(follower != null) {
+            mFollowers.remove(follower);
+        }
+        adapt.notifyDataSetChanged();
+    }
+
+    private void removeFollowing(String id) {
+        User following = null;
+        for(User user: mFollowing) {
+            if(user.getId().equals(id)) {
+                following = user;
+                break;
+            }
+        }
+        if(following != null) {
+            mFollowing.remove(following);
         }
         adapt.notifyDataSetChanged();
     }
