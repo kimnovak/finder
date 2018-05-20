@@ -1,5 +1,6 @@
 package ftn.tim2.finder.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
@@ -67,7 +69,7 @@ public class CommentFragment extends Fragment {
         v = inflater.inflate(R.layout.fragment_comments, container, false);
 
         recyclerView = v.findViewById(R.id.recycler_comments_view);
-        commentAdapter = new CommentAdapter(commentList);
+        commentAdapter = new CommentAdapter(commentList, getContext());
         RecyclerView.LayoutManager myLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(myLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -137,6 +139,8 @@ public class CommentFragment extends Fragment {
                 usersProfile.getUserProfile().getComments().put(id, comment);
                 databaseUsers.child(getArguments().getString("user_ID")).child("userProfile").child("comments").setValue(usersProfile.getUserProfile().getComments());
                 comment_content.setText("");
+                final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
             }
 
             @Override
