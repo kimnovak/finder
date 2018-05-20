@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,6 +50,9 @@ public class ProfileDetailsFragment extends Fragment {
     private TextView followersProfile;
     private TextView followingProfile;
     private ImageView imageProfile;
+    private TextView closeRate;
+    private Button rateBtn;
+    private RatingBar ratingBar;
 
     private Button profile_follow_btn;
     private Button profile_unfollow_btn;
@@ -251,11 +255,21 @@ public class ProfileDetailsFragment extends Fragment {
     }
 
     private void showRatePopup(){
-        TextView closeRate;
-        Button rateBtn;
         rateDialog.setContentView(R.layout.rate_popup);
         closeRate = rateDialog.findViewById(R.id.close_rate);
         rateBtn = rateDialog.findViewById(R.id.rate_submit);
+        ratingBar = rateDialog.findViewById(R.id.rating_bar);
+        rateBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                user.getUserProfile().getRateCalc().setCount(user.getUserProfile().getRateCalc().getCount() + 1);
+                user.getUserProfile().getRateCalc().setScore(user.getUserProfile().getRateCalc().getScore()+ (int)ratingBar.getRating());
+                user.getUserProfile().setRate(user.getUserProfile().getRateCalc().getScore()*1.0/user.getUserProfile().getRateCalc().getCount());
+                databaseUsers.child(user.getId()).child("userProfile").child("rate").setValue(user.getUserProfile().getRate());
+                databaseUsers.child(user.getId()).child("userProfile").child("rateCalc").setValue(user.getUserProfile().getRateCalc());
+                rateDialog.dismiss();
+            }
+        });
         closeRate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

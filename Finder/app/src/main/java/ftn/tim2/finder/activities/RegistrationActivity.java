@@ -24,6 +24,7 @@ import java.util.HashMap;
 
 import ftn.tim2.finder.MainActivity;
 import ftn.tim2.finder.R;
+import ftn.tim2.finder.model.Rate;
 import ftn.tim2.finder.model.User;
 import ftn.tim2.finder.model.UserProfile;
 
@@ -83,6 +84,8 @@ public class RegistrationActivity extends AppCompatActivity {
                                 password, firstName, lastName, new HashMap<String, String>());
 
                         UserProfile userProfile = new UserProfile("", "", new Date(), 0, "", "");
+                        Rate rate = new Rate();
+                        userProfile.setRateCalc(rate);
                         user.setUserProfile(userProfile);
 
                         databaseUsers.child(firebaseAuth.getCurrentUser().getUid()).setValue(user);

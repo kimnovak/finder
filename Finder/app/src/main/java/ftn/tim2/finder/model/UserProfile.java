@@ -17,6 +17,7 @@ public class UserProfile {
     private String country;
     private Map<String, Comment> comments;
     private Map<String, Conversation> conversations;
+    private Rate rateCalc;
 
     public UserProfile() {
     }
@@ -107,4 +108,12 @@ public class UserProfile {
     public Map<String, Conversation> getConversations() { return conversations; }
 
     public void setConversations(Map<String, Conversation> conversations) { this.conversations = conversations; }
+
+    public Rate getRateCalc() {
+        return rateCalc;
+    }
+
+    public void setRateCalc(Rate rateCalc) {
+        this.rateCalc = rateCalc;
+    }
 }

@@ -148,7 +148,7 @@ public class MapFragment extends Fragment {
                     public void onComplete(@NonNull Task task) {
                         if(task.isSuccessful()) {
                             Location currentLocation = (Location) task.getResult();
-                            if(currentUserId != null) {
+                            if(currentUserId != null && currentLocation != null) {
                                 databaseUsers.child(currentUserId).child("location").child("latitude").setValue(currentLocation.getLatitude());
                                 databaseUsers.child(currentUserId).child("location").child("longitude").setValue(currentLocation.getLongitude());
                                 Log.d(TAG, currentLocation.getLatitude() + " " + currentLocation.getLongitude());
