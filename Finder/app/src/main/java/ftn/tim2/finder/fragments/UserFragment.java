@@ -61,7 +61,7 @@ public class UserFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_users, container, false);
         Log.d(TAG, "view all users activity - oncreateview method");
-        initializeUsers(v);
+        //initializeUsers(v);
 
         //initRecyclerView(v);
 
@@ -87,6 +87,8 @@ public class UserFragment extends Fragment {
 
         return v;
     }
+
+
 
     private void initializeUsers(View v) {
         final View view = v;
@@ -366,5 +368,6 @@ public class UserFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        initializeUsers(v);
     }
 }

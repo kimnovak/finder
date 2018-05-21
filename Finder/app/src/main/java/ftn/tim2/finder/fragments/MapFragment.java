@@ -16,13 +16,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
+import com.bumptech.glide.Glide;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -180,8 +181,32 @@ public class MapFragment extends Fragment {
                     .anchor(0.0f, 1.0f) // Anchors the marker on the bottom left
                     .title(user.getUsername())
                     .snippet(user.getEmail())
-                    // formula da ih lepo rasporedi po mapi u blizini korisnika koji ima koordinate 19.8335 45.2671
-                    //TODO: zameniti koordinatama korisnika
+                    .position(new LatLng(user.getLocation().getLatitude(), user.getLocation().getLongitude())));
+            mMarkers.add(marker);
+        }
+    }
+
+    private void addFollowingMarker(User user) {
+        Log.d(TAG, "addMarkers");
+        if(user.getLocation() != null) {
+            Marker marker = mMap.addMarker(new MarkerOptions()
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_following))
+                    .anchor(0.0f, 1.0f) // Anchors the marker on the bottom left
+                    .title(user.getUsername())
+                    .snippet(user.getEmail())
+                    .position(new LatLng(user.getLocation().getLatitude(), user.getLocation().getLongitude())));
+            mMarkers.add(marker);
+        }
+    }
+
+    private void addFollowerMarker(User user) {
+        Log.d(TAG, "addMarkers");
+        if(user.getLocation() != null) {
+            Marker marker = mMap.addMarker(new MarkerOptions()
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_follower))
+                    .anchor(0.0f, 1.0f) // Anchors the marker on the bottom left
+                    .title(user.getUsername())
+                    .snippet(user.getEmail())
                     .position(new LatLng(user.getLocation().getLatitude(), user.getLocation().getLongitude())));
             mMarkers.add(marker);
         }
@@ -257,7 +282,14 @@ public class MapFragment extends Fragment {
             }
         }
         users.add(user);
-        addMarker(user);
+        if (user.getUserProfile().getFollowers() != null && user.getUserProfile().getFollowers().contains(currentUserId)) {
+            addFollowingMarker(user);
+            return;
+        }else if(user.getUserProfile().getFollowing() != null && user.getUserProfile().getFollowing().contains(currentUserId)) {
+            addFollowerMarker(user);
+        }else {
+            addMarker(user);
+        }
     }
 
 
