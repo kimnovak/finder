@@ -32,10 +32,12 @@ public class UsersRecyclerViewAdapter extends RecyclerView.Adapter<UsersRecycler
     private FirebaseAuth firebaseAuth;
 
     public void setmUsers(ArrayList<User> mUsers) {
+        Log.d(TAG, "set");
         this.mUsers = mUsers;
     }
 
     public UsersRecyclerViewAdapter(ArrayList<User> mUsers, Context mContext, Fragment fragment) {
+        Log.d(TAG, "construct");
         this.mUsers = mUsers;
         this.mContext = mContext;
         this.mFragment = fragment;
@@ -49,6 +51,7 @@ public class UsersRecyclerViewAdapter extends RecyclerView.Adapter<UsersRecycler
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        Log.d(TAG, "createviewholdere");
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_users_item, parent, false);
         ViewHolder holder = new ViewHolder(view);
         firebaseAuth = FirebaseAuth.getInstance();

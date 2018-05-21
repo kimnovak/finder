@@ -1,5 +1,6 @@
 package ftn.tim2.finder.fragments;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.support.v4.app.FragmentTransaction;
 import android.widget.SearchView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -44,9 +46,7 @@ public class UserFragment extends Fragment {
     private int selectedTab = 0;
 
     public UserFragment() {
-        mUsers = new ArrayList<>();
-        mFollowers = new ArrayList<>();
-        mFollowing = new ArrayList<>();
+
     }
 
     @Override
@@ -54,6 +54,10 @@ public class UserFragment extends Fragment {
         super.onCreate(savedInstanceState);
         databaseUsers = FirebaseDatabase.getInstance().getReference("users");
         Log.d(TAG, "view all users activity - oncreate method");
+        mUsers = new ArrayList<>();
+        mFollowers = new ArrayList<>();
+        mFollowing = new ArrayList<>();
+        Log.d(TAG, "viewall done");
     }
 
     @Nullable
@@ -61,28 +65,9 @@ public class UserFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_users, container, false);
         Log.d(TAG, "view all users activity - oncreateview method");
-        //initializeUsers(v);
+        initializeUsers(v);
 
         //initRecyclerView(v);
-
-        final SearchView search = (SearchView) v.findViewById(R.id.search_users_button);
-
-        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                Log.d(TAG, query);
-                findUsers(query);
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                if(newText == null || newText.isEmpty()) {
-                    clearFilter();
-                }
-                return false;
-            }
-        });
 
 
         return v;
@@ -91,7 +76,10 @@ public class UserFragment extends Fragment {
 
 
     private void initializeUsers(View v) {
+        Log.d(TAG, "initializeUsers");
         final View view = v;
+        Log.d(TAG, view.toString());
+        Log.d(TAG, databaseUsers.toString());
         databaseUsers.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -123,6 +111,8 @@ public class UserFragment extends Fragment {
         final UsersRecyclerViewAdapter adapter = new UsersRecyclerViewAdapter(mUsers, getContext(), this);
         adapter.notifyDataSetChanged();
         adapt = adapter;
+        Log.d(TAG, "ada");
+        Log.d(TAG, adapter.toString());
         TabLayout tabLayout = v.findViewById(R.id.users_tab);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -158,8 +148,29 @@ public class UserFragment extends Fragment {
 
             }
         });
+        Log.d(TAG, "proslo");
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        final SearchView search = (SearchView) v.findViewById(R.id.search_users_button);
+
+        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Log.d(TAG, "search");
+                Log.d(TAG, query);
+                findUsers(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                Log.d(TAG, "search2");
+                if(newText == null || newText.isEmpty()) {
+                    clearFilter();
+                }
+                return false;
+            }
+        });
 
     }
     private void findUsers(String query) {
@@ -183,8 +194,10 @@ public class UserFragment extends Fragment {
                 }
             }
         }
-        adapt.setmUsers(filteredUsers);
-        adapt.notifyDataSetChanged();
+        if(adapt != null) {
+            adapt.setmUsers(filteredUsers);
+            adapt.notifyDataSetChanged();
+        }
     }
 
     private void clearFilter() {
@@ -367,7 +380,11 @@ public class UserFragment extends Fragment {
 
     @Override
     public void onResume() {
+        Log.d(TAG, "resume v");
         super.onResume();
-        initializeUsers(v);
+        Log.d(TAG, "resume");
     }
+
+
+
 }

@@ -1,11 +1,13 @@
 package ftn.tim2.finder;
 
+import android.content.res.Configuration;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import ftn.tim2.finder.activities.FinderPreferenceActivity;
@@ -54,5 +56,6 @@ public class MainActivity extends AppCompatActivity {
         transaction.replace(R.id.content_frame, new MapFragment());
         transaction.commit();
     }
+
 
 }
