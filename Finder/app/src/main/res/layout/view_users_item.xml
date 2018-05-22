@@ -6,11 +6,16 @@
     android:id="@+id/parent_layout"
     android:layout_marginTop="10dp">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/user_list_image"
-        android:layout_width="@dimen/user_list_image"
-        android:layout_height="@dimen/user_list_image"
-        android:src="@mipmap/ic_test_user"/>
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@mipmap/ic_test_user"
+        app:civ_border_width="1dp"
+        app:civ_border_color="@color/grayLight"
+        />
+
 
     <android.support.v7.widget.LinearLayoutCompat
         android:layout_width="match_parent"
@@ -31,7 +36,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginLeft="@dimen/user_item_left_margin">
             <ImageView
-                android:id="@+id/user_list_email"
                 android:layout_width="@dimen/user_list_email"
                 android:layout_height="@dimen/user_list_email"
                 android:src="@drawable/ic_mail_outline"/>
