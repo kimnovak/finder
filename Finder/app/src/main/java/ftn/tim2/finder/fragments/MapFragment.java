@@ -11,10 +11,17 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
+import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -53,7 +60,6 @@ public class MapFragment extends Fragment {
     private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
     private static final float DEFAULT_ZOOM = 15f;
-    private final int NUMBER_OF_INITIAL_USERS = 5;
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private DatabaseReference databaseUsers;
@@ -128,6 +134,31 @@ public class MapFragment extends Fragment {
                 }
             }
         });
+        final SearchView searchInput = v.findViewById(R.id.search_field);
+        searchInput.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                findUser(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
+
+    }
+
+    private void findUser(String query) {
+        for(Marker m: mMarkers) {
+            if(m.getTitle().contains(query)) {
+                moveCamera(new LatLng(m.getPosition().latitude, m.getPosition().longitude), DEFAULT_ZOOM);
+                m.showInfoWindow();
+                setSelectedUser(m.getTitle());
+            }
+        }
     }
 
     private void setSelectedUser(String username) {
