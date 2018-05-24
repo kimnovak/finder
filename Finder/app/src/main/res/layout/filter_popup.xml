@@ -9,7 +9,7 @@
     android:padding="5dp"
     android:layout_gravity="center">
     <TextView
-        android:id="@+id/close_rate"
+        android:id="@+id/close_filter"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:textColor="@color/colorPrimary"
@@ -35,6 +35,7 @@
             android:layout_gravity="center"/>
 
         <RadioGroup
+            android:id="@+id/filter_radio_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -42,24 +43,27 @@
             >
 
             <RadioButton
+                android:id="@+id/radio_following"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/tab_following"
                 />
             <RadioButton
+                android:id="@+id/radio_followers"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/tab_followers"
                 />
 
             <RadioButton
+                android:id="@+id/radio_all"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/tab_all_users" />
         </RadioGroup>
 
         <Button
-            android:id="@+id/rate_submit"
+            android:id="@+id/filter_submit"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:text="Submit"

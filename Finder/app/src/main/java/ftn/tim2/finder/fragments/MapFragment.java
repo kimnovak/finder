@@ -20,8 +20,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -71,6 +74,11 @@ public class MapFragment extends Fragment {
     private String currentUserId;
     private ImageView filter_btn;
     private Dialog filterPopup;
+    private Button filterSubmitBtn;
+    private RadioGroup radioGroup;
+    private ArrayList<Marker> mFollowing;
+    private ArrayList<Marker> mFollowers;
+    private TextView filterCloseBtn;
 
     public MapFragment() {
     }
@@ -82,6 +90,8 @@ public class MapFragment extends Fragment {
         mMarkers = new ArrayList<>();
         users = new ArrayList<User>();
         filterPopup = new Dialog(getContext());
+        mFollowers = new ArrayList<>();
+        mFollowing = new ArrayList<>();
     }
 
     @Nullable
@@ -167,6 +177,71 @@ public class MapFragment extends Fragment {
         filterPopup.setContentView(R.layout.filter_popup);
         filterPopup.show();
 
+        filterSubmitBtn = filterPopup.findViewById(R.id.filter_submit);
+        filterSubmitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                radioGroup = filterPopup.findViewById(R.id.filter_radio_group);
+                int selectedRadioId = radioGroup.getCheckedRadioButtonId();
+                RadioButton selectedRadioBtn = filterPopup.findViewById(selectedRadioId);
+                String filterCriteria = String.valueOf(selectedRadioBtn.getText());
+                Log.d(TAG, filterCriteria);
+                if(filterCriteria.equals("FOLLOWING")) {
+                    showOnlyFollowing();
+                } else if(filterCriteria.equals("FOLLOWERS")) {
+                    showOnlyFollowers();
+                } else {
+                    showAll();
+                }
+                filterPopup.dismiss();
+            }
+        });
+        filterCloseBtn = filterPopup.findViewById(R.id.close_filter);
+        filterCloseBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                filterPopup.dismiss();
+            }
+        });
+    }
+
+    private void resetPreviousFilter() {
+        for(Marker marker: mMarkers) {
+            marker.setVisible(true);
+        }
+        for(Marker follower: mFollowers) {
+            for(Marker following: mFollowing) {
+                if(following.getTitle().equals(follower.getTitle())) {
+                    follower.setVisible(false);
+                }
+            }
+        }
+    }
+
+    private void showOnlyFollowing() {
+        resetPreviousFilter();
+
+        for(Marker marker: mMarkers) {
+            if(!mFollowing.contains(marker)) {
+                marker.setVisible(false);
+            }
+        }
+    }
+
+    private void showOnlyFollowers() {
+        resetPreviousFilter();
+
+        for(Marker marker: mMarkers) {
+            if(!mFollowers.contains(marker)) {
+                marker.setVisible(false);
+            } else {
+                marker.setVisible(true);
+            }
+        }
+    }
+
+    private void showAll() {
+        resetPreviousFilter();
     }
 
     private void findUser(String query) {
@@ -245,10 +320,11 @@ public class MapFragment extends Fragment {
                     .snippet(user.getEmail())
                     .position(new LatLng(user.getLocation().getLatitude(), user.getLocation().getLongitude())));
             mMarkers.add(marker);
+            mFollowing.add(marker);
         }
     }
 
-    private void addFollowerMarker(User user) {
+    private void addFollowerMarker(User user, boolean visible) {
         Log.d(TAG, "addMarkers");
         if(user.getLocation() != null) {
             Marker marker = mMap.addMarker(new MarkerOptions()
@@ -257,12 +333,25 @@ public class MapFragment extends Fragment {
                     .title(user.getUsername())
                     .snippet(user.getEmail())
                     .position(new LatLng(user.getLocation().getLatitude(), user.getLocation().getLongitude())));
+            marker.setVisible(visible);
             mMarkers.add(marker);
+            mFollowers.add(marker);
         }
     }
 
     private void moveMarker(String username, LatLng newPosition) {
         for(Marker marker: mMarkers) {
+            if(marker.getTitle().equals(username)) {
+                marker.setPosition(newPosition);
+            }
+        }
+        for(Marker marker: mFollowing) {
+            if(marker.getTitle().equals(username)) {
+                marker.setPosition(newPosition);
+            }
+        }
+
+        for(Marker marker: mFollowers) {
             if(marker.getTitle().equals(username)) {
                 marker.setPosition(newPosition);
             }
@@ -281,6 +370,12 @@ public class MapFragment extends Fragment {
         markerToRemove.setVisible(false);
         if(markerToRemove != null) {
             mMarkers.remove(markerToRemove);
+            if(mFollowing.contains(markerToRemove)) {
+                mFollowing.remove(markerToRemove);
+            }
+            if(mFollowers.contains(markerToRemove)) {
+                mFollowers.remove(markerToRemove);
+            }
         }
     }
 
@@ -333,9 +428,12 @@ public class MapFragment extends Fragment {
         users.add(user);
         if (user.getUserProfile().getFollowers() != null && user.getUserProfile().getFollowers().contains(currentUserId)) {
             addFollowingMarker(user);
+            if(user.getUserProfile().getFollowing().contains(currentUserId)) {
+                addFollowerMarker(user, false);
+            }
             return;
         }else if(user.getUserProfile().getFollowing() != null && user.getUserProfile().getFollowing().contains(currentUserId)) {
-            addFollowerMarker(user);
+            addFollowerMarker(user, true);
         }else {
             addMarker(user);
         }
