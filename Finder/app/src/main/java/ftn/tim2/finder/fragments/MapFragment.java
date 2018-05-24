@@ -1,6 +1,7 @@
 package ftn.tim2.finder.fragments;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -67,6 +69,8 @@ public class MapFragment extends Fragment {
     private ArrayList<User> users;
     private User selectedUser;
     private String currentUserId;
+    private ImageView filter_btn;
+    private Dialog filterPopup;
 
     public MapFragment() {
     }
@@ -77,6 +81,7 @@ public class MapFragment extends Fragment {
         databaseUsers = FirebaseDatabase.getInstance().getReference("users");
         mMarkers = new ArrayList<>();
         users = new ArrayList<User>();
+        filterPopup = new Dialog(getContext());
     }
 
     @Nullable
@@ -148,6 +153,19 @@ public class MapFragment extends Fragment {
             }
         });
 
+        ///////////////////////////////////////////////////////////////////////////
+        filter_btn = v.findViewById(R.id.filter_btn);
+        filter_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showFilterPopUp();
+            }
+        });
+    }
+
+    private void showFilterPopUp() {
+        filterPopup.setContentView(R.layout.filter_popup);
+        filterPopup.show();
 
     }
 
