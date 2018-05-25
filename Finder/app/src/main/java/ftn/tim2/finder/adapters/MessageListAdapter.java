@@ -1,5 +1,6 @@
 package ftn.tim2.finder.adapters;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
@@ -21,10 +23,12 @@ public class MessageListAdapter extends RecyclerView.Adapter {
 
     private String receiverName;
     private List<Message> mMessageList;
+    private Context mContext;
 
-    public MessageListAdapter(List<Message> messageList, String receiverName) {
+    public MessageListAdapter(List<Message> messageList, String receiverName, Context context) {
         mMessageList = messageList;
         this.receiverName = receiverName;
+        this.mContext = context;
     }
 
     private class ReceivedMessageHolder extends RecyclerView.ViewHolder {
@@ -46,8 +50,9 @@ public class MessageListAdapter extends RecyclerView.Adapter {
             timeText.setText(dateFormat.format("hh:mm", message.getCreatedAt()));
             //nameText.setText(message.getSender().getUsername());
             nameText.setText(receiverName);
-
-            //Utils.displayRoundImageFromUrl(mContext, message.getSender().getProfileUrl(), profileImage);
+            if(!message.getReceiverImage().isEmpty()) {
+                Glide.with(mContext).load(message.getReceiverImage()).into(profileImage);
+            }
         }
     }
 

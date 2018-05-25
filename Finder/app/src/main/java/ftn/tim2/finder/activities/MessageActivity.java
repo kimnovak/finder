@@ -109,7 +109,7 @@ public class MessageActivity extends AppCompatActivity {
     }
 
     private void sendMessage(String message, String senderId, String receiverId) {
-        Message newMessage = new Message(message, senderId, receiverId, new Date());
+        Message newMessage = new Message(message, senderId, receiverId, new Date(), me.getUserProfile().getImage());
 
         databaseMessages.push().setValue(newMessage).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -205,7 +205,7 @@ public class MessageActivity extends AppCompatActivity {
             }
         });
 
-        mMessageAdapter = new MessageListAdapter(messageList, receiverName);
+        mMessageAdapter = new MessageListAdapter(messageList, receiverName, this);
         mMessageRecycler.setAdapter(mMessageAdapter);
     }
 

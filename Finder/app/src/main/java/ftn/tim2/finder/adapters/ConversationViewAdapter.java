@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 import ftn.tim2.finder.R;
@@ -47,7 +49,9 @@ public class ConversationViewAdapter extends RecyclerView.Adapter<ConversationVi
         holder.tv_name.setText(conversation.getParticipant().getFirstName() + " " +
                 conversation.getParticipant().getLastName());
         holder.tv_email.setText(conversation.getParticipant().getEmail());
-        //holder.img.setImageResource(0); //messages.get(position).getSender().get
+        if(!conversation.getParticipant().getUserProfile().getImage().isEmpty()) {
+            Glide.with(context).load(conversation.getParticipant().getUserProfile().getImage()).into(holder.img);
+        }
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
