@@ -28,6 +28,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -36,6 +38,7 @@ import ftn.tim2.finder.R;
 import ftn.tim2.finder.activities.LoginActivity;
 import ftn.tim2.finder.adapters.CommentAdapter;
 import ftn.tim2.finder.model.Comment;
+import ftn.tim2.finder.model.Message;
 import ftn.tim2.finder.model.User;
 
 public class CommentFragment extends Fragment {
@@ -110,12 +113,22 @@ public class CommentFragment extends Fragment {
                         commentList.add(usersProfile.getUserProfile().getComments().get(key));
                     }
                 }
+                sort();
                 commentAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.d(TAG, "The read failed: " + databaseError.getCode());
+            }
+        });
+    }
+
+    private void sort() {
+        Collections.sort(commentList, new Comparator<Comment>() {
+            @Override
+            public int compare(Comment o1, Comment o2) {
+                return o1.getDateCreated().compareTo(o2.getDateCreated());
             }
         });
     }
