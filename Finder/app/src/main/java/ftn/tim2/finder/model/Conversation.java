@@ -6,12 +6,14 @@ public class Conversation {
 
     private User participant;
     private Map<String, String> messages;
+    private String lastMessage;
 
     public Conversation() {
     }
 
-    public Conversation(User participant) {
+    public Conversation(User participant, String lastMessage) {
         this.participant = participant;
+        this.lastMessage = lastMessage;
     }
 
     public User getParticipant() {
@@ -28,5 +30,13 @@ public class Conversation {
 
     public void setMessages(Map<String, String> messages) {
         this.messages = messages;
+    }
+
+    public String getLastMessage() {
+        return lastMessage;
+    }
+
+    public void setLastMessage(String lastMessage) {
+        this.lastMessage = lastMessage;
     }
 }

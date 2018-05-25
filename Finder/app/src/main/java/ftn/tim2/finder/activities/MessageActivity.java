@@ -7,6 +7,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -109,7 +110,7 @@ public class MessageActivity extends AppCompatActivity {
     }
 
     private void sendMessage(String message, String senderId, String receiverId) {
-        Message newMessage = new Message(message, senderId, receiverId, new Date(), me.getUserProfile().getImage());
+        final Message newMessage = new Message(message, senderId, receiverId, new Date(), receiver.getUserProfile().getImage());
 
         databaseMessages.push().setValue(newMessage).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -118,16 +119,17 @@ public class MessageActivity extends AppCompatActivity {
                     Toast.makeText(MessageActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
                 } else {
                     mMessageText.setText(null);
-                    createReceiverConversation();
+                    createReceiverConversation(newMessage);
                     //hideSoftKeyboard()
                 }
             }
         });
     }
 
-    private void createReceiverConversation() {
+    private void createReceiverConversation(Message message) {
         boolean updateConv = false;
-        final Conversation conversation = new Conversation(me);
+
+        final Conversation conversation = new Conversation(me, message.getMessage());
 
         if (receiver.getUserProfile().getConversations() == null) {
             receiver.getUserProfile().setConversations(new HashMap<String, Conversation>() {{
@@ -148,6 +150,8 @@ public class MessageActivity extends AppCompatActivity {
         if (updateConv) {
             databaseUsers.child(receiver.getId()).child("userProfile").child("conversations")
                     .setValue(receiver.getUserProfile().getConversations());
+//            databaseUsers.child(receiver.getId()).child("userProfile").child("conversations")
+//                    .child("lastMessage").setValue(message.getMessage());
         }
     }
 

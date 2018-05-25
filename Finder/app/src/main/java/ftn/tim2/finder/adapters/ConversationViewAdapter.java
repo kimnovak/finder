@@ -48,7 +48,7 @@ public class ConversationViewAdapter extends RecyclerView.Adapter<ConversationVi
 
         holder.tv_name.setText(conversation.getParticipant().getFirstName() + " " +
                 conversation.getParticipant().getLastName());
-        holder.tv_email.setText(conversation.getParticipant().getEmail());
+        holder.tv_last.setText(conversation.getLastMessage());
         if(!conversation.getParticipant().getUserProfile().getImage().isEmpty()) {
             Glide.with(context).load(conversation.getParticipant().getUserProfile().getImage()).into(holder.img);
         }
@@ -70,7 +70,7 @@ public class ConversationViewAdapter extends RecyclerView.Adapter<ConversationVi
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView tv_name;
-        private TextView tv_email;
+        private TextView tv_last;
         private ImageView img;
         private LinearLayout parentLayout;
 
@@ -78,7 +78,7 @@ public class ConversationViewAdapter extends RecyclerView.Adapter<ConversationVi
             super(itemView);
 
             tv_name = itemView.findViewById(R.id.name_message);
-            tv_email = itemView.findViewById(R.id.email_message);
+            tv_last= itemView.findViewById(R.id.last_message);
             img = itemView.findViewById(R.id.img_message);
             parentLayout = itemView.findViewById(R.id.parent_layout_conversation);
         }
