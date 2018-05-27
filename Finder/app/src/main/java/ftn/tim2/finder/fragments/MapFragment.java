@@ -2,9 +2,13 @@ package ftn.tim2.finder.fragments;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.preference.PreferenceFragment;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -79,6 +83,9 @@ public class MapFragment extends Fragment {
     private ArrayList<Marker> mFollowing;
     private ArrayList<Marker> mFollowers;
     private TextView filterCloseBtn;
+    private Location currentLocation;
+    private Location currentLocation1;
+    private ChildEventListener childEventListener;
 
     public MapFragment() {
     }
@@ -127,25 +134,7 @@ public class MapFragment extends Fragment {
                 mMap = googleMap;
                 if(mLocationPermissionsGranted) {
                     getDeviceLocation();
-                    if (ContextCompat.checkSelfPermission(getContext(), FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                        mMap.setMyLocationEnabled(true);
-                    }
-                    mMap.getUiSettings().setMyLocationButtonEnabled(false);
-                    getUsers();
-                    mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                        @Override
-                        public boolean onMarkerClick(Marker marker) {
-                            marker.showInfoWindow();
-                            setSelectedUser(marker.getTitle());
-                            return false;
-                        }
-                    });
-                    mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-                        @Override
-                        public void onInfoWindowClick(Marker marker) {
-                            seeProfile();
-                        }
-                    });
+
                 }
             }
         });
@@ -185,7 +174,6 @@ public class MapFragment extends Fragment {
                 int selectedRadioId = radioGroup.getCheckedRadioButtonId();
                 RadioButton selectedRadioBtn = filterPopup.findViewById(selectedRadioId);
                 String filterCriteria = String.valueOf(selectedRadioBtn.getText());
-                Log.d(TAG, filterCriteria);
                 if(filterCriteria.equals("FOLLOWING")) {
                     showOnlyFollowing();
                 } else if(filterCriteria.equals("FOLLOWERS")) {
@@ -272,16 +260,19 @@ public class MapFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task task) {
                         if(task.isSuccessful()) {
-                            Location currentLocation = (Location) task.getResult();
-                            if(currentUserId != null && currentLocation != null) {
-                                databaseUsers.child(currentUserId).child("location").child("latitude").setValue(currentLocation.getLatitude());
-                                databaseUsers.child(currentUserId).child("location").child("longitude").setValue(currentLocation.getLongitude());
-                                Log.d(TAG, currentLocation.getLatitude() + " " + currentLocation.getLongitude());
-                                moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), DEFAULT_ZOOM);
+                            currentLocation1 = (Location) task.getResult();
+                            if(currentUserId != null && currentLocation1 != null) {
+                                databaseUsers.child(currentUserId).child("location").child("latitude").setValue(currentLocation1.getLatitude());
+                                databaseUsers.child(currentUserId).child("location").child("longitude").setValue(currentLocation1.getLongitude());
+                                moveCamera(new LatLng(currentLocation1.getLatitude(), currentLocation1.getLongitude()), DEFAULT_ZOOM);
                             } else {
                                 LatLng defaultLocation = new LatLng(45.2691, 19.8374983);
                                 moveCamera(defaultLocation, DEFAULT_ZOOM);
+                                currentLocation1 = new Location("");
+                                currentLocation1.setLatitude(defaultLocation.latitude);
+                                currentLocation1.setLongitude(defaultLocation.longitude);
                             }
+                            continueMapInit();
                         }else {
                             Toast.makeText(getContext(), "unable to get current location", Toast.LENGTH_SHORT).show();
                         }
@@ -291,13 +282,36 @@ public class MapFragment extends Fragment {
         } catch (SecurityException e){
 
         }
+
+    }
+
+    private void continueMapInit() {
+        if (ContextCompat.checkSelfPermission(getContext(), FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            mMap.setMyLocationEnabled(true);
+        }
+        mMap.getUiSettings().setMyLocationButtonEnabled(false);
+        getUsers();
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                marker.showInfoWindow();
+                setSelectedUser(marker.getTitle());
+                return false;
+            }
+        });
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                seeProfile();
+            }
+        });
     }
 
     private void moveCamera(LatLng latLng, float zoom) {
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
     }
 
-    private void addMarker(User user) {
+    private void addMarker(User user, boolean visible) {
         Log.d(TAG, "addMarkers");
         if(user.getLocation() != null) {
             Marker marker = mMap.addMarker(new MarkerOptions()
@@ -306,12 +320,13 @@ public class MapFragment extends Fragment {
                     .title(user.getUsername())
                     .snippet(user.getEmail())
                     .position(new LatLng(user.getLocation().getLatitude(), user.getLocation().getLongitude())));
+            marker.setVisible(visible);
             mMarkers.add(marker);
         }
     }
 
-    private void addFollowingMarker(User user) {
-        Log.d(TAG, "addMarkers");
+    private void addFollowingMarker(User user, boolean visible) {
+        Log.d(TAG, "add following Markers");
         if(user.getLocation() != null) {
             Marker marker = mMap.addMarker(new MarkerOptions()
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_following))
@@ -319,13 +334,14 @@ public class MapFragment extends Fragment {
                     .title(user.getUsername())
                     .snippet(user.getEmail())
                     .position(new LatLng(user.getLocation().getLatitude(), user.getLocation().getLongitude())));
+            marker.setVisible(visible);
             mMarkers.add(marker);
             mFollowing.add(marker);
         }
     }
 
     private void addFollowerMarker(User user, boolean visible) {
-        Log.d(TAG, "addMarkers");
+        Log.d(TAG, "add follower Markers");
         if(user.getLocation() != null) {
             Marker marker = mMap.addMarker(new MarkerOptions()
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_follower))
@@ -339,27 +355,35 @@ public class MapFragment extends Fragment {
         }
     }
 
-    private void moveMarker(String username, LatLng newPosition) {
+    private void moveMarker(User user, String username, LatLng newPosition) {
+        Log.d(TAG, "moveMarker");
+        boolean visible = inRadius(user);
+        Marker changedMarker = null;
         for(Marker marker: mMarkers) {
             if(marker.getTitle().equals(username)) {
                 marker.setPosition(newPosition);
+                marker.setVisible(visible);
             }
         }
         for(Marker marker: mFollowing) {
             if(marker.getTitle().equals(username)) {
                 marker.setPosition(newPosition);
+                changedMarker = marker;
+                marker.setVisible(visible);
             }
         }
 
         for(Marker marker: mFollowers) {
             if(marker.getTitle().equals(username)) {
                 marker.setPosition(newPosition);
+                if(changedMarker == null) {
+                    marker.setVisible(visible);
+                }
             }
         }
     }
 
     private void removeMarker(String username) {
-        Log.d(TAG, username);
         Marker markerToRemove = null;
         for(Marker marker: mMarkers) {
             if(marker.getTitle().equals(username)) {
@@ -379,13 +403,37 @@ public class MapFragment extends Fragment {
         }
     }
 
+    private boolean inRadius(User user) {
+        if (user.getLocation() != null) {
+            if(currentLocation1 != null) {
+                float[] results = new float[2];
+                Location.distanceBetween(currentLocation1.getLatitude(), currentLocation1.getLongitude(), user.getLocation().getLatitude(), user.getLocation().getLongitude(), results);
+                if(results.length > 0) {
+                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this.getContext());
+                    preferences.getAll().get("pref_radius");
+                    String radius = preferences.getAll().get("pref_radius").toString();
+                    if(results[0] < Integer.valueOf(radius) * 1000) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
     private void getUsers() {
-        databaseUsers.addChildEventListener(new ChildEventListener() {
+        childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Log.d(TAG, dataSnapshot.getValue().toString());
                 User user = dataSnapshot.getValue(User.class);
-                addUser(user);
+                if(inRadius(user)) {
+                    addUser(user, true);
+                } else {
+                    addUser(user, false);
+                }
             }
 
             @Override
@@ -393,12 +441,14 @@ public class MapFragment extends Fragment {
                 //ako je promenjen ulogovan korisnik pomeri kameru
                 //ako je promenjen neko drugi pomeri marker na novu lokaciju
                 User user = dataSnapshot.getValue(User.class);
-                if(user.getId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                if(user.getId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid()) && user.getLocation() != null) {
                     moveCamera(new LatLng(user.getLocation().getLatitude(), user.getLocation().getLongitude()), DEFAULT_ZOOM);
                 } else {
-                    moveMarker(user.getUsername(), new LatLng(user.getLocation().getLatitude(), user.getLocation().getLongitude()));
+                    if(user.getLocation() != null) {
+                        Log.d(TAG, "pomeren");
+                        moveMarker(user, user.getUsername(), new LatLng(user.getLocation().getLatitude(), user.getLocation().getLongitude()));
+                    }
                 }
-
             }
 
             @Override
@@ -416,10 +466,11 @@ public class MapFragment extends Fragment {
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });
+        };
+        databaseUsers.addChildEventListener(childEventListener);
     }
 
-    private void addUser(User user) {
+    private void addUser(User user, boolean inRadius) {
         for(User u: users) {
             if(u.getEmail().equals(user.getEmail()) || FirebaseAuth.getInstance().getCurrentUser().getUid().equals(user.getId())) {
                 return;
@@ -427,15 +478,15 @@ public class MapFragment extends Fragment {
         }
         users.add(user);
         if (user.getUserProfile().getFollowers() != null && user.getUserProfile().getFollowers().contains(currentUserId)) {
-            addFollowingMarker(user);
+            addFollowingMarker(user, inRadius);
             if(user.getUserProfile().getFollowing().contains(currentUserId)) {
                 addFollowerMarker(user, false);
             }
             return;
         }else if(user.getUserProfile().getFollowing() != null && user.getUserProfile().getFollowing().contains(currentUserId)) {
-            addFollowerMarker(user, true);
+            addFollowerMarker(user, inRadius);
         }else {
-            addMarker(user);
+            addMarker(user, inRadius);
         }
     }
 
@@ -469,5 +520,12 @@ public class MapFragment extends Fragment {
                 }
             }
         }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Log.d(TAG, "detach");
+        databaseUsers.removeEventListener(childEventListener);
     }
 }

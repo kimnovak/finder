@@ -29,24 +29,28 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Fragment selectedFragment = null;
-
+                String tag = null;
                 switch (item.getItemId()) {
                     case R.id.home_toolbar:
                         selectedFragment = new MapFragment();
+                        tag = "MAP_FRAGMENT";
                         break;
                     case R.id.users_toolbar:
                         selectedFragment = new UserFragment();
+                        tag = "USER_FRAGMENT";
                         break;
                     case R.id.conversation_toolbar:
                         selectedFragment = new ConversationFragment();
+                        tag = "CONVERSATION_FRAGMENT";
                         break;
                     case R.id.account_toolbar:
                         selectedFragment = new ProfileDetailsFragment();
+                        tag = "PROFILE_DETAILS_FRAGMENT";
                         break;
                 }
 
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.content_frame, selectedFragment);
+                transaction.replace(R.id.content_frame, selectedFragment, tag);
                 transaction.commit();
                 return true;
             }
