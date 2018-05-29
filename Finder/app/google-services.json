@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "577389876531",
+    "firebase_url": "https://finder-129c3.firebaseio.com",
+    "project_id": "finder-129c3",
+    "storage_bucket": "finder-129c3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:577389876531:android:feb03458efca753c",
+        "android_client_info": {
+          "package_name": "ftn.tim2.finder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "577389876531-4qtvn2jkatluut93kjgn2irin25i5p3j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ftn.tim2.finder",
+            "certificate_hash": "69bf8f1912a2f03be3d5437085726c74806bef9d"
+          }
+        },
+        {
+          "client_id": "577389876531-qoob82lhds6vehum5ecuaq8gqe5shcl8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZpMsdzJUVB0vG9HKdgo4ST2Rgr6lmXAs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "577389876531-qoob82lhds6vehum5ecuaq8gqe5shcl8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

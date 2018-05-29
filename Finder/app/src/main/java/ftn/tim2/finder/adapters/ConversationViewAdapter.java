@@ -5,21 +5,19 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
 import ftn.tim2.finder.R;
 import ftn.tim2.finder.activities.MessageActivity;
-import ftn.tim2.finder.activities.ProfileDetailsActivity;
 import ftn.tim2.finder.model.Conversation;
 
 public class ConversationViewAdapter extends RecyclerView.Adapter<ConversationViewAdapter.ViewHolder> {
@@ -46,14 +44,19 @@ public class ConversationViewAdapter extends RecyclerView.Adapter<ConversationVi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        holder.tv_name.setText(conversations.get(position).getReceiever().getFirstName() + " " +
-                            conversations.get(position).getReceiever().getLastName());
-        holder.tv_email.setText(conversations.get(position).getReceiever().getEmail());
-        //holder.img.setImageResource(0); //messages.get(position).getSender().get
+        final Conversation conversation = conversations.get(position);
+
+        holder.tv_name.setText(conversation.getParticipant().getFirstName() + " " +
+                conversation.getParticipant().getLastName());
+        holder.tv_last.setText(conversation.getLastMessage());
+        if(!conversation.getParticipant().getUserProfile().getImage().isEmpty()) {
+            Glide.with(context).load(conversation.getParticipant().getUserProfile().getImage()).into(holder.img);
+        }
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, MessageActivity.class);
+                intent.putExtra("USER_ID",conversation.getParticipant().getId());
                 ActivityCompat.startActivity(context, intent, null);
             }
         });
@@ -67,7 +70,7 @@ public class ConversationViewAdapter extends RecyclerView.Adapter<ConversationVi
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView tv_name;
-        private TextView tv_email;
+        private TextView tv_last;
         private ImageView img;
         private LinearLayout parentLayout;
 
@@ -75,7 +78,7 @@ public class ConversationViewAdapter extends RecyclerView.Adapter<ConversationVi
             super(itemView);
 
             tv_name = itemView.findViewById(R.id.name_message);
-            tv_email = itemView.findViewById(R.id.email_message);
+            tv_last= itemView.findViewById(R.id.last_message);
             img = itemView.findViewById(R.id.img_message);
             parentLayout = itemView.findViewById(R.id.parent_layout_conversation);
         }

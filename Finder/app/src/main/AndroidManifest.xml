@@ -28,13 +28,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity">
-        </activity>
-        <activity android:name=".activities.ViewAllUsersActivity">
-        </activity>
-        <activity android:name=".activities.CommentActivity">
-        </activity>
-        <activity android:name=".activities.ProfileDetailsActivity">
+        <activity android:name=".MainActivity"
+            android:configChanges="keyboardHidden|orientation"
+            >
         </activity>
         <activity android:name=".activities.ProfileEditActivity">
         </activity>
@@ -43,10 +39,6 @@
         <activity android:name=".activities.RegistrationActivity">
         </activity>
         <activity android:name=".activities.FinderPreferenceActivity">
-        </activity>
-        <activity android:name=".activities.ConversationActivity">
-        </activity>
-        <activity android:name=".activities.MapActivity">
         </activity>
         <activity android:name=".activities.MessageActivity">
         </activity>
