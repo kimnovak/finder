@@ -78,6 +78,7 @@ public class ConversationFragment extends Fragment {
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+                        conversations.clear();
                         for (DataSnapshot convSnapshot: dataSnapshot.getChildren()) {
                             Conversation conversation = convSnapshot.getValue(Conversation.class);
 
