@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -29,6 +30,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ftn.tim2.finder.R;
 import ftn.tim2.finder.adapters.CommentAdapter;
@@ -43,6 +45,7 @@ public class MessageActivity extends AppCompatActivity {
     private List<Message> messageList = new ArrayList<>();
     private RecyclerView mMessageRecycler;
     private MessageListAdapter mMessageAdapter;
+    private ScrollView mMessageScroll;
 
     private Button mMessageSendBtn;
     private EditText mMessageText;
@@ -63,6 +66,7 @@ public class MessageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_messages);
 
         mMessageRecycler = findViewById(R.id.reyclerview_message_list);
+        mMessageScroll = findViewById(R.id.message_scroll);
 
         RecyclerView.LayoutManager myLayoutManager = new LinearLayoutManager(getApplicationContext());
         mMessageRecycler.setLayoutManager(myLayoutManager);
@@ -112,6 +116,9 @@ public class MessageActivity extends AppCompatActivity {
     private void sendMessage(String message, String senderId, String receiverId) {
         final Message newMessage = new Message(message, senderId, receiverId, new Date(), receiver.getUserProfile().getImage());
 
+        // create conversation for me
+        createReceiverConversation(receiver, me, newMessage);
+
         databaseMessages.push().setValue(newMessage).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -119,40 +126,39 @@ public class MessageActivity extends AppCompatActivity {
                     Toast.makeText(MessageActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
                 } else {
                     mMessageText.setText(null);
-                    createReceiverConversation(newMessage);
-                    //hideSoftKeyboard()
+                    createReceiverConversation(me, receiver, newMessage);
+
+                    scrollToBottom();
                 }
             }
         });
     }
 
-    private void createReceiverConversation(Message message) {
-        boolean updateConv = false;
+    private void createReceiverConversation(User sender, User receiver, Message message) {
+        boolean hasSender = false;
 
-        final Conversation conversation = new Conversation(me, message.getMessage());
+        final Conversation conversation = new Conversation(sender, message.getMessage());
 
         if (receiver.getUserProfile().getConversations() == null) {
             receiver.getUserProfile().setConversations(new HashMap<String, Conversation>() {{
                 put(databaseUsers.push().getKey(), conversation);
             }});
-            updateConv = true;
         } else {
-            for (Conversation c : receiver.getUserProfile().getConversations().values()) {
-                if (!c.getParticipant().getId().equals(me.getId())) {
-                    receiver.getUserProfile().getConversations()
-                            .put(databaseUsers.push().getKey(), conversation);
-                    updateConv = true;
+            for (Map.Entry<String, Conversation> entry : receiver.getUserProfile().getConversations().entrySet()) {
+                if (entry.getValue().getParticipant().getId().equals(sender.getId())) {
+                    receiver.getUserProfile().getConversations().get(entry.getKey()).setLastMessage(message.getMessage());
+                    hasSender = true;
                     break;
                 }
             }
+            if (!hasSender) {
+                receiver.getUserProfile().getConversations()
+                        .put(databaseUsers.push().getKey(), conversation);
+            }
         }
 
-        if (updateConv) {
-            databaseUsers.child(receiver.getId()).child("userProfile").child("conversations")
-                    .setValue(receiver.getUserProfile().getConversations());
-//            databaseUsers.child(receiver.getId()).child("userProfile").child("conversations")
-//                    .child("lastMessage").setValue(message.getMessage());
-        }
+        databaseUsers.child(receiver.getId()).child("userProfile").child("conversations")
+                .setValue(receiver.getUserProfile().getConversations());
     }
 
     private void messagesBetweenMeAndUser() {
@@ -211,6 +217,18 @@ public class MessageActivity extends AppCompatActivity {
 
         mMessageAdapter = new MessageListAdapter(messageList, receiverName, this);
         mMessageRecycler.setAdapter(mMessageAdapter);
+
+        scrollToBottom();
+    }
+
+    private void scrollToBottom() {
+        mMessageScroll.postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                mMessageScroll.fullScroll(ScrollView.FOCUS_DOWN);
+            }
+        }, 100);
     }
 
 
