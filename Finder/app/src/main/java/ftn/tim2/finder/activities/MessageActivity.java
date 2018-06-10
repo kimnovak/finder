@@ -146,7 +146,11 @@ public class MessageActivity extends AppCompatActivity {
         } else {
             for (Map.Entry<String, Conversation> entry : receiver.getUserProfile().getConversations().entrySet()) {
                 if (entry.getValue().getParticipant().getId().equals(sender.getId())) {
-                    receiver.getUserProfile().getConversations().get(entry.getKey()).setLastMessage(message.getMessage());
+                    String last_message = message.getMessage();
+                    if(message.getMessage().length() > 30){
+                        last_message = message.getMessage().substring(0,30) + "...";
+                    }
+                    receiver.getUserProfile().getConversations().get(entry.getKey()).setLastMessage(last_message);
                     hasSender = true;
                     break;
                 }

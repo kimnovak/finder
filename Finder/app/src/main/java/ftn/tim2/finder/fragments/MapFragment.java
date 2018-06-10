@@ -496,9 +496,11 @@ public class MapFragment extends Fragment {
         ProfileDetailsFragment profileDetailsFragment = new ProfileDetailsFragment();
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        Bundle bundle = new Bundle();
-        bundle.putString("user_ID", selectedUser.getId());
-        profileDetailsFragment.setArguments(bundle);
+        if(!currentUserId.equals(selectedUser.getId())) {
+            Bundle bundle = new Bundle();
+            bundle.putString("user_ID", selectedUser.getId());
+            profileDetailsFragment.setArguments(bundle);
+        }
         transaction.replace(R.id.content_frame, profileDetailsFragment);
         transaction.commit();
     }
