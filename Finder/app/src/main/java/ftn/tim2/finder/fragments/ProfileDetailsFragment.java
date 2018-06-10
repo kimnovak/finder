@@ -61,7 +61,6 @@ public class ProfileDetailsFragment extends Fragment {
     private Button finder_preferences_btn;
 
     private ImageView edit_profile_img;
-    private TextView sign_out;
     private ImageView profile_star_img;
 
     private static final String TAG = "ProfileDetailsFragment";
@@ -171,14 +170,6 @@ public class ProfileDetailsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 showPreferences();
-            }
-        });
-
-        sign_out = v.findViewById(R.id.signOut);
-        sign_out.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signOut();
             }
         });
 
@@ -381,12 +372,6 @@ public class ProfileDetailsFragment extends Fragment {
 
     private void editProfile() {
         Intent intent = new Intent(getContext(), ProfileEditActivity.class);
-        startActivity(intent);
-    }
-
-    private void signOut(){
-        firebaseAuth.signOut();
-        Intent intent = new Intent(getContext(), LoginActivity.class);
         startActivity(intent);
     }
 }

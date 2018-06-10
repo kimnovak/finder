@@ -29,6 +29,9 @@
     <string name="notif_on_sync_summ">Send you notifications about sync</string>
     <string name="notif_on_sync_title">Sync notifications</string>
 
+    <string name="account">Account</string>
+    <string name="account_switch_key">account_switch</string>
+    <string name="account_switch_title">Switch Account</string>
 
     <string name="tab_all_users">ALL USERS</string>
     <string name="tab_followers">FOLLOWERS</string>
