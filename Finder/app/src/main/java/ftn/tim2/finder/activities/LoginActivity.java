@@ -28,6 +28,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import ftn.tim2.finder.MainActivity;
 import ftn.tim2.finder.R;
@@ -41,6 +44,7 @@ public class LoginActivity extends AppCompatActivity{
     private static final int RC_SIGN_IN = 9001;
     private static final String TAG = "LoginActivity";
 
+    private DatabaseReference databaseUsers;
     private FirebaseAuth firebaseAuth;
 
     @Override
@@ -49,6 +53,7 @@ public class LoginActivity extends AppCompatActivity{
         setContentView(R.layout.activity_login);
 
         firebaseAuth = FirebaseAuth.getInstance();
+        databaseUsers = FirebaseDatabase.getInstance().getReference("users");
 
         if(firebaseAuth.getCurrentUser() != null){
             Log.d(TAG, "Logged user: " + firebaseAuth.getCurrentUser());
@@ -79,6 +84,10 @@ public class LoginActivity extends AppCompatActivity{
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
+                            String fcmToken = FirebaseInstanceId.getInstance().getToken();
+                            databaseUsers.child(firebaseAuth.getCurrentUser().getUid())
+                                    .child("fcmToken").setValue(fcmToken);
+
                             Log.d(TAG, "Logged in successfully!");
                             Log.d(TAG, "User: " + firebaseAuth.getCurrentUser());
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);

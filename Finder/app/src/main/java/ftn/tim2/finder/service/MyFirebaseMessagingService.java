@@ -32,8 +32,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String body  = notification.getBody();
 
         Intent intent = new Intent(this, MessageActivity.class);
-        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        //intent.putExtra("USER_ID", data.get("USER_ID"));
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        Log.d("TESTID", data.get("USER_ID"));
+        intent.putExtra("USER_ID", data.get("USER_ID"));
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
 

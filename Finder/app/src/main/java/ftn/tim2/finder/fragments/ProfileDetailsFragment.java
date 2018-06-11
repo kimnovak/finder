@@ -35,6 +35,7 @@ import ftn.tim2.finder.activities.LoginActivity;
 import ftn.tim2.finder.activities.MessageActivity;
 import ftn.tim2.finder.activities.ProfileEditActivity;
 import ftn.tim2.finder.model.User;
+import ftn.tim2.finder.service.ClientNotificationsViaFCMServerHelper;
 
 public class ProfileDetailsFragment extends Fragment {
 
@@ -70,6 +71,8 @@ public class ProfileDetailsFragment extends Fragment {
     private DatabaseReference databaseUsers;
     private User currentUser;
     private User user;
+
+    private ClientNotificationsViaFCMServerHelper clientNotificationsViaFCMServerHelper;
 
 
     public ProfileDetailsFragment() {
@@ -115,6 +118,8 @@ public class ProfileDetailsFragment extends Fragment {
                 Log.d(TAG, "The read failed: " + databaseError.getCode());
             }
         });
+
+        clientNotificationsViaFCMServerHelper = new ClientNotificationsViaFCMServerHelper(getContext());
 
         prepareData(v);
 
@@ -258,6 +263,9 @@ public class ProfileDetailsFragment extends Fragment {
                 user.getUserProfile().setRate(user.getUserProfile().getRateCalc().getScore()*1.0/user.getUserProfile().getRateCalc().getCount());
                 databaseUsers.child(user.getId()).child("userProfile").child("rate").setValue(user.getUserProfile().getRate());
                 databaseUsers.child(user.getId()).child("userProfile").child("rateCalc").setValue(user.getUserProfile().getRateCalc());
+
+                notifyReceiever(firebaseAuth.getCurrentUser().getUid(), user.getFcmToken());
+
                 rateDialog.dismiss();
             }
         });
@@ -373,5 +381,10 @@ public class ProfileDetailsFragment extends Fragment {
     private void editProfile() {
         Intent intent = new Intent(getContext(), ProfileEditActivity.class);
         startActivity(intent);
+    }
+
+    private void notifyReceiever(String id, String fcmToken) {
+        clientNotificationsViaFCMServerHelper
+                .sendNotification("Finder", "Your profile is rated.", id, fcmToken);
     }
 }

@@ -40,6 +40,7 @@ import ftn.tim2.finder.adapters.CommentAdapter;
 import ftn.tim2.finder.model.Comment;
 import ftn.tim2.finder.model.Message;
 import ftn.tim2.finder.model.User;
+import ftn.tim2.finder.service.ClientNotificationsViaFCMServerHelper;
 
 public class CommentFragment extends Fragment {
 
@@ -56,6 +57,8 @@ public class CommentFragment extends Fragment {
     private DatabaseReference databaseComments;
     private DatabaseReference databaseUsers;
     private static final String TAG = "CommentFragment";
+
+    private ClientNotificationsViaFCMServerHelper clientNotificationsViaFCMServerHelper;
 
 
     public CommentFragment() {
@@ -87,6 +90,8 @@ public class CommentFragment extends Fragment {
 
         databaseComments = FirebaseDatabase.getInstance().getReference("comments");
         databaseUsers = FirebaseDatabase.getInstance().getReference("users");
+
+        clientNotificationsViaFCMServerHelper = new ClientNotificationsViaFCMServerHelper(getContext());
 
         prepareData(v);
 
@@ -151,6 +156,9 @@ public class CommentFragment extends Fragment {
                 }
                 usersProfile.getUserProfile().getComments().put(id, comment);
                 databaseUsers.child(getArguments().getString("user_ID")).child("userProfile").child("comments").setValue(usersProfile.getUserProfile().getComments());
+
+                notifyReceiever(firebaseAuth.getCurrentUser().getUid(), usersProfile.getFcmToken());
+
                 comment_content.setText("");
                 final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
@@ -161,5 +169,10 @@ public class CommentFragment extends Fragment {
                 Log.d(TAG, "The read failed: " + databaseError.getCode());
             }
         });
+    }
+
+    private void notifyReceiever(String id, String fcmToken) {
+        clientNotificationsViaFCMServerHelper
+                .sendNotification("Finder", "You have a new comment.", id, fcmToken);
     }
 }

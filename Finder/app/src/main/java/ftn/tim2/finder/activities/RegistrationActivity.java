@@ -18,6 +18,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -80,8 +81,10 @@ public class RegistrationActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful()){
+                        String fcmToken = FirebaseInstanceId.getInstance().getToken();
+
                         User user = new User(firebaseAuth.getCurrentUser().getUid(), username, email,
-                                password, firstName, lastName, new HashMap<String, String>());
+                                password, firstName, lastName, fcmToken, new HashMap<String, String>());
 
                         UserProfile userProfile = new UserProfile("", "", new Date(), 0, "", "");
                         Rate rate = new Rate();

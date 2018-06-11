@@ -101,7 +101,6 @@ public class MessageActivity extends AppCompatActivity {
     private void prepareData(){
         //get receiverId from intent
         receiverId = getIntent().getStringExtra("USER_ID");
-        Log.d("TRALALALALLAA", receiverId);
 
         mMessageSendBtn = findViewById(R.id.button_chatbox_send);
         mMessageText = findViewById(R.id.edittext_chatbox);
@@ -220,7 +219,7 @@ public class MessageActivity extends AppCompatActivity {
 
     private void notifyReceiever() {
         clientNotificationsViaFCMServerHelper
-                .sendNotification("Title test", "Test body", me.getId());
+                .sendNotification("Finder", "You have a new message.", me.getId(), receiver.getFcmToken());
     }
 
     private void populateMessagesRecyclerView() {

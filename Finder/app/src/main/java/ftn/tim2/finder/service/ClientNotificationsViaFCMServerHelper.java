@@ -35,8 +35,8 @@ public class ClientNotificationsViaFCMServerHelper {
         this.context = context;
     }
 
-    public void sendNotification(String notificationTitle, String notificationBody, String receiverId) {
-        sendMessageToFcm(getFCMNotificationMessage(notificationTitle, notificationBody, receiverId));
+    public void sendNotification(String notificationTitle, String notificationBody, String receiverId, String fcmToken) {
+        sendMessageToFcm(getFCMNotificationMessage(notificationTitle, notificationBody, receiverId, fcmToken));
     }
 
     // send message to firebase cloud messaging server using okhttp
@@ -82,13 +82,13 @@ public class ClientNotificationsViaFCMServerHelper {
         return token;
     }
 
-    private String getFCMNotificationMessage(String title, String msg, String receiverId) {
+    private String getFCMNotificationMessage(String title, String msg, String receiverId, String fcmToken) {
         JsonObject jsonObj = new JsonObject();
         // client registration key is sent as token in the message to FCM server
-        jsonObj.addProperty("token", getClientToken());
+        jsonObj.addProperty("token", fcmToken);
 
         JsonObject data = new JsonObject();
-        data.addProperty("USER_ID", "111111111111111");
+        data.addProperty("USER_ID", receiverId);
         jsonObj.add("data", data);
 
         JsonObject notification = new JsonObject();
@@ -107,7 +107,7 @@ public class ClientNotificationsViaFCMServerHelper {
     // Firebase SDK registration key from client
     private String getClientToken() {
         //return "cFncIYMV3CU:APA91bH1tj6W3KcngMBZDjvQmYGwcOJdfy-4KBKDL2aMZz_CftdYroeLqAtIDoBfjvnmo_kTpEn6k0ylBLhsEVYjC8YdYy8vRy4dA0GPh8-qkPWkTXjsDCbjJ9E7NuoW4veKFhAGTCiN";
-        return "cl6w1J25bNg:APA91bGfkdMpUkUiHpMCj3RAuOjHeRyuwA5Yj1LO9nzuONYjOtGuWwPXLn9KASA8Bc_4XPBf9GyVQuri5Yuka-YnfAwlWPmKAoxH5awqWejzJ8MyeabUxy72mfjAc41J6RWJVdJNZ0-0";
+        return "c9fVPD3KrnY:APA91bG679StuPuWkYEPyuhVKxpvTwgrYvGJviBa4IPlB_n0z6RJf5jSgiIWVjrcn09VLkwhpiXKNplK6mVKBc3fkTPS6PcFXPqnbndQZ81md6QhPWTZh2n5cV3gA-krOVSQPYolhrc3";
     }
 
 }
