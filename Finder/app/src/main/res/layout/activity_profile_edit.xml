@@ -5,7 +5,6 @@
     android:orientation="vertical"
     android:background="@color/white">
 
-
     <LinearLayout
         android:gravity="center"
         android:id="@+id/headerCard"
@@ -42,73 +41,80 @@
             android:layout_gravity="center_horizontal" />
     </LinearLayout>
 
-    <LinearLayout
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center_horizontal"
-        android:layout_below="@+id/headerCard"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin">
-        <EditText
-            android:id="@+id/firstname_edit"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:hint="First Name"
-            android:text="User"
-            android:textSize="16sp"
-            android:inputType="textPersonName" />
-        <EditText
-            android:id="@+id/lastname_edit"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:hint="Last Name"
-            android:textSize="16dp"
-            android:inputType="textPersonName" />
-        <EditText
-            android:id="@+id/username_edit"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:hint="Username"
-            android:textSize="16dp"
-            android:inputType="textNoSuggestions" />
-        <EditText
-            android:id="@+id/password_edit"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:hint="Password"
-            android:text="pass"
-            android:textSize="16dp"
-            android:inputType="textPassword" />
-        <EditText
-            android:id="@+id/city_edit"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:hint="City"
-            android:text="Novi Sad"
-            android:textSize="16dp"
-            android:inputType="textNoSuggestions" />
-        <EditText
-            android:id="@+id/country_edit"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:hint="Country"
-            android:text="Serbia"
-            android:textSize="16dp"
-            android:inputType="textNoSuggestions" />
-        <EditText
-            android:id="@+id/description_edit"
-            android:layout_width="300dp"
-            android:layout_height="80dp"
-            android:breakStrategy="balanced"
-            android:fitsSystemWindows="true"
-            android:gravity="top"
-            android:hint="Description"
-            android:inputType="textMultiLine"
-            android:padding="5dp"
-            android:singleLine="false"
-            android:textSize="16dp" />
-    </LinearLayout>
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/headerCard">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_below="@+id/headerCard"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin">
+            <EditText
+                android:id="@+id/firstname_edit"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:hint="First Name"
+                android:text="User"
+                android:textSize="16sp"
+                android:inputType="textPersonName" />
+            <EditText
+                android:id="@+id/lastname_edit"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:hint="Last Name"
+                android:textSize="16dp"
+                android:inputType="textPersonName" />
+            <EditText
+                android:id="@+id/username_edit"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:hint="Username"
+                android:textSize="16dp"
+                android:inputType="textNoSuggestions" />
+            <EditText
+                android:id="@+id/password_edit"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:hint="Password"
+                android:text="pass"
+                android:textSize="16dp"
+                android:inputType="textPassword" />
+            <EditText
+                android:id="@+id/city_edit"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:hint="City"
+                android:text="Novi Sad"
+                android:textSize="16dp"
+                android:inputType="textNoSuggestions" />
+            <EditText
+                android:id="@+id/country_edit"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:hint="Country"
+                android:text="Serbia"
+                android:textSize="16dp"
+                android:inputType="textNoSuggestions" />
+            <EditText
+                android:id="@+id/description_edit"
+                android:layout_width="300dp"
+                android:layout_height="80dp"
+                android:breakStrategy="balanced"
+                android:fitsSystemWindows="true"
+                android:gravity="top"
+                android:hint="Description"
+                android:inputType="textMultiLine"
+                android:padding="5dp"
+                android:singleLine="false"
+                android:textSize="16dp" />
+        </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>
