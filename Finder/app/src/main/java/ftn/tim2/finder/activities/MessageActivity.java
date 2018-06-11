@@ -39,6 +39,7 @@ import ftn.tim2.finder.model.Comment;
 import ftn.tim2.finder.model.Conversation;
 import ftn.tim2.finder.model.Message;
 import ftn.tim2.finder.model.User;
+import ftn.tim2.finder.service.ClientNotificationsViaFCMServerHelper;
 
 public class MessageActivity extends AppCompatActivity {
 
@@ -60,6 +61,8 @@ public class MessageActivity extends AppCompatActivity {
     private DatabaseReference databaseUsers;
     private DatabaseReference databaseMessages;
 
+    private ClientNotificationsViaFCMServerHelper clientNotificationsViaFCMServerHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +78,8 @@ public class MessageActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         databaseUsers = FirebaseDatabase.getInstance().getReference("users");
         databaseMessages = FirebaseDatabase.getInstance().getReference("messages");
+
+        clientNotificationsViaFCMServerHelper = new ClientNotificationsViaFCMServerHelper(this);
 
         prepareData();
     }
@@ -96,6 +101,7 @@ public class MessageActivity extends AppCompatActivity {
     private void prepareData(){
         //get receiverId from intent
         receiverId = getIntent().getStringExtra("USER_ID");
+        Log.d("TRALALALALLAA", receiverId);
 
         mMessageSendBtn = findViewById(R.id.button_chatbox_send);
         mMessageText = findViewById(R.id.edittext_chatbox);
@@ -127,6 +133,8 @@ public class MessageActivity extends AppCompatActivity {
                 } else {
                     mMessageText.setText(null);
                     createReceiverConversation(me, receiver, newMessage);
+
+                    notifyReceiever();
 
                     scrollToBottom();
                 }
@@ -208,6 +216,11 @@ public class MessageActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void notifyReceiever() {
+        clientNotificationsViaFCMServerHelper
+                .sendNotification("Title test", "Test body", me.getId());
     }
 
     private void populateMessagesRecyclerView() {

@@ -9,7 +9,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import ftn.tim2.finder.MainActivity;
 import ftn.tim2.finder.R;
 
 public class SplashActivity extends AppCompatActivity {
