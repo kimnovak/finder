@@ -56,7 +56,7 @@ public class ConversationViewAdapter extends RecyclerView.Adapter<ConversationVi
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, MessageActivity.class);
-                intent.putExtra("USER_ID",conversation.getParticipant().getId());
+                intent.putExtra("USER_ID", conversation.getParticipant().getId());
                 ActivityCompat.startActivity(context, intent, null);
             }
         });

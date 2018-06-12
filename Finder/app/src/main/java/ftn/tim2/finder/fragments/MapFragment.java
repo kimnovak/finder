@@ -410,12 +410,13 @@ public class MapFragment extends Fragment {
                 Location.distanceBetween(currentLocation1.getLatitude(), currentLocation1.getLongitude(), user.getLocation().getLatitude(), user.getLocation().getLongitude(), results);
                 if(results.length > 0) {
                     SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this.getContext());
-                    preferences.getAll().get("pref_radius");
-                    String radius = preferences.getAll().get("pref_radius").toString();
-                    if(results[0] < Integer.valueOf(radius) * 1000) {
-                        return true;
-                    } else {
-                        return false;
+                    if(preferences.getAll().get("pref_radius") != null) {
+                        String radius = preferences.getAll().get("pref_radius").toString();
+                        if (radius != null && results[0] < Integer.valueOf(radius) * 1000) {
+                            return true;
+                        } else {
+                            return false;
+                        }
                     }
                 }
             }
@@ -495,9 +496,11 @@ public class MapFragment extends Fragment {
         ProfileDetailsFragment profileDetailsFragment = new ProfileDetailsFragment();
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        Bundle bundle = new Bundle();
-        bundle.putString("user_ID", selectedUser.getId());
-        profileDetailsFragment.setArguments(bundle);
+        if(!currentUserId.equals(selectedUser.getId())) {
+            Bundle bundle = new Bundle();
+            bundle.putString("user_ID", selectedUser.getId());
+            profileDetailsFragment.setArguments(bundle);
+        }
         transaction.replace(R.id.content_frame, profileDetailsFragment);
         transaction.commit();
     }
@@ -526,6 +529,8 @@ public class MapFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         Log.d(TAG, "detach");
-        databaseUsers.removeEventListener(childEventListener);
+        if(childEventListener != null) {
+            databaseUsers.removeEventListener(childEventListener);
+        }
     }
 }

@@ -1,10 +1,12 @@
 package ftn.tim2.finder.activities;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -26,6 +28,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import ftn.tim2.finder.MainActivity;
 import ftn.tim2.finder.R;
@@ -39,6 +44,7 @@ public class LoginActivity extends AppCompatActivity{
     private static final int RC_SIGN_IN = 9001;
     private static final String TAG = "LoginActivity";
 
+    private DatabaseReference databaseUsers;
     private FirebaseAuth firebaseAuth;
 
     @Override
@@ -47,6 +53,7 @@ public class LoginActivity extends AppCompatActivity{
         setContentView(R.layout.activity_login);
 
         firebaseAuth = FirebaseAuth.getInstance();
+        databaseUsers = FirebaseDatabase.getInstance().getReference("users");
 
         if(firebaseAuth.getCurrentUser() != null){
             Log.d(TAG, "Logged user: " + firebaseAuth.getCurrentUser());
@@ -77,6 +84,10 @@ public class LoginActivity extends AppCompatActivity{
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
+                            String fcmToken = FirebaseInstanceId.getInstance().getToken();
+                            databaseUsers.child(firebaseAuth.getCurrentUser().getUid())
+                                    .child("fcmToken").setValue(fcmToken);
+
                             Log.d(TAG, "Logged in successfully!");
                             Log.d(TAG, "User: " + firebaseAuth.getCurrentUser());
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -93,5 +104,29 @@ public class LoginActivity extends AppCompatActivity{
     public void goToRegistration(View v) {
         Intent intent = new Intent(this, RegistrationActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        finishAffinity();
+                        System.exit(0);
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        //No button clicked
+                        break;
+                }
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Are you sure you want to exit?").setPositiveButton("Yes", dialogClickListener)
+                .setNegativeButton("No", dialogClickListener).show();
     }
 }

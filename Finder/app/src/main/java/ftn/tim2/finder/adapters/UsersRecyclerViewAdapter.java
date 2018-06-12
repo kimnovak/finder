@@ -66,6 +66,9 @@ public class UsersRecyclerViewAdapter extends RecyclerView.Adapter<UsersRecycler
         if(!mUsers.get(position).getUserProfile().getImage().isEmpty()) {
             Glide.with(mContext).load(mUsers.get(position).getUserProfile().getImage()).into(holder.userImage);
         }
+        else{
+            Glide.with(mContext).load(R.mipmap.ic_test_user).into(holder.userImage);
+        }
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

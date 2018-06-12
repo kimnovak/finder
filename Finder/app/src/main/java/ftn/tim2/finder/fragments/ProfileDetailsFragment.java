@@ -35,6 +35,7 @@ import ftn.tim2.finder.activities.LoginActivity;
 import ftn.tim2.finder.activities.MessageActivity;
 import ftn.tim2.finder.activities.ProfileEditActivity;
 import ftn.tim2.finder.model.User;
+import ftn.tim2.finder.service.ClientNotificationsViaFCMServerHelper;
 
 public class ProfileDetailsFragment extends Fragment {
 
@@ -61,7 +62,6 @@ public class ProfileDetailsFragment extends Fragment {
     private Button finder_preferences_btn;
 
     private ImageView edit_profile_img;
-    private TextView sign_out;
     private ImageView profile_star_img;
 
     private static final String TAG = "ProfileDetailsFragment";
@@ -71,6 +71,10 @@ public class ProfileDetailsFragment extends Fragment {
     private DatabaseReference databaseUsers;
     private User currentUser;
     private User user;
+
+    private ValueEventListener valueEventListener;
+
+    private ClientNotificationsViaFCMServerHelper clientNotificationsViaFCMServerHelper;
 
 
     public ProfileDetailsFragment() {
@@ -105,7 +109,7 @@ public class ProfileDetailsFragment extends Fragment {
 
         databaseUsers = FirebaseDatabase.getInstance().getReference("users");
 
-        databaseUsers.addValueEventListener(new ValueEventListener() {
+        valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 showData(dataSnapshot);
@@ -115,7 +119,11 @@ public class ProfileDetailsFragment extends Fragment {
             public void onCancelled(DatabaseError databaseError) {
                 Log.d(TAG, "The read failed: " + databaseError.getCode());
             }
-        });
+        };
+
+        databaseUsers.addValueEventListener(valueEventListener);
+
+        clientNotificationsViaFCMServerHelper = new ClientNotificationsViaFCMServerHelper(getContext());
 
         prepareData(v);
 
@@ -174,14 +182,6 @@ public class ProfileDetailsFragment extends Fragment {
             }
         });
 
-        sign_out = v.findViewById(R.id.signOut);
-        sign_out.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signOut();
-            }
-        });
-
         edit_profile_img = v.findViewById(R.id.profile_edit);
         edit_profile_img.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -216,13 +216,13 @@ public class ProfileDetailsFragment extends Fragment {
         registrationDateProfile.setText(dateFormat.format("yyyy-MM-dd", user.getUserProfile().getRegistrationDate()));
         descriptionProfile.setText(user.getUserProfile().getDescription());
         if(user.getUserProfile().getFollowers() != null){
-            followersProfile.setText(String.valueOf(user.getUserProfile().getFollowers().size()));
+            followersProfile.setText(String.valueOf(user.getUserProfile().getFollowers().size()-1));
         }
         else{
             followersProfile.setText("0");
         }
         if(user.getUserProfile().getFollowing() != null){
-            followingProfile.setText(String.valueOf(user.getUserProfile().getFollowing().size()));
+            followingProfile.setText(String.valueOf(user.getUserProfile().getFollowing().size()-1));
         }
         else{
             followingProfile.setText("0");
@@ -267,6 +267,9 @@ public class ProfileDetailsFragment extends Fragment {
                 user.getUserProfile().setRate(user.getUserProfile().getRateCalc().getScore()*1.0/user.getUserProfile().getRateCalc().getCount());
                 databaseUsers.child(user.getId()).child("userProfile").child("rate").setValue(user.getUserProfile().getRate());
                 databaseUsers.child(user.getId()).child("userProfile").child("rateCalc").setValue(user.getUserProfile().getRateCalc());
+
+                notifyReceiever(user.getFcmToken());
+
                 rateDialog.dismiss();
             }
         });
@@ -384,9 +387,17 @@ public class ProfileDetailsFragment extends Fragment {
         startActivity(intent);
     }
 
-    private void signOut(){
-        firebaseAuth.signOut();
-        Intent intent = new Intent(getContext(), LoginActivity.class);
-        startActivity(intent);
+    private void notifyReceiever(String fcmToken) {
+        clientNotificationsViaFCMServerHelper
+                .sendNotification("Finder", "Your profile is rated.", "RATE_FRAGMENT", fcmToken);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Log.d(TAG, "detach");
+        if(valueEventListener != null) {
+            databaseUsers.removeEventListener(valueEventListener);
+        }
     }
 }

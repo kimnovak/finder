@@ -9,6 +9,7 @@ public class User {
     private String password;
     private String firstName;
     private String lastName;
+    private String fcmToken;
     private UserProfile userProfile;
     private Location location;
     private Map<String, String> friends;
@@ -17,13 +18,14 @@ public class User {
 
     }
 
-    public User(String id, String username, String email, String password, String firstName, String lastName, Map<String, String> friends) {
+    public User(String id, String username, String email, String password, String firstName, String lastName, String fcmToken, Map<String, String> friends) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.fcmToken = fcmToken;
         this.friends = friends;
     }
 
@@ -97,5 +99,13 @@ public class User {
 
     public void setLocation(Location location) {
         this.location = location;
+    }
+
+    public String getFcmToken() {
+        return fcmToken;
+    }
+
+    public void setFcmToken(String fcmToken) {
+        this.fcmToken = fcmToken;
     }
 }

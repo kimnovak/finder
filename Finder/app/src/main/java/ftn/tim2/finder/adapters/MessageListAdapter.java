@@ -47,7 +47,7 @@ public class MessageListAdapter extends RecyclerView.Adapter {
         void bind(Message message) {
             messageText.setText(message.getMessage());
             android.text.format.DateFormat dateFormat = new android.text.format.DateFormat();
-            timeText.setText(dateFormat.format("hh:mm", message.getCreatedAt()));
+            timeText.setText(dateFormat.format("dd.MM. 'at' hh:mm", message.getCreatedAt()));
             //nameText.setText(message.getSender().getUsername());
             nameText.setText(receiverName);
             if(!message.getReceiverImage().isEmpty()) {
@@ -71,7 +71,7 @@ public class MessageListAdapter extends RecyclerView.Adapter {
 
             android.text.format.DateFormat dateFormat = new android.text.format.DateFormat();
             // Format the stored timestamp into a readable String using method.
-            timeText.setText(dateFormat.format("hh:mm", message.getCreatedAt()));
+            timeText.setText(dateFormat.format("dd.MM. 'at' hh:mm", message.getCreatedAt()));
         }
     }
 
