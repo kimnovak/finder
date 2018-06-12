@@ -87,6 +87,8 @@ public class RegistrationActivity extends AppCompatActivity {
                                 password, firstName, lastName, fcmToken, new HashMap<String, String>());
 
                         UserProfile userProfile = new UserProfile("", "", new Date(), 0, "", "");
+                        userProfile.getFollowing().add("");
+                        userProfile.getFollowers().add("");
                         Rate rate = new Rate();
                         userProfile.setRateCalc(rate);
                         user.setUserProfile(userProfile);

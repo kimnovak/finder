@@ -72,6 +72,8 @@ public class ProfileDetailsFragment extends Fragment {
     private User currentUser;
     private User user;
 
+    private ValueEventListener valueEventListener;
+
     private ClientNotificationsViaFCMServerHelper clientNotificationsViaFCMServerHelper;
 
 
@@ -107,7 +109,7 @@ public class ProfileDetailsFragment extends Fragment {
 
         databaseUsers = FirebaseDatabase.getInstance().getReference("users");
 
-        databaseUsers.addValueEventListener(new ValueEventListener() {
+        valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 showData(dataSnapshot);
@@ -117,7 +119,9 @@ public class ProfileDetailsFragment extends Fragment {
             public void onCancelled(DatabaseError databaseError) {
                 Log.d(TAG, "The read failed: " + databaseError.getCode());
             }
-        });
+        };
+
+        databaseUsers.addValueEventListener(valueEventListener);
 
         clientNotificationsViaFCMServerHelper = new ClientNotificationsViaFCMServerHelper(getContext());
 
@@ -212,13 +216,13 @@ public class ProfileDetailsFragment extends Fragment {
         registrationDateProfile.setText(dateFormat.format("yyyy-MM-dd", user.getUserProfile().getRegistrationDate()));
         descriptionProfile.setText(user.getUserProfile().getDescription());
         if(user.getUserProfile().getFollowers() != null){
-            followersProfile.setText(String.valueOf(user.getUserProfile().getFollowers().size()));
+            followersProfile.setText(String.valueOf(user.getUserProfile().getFollowers().size()-1));
         }
         else{
             followersProfile.setText("0");
         }
         if(user.getUserProfile().getFollowing() != null){
-            followingProfile.setText(String.valueOf(user.getUserProfile().getFollowing().size()));
+            followingProfile.setText(String.valueOf(user.getUserProfile().getFollowing().size()-1));
         }
         else{
             followingProfile.setText("0");
@@ -386,5 +390,14 @@ public class ProfileDetailsFragment extends Fragment {
     private void notifyReceiever(String fcmToken) {
         clientNotificationsViaFCMServerHelper
                 .sendNotification("Finder", "Your profile is rated.", "RATE_FRAGMENT", fcmToken);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Log.d(TAG, "detach");
+        if(valueEventListener != null) {
+            databaseUsers.removeEventListener(valueEventListener);
+        }
     }
 }
