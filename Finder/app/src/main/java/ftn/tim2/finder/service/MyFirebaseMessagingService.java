@@ -12,6 +12,7 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.Map;
 
+import ftn.tim2.finder.MainActivity;
 import ftn.tim2.finder.R;
 import ftn.tim2.finder.activities.MessageActivity;
 
@@ -31,10 +32,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String title = notification.getTitle();
         String body  = notification.getBody();
 
-        Intent intent = new Intent(this, MessageActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        Log.d("TESTID", data.get("USER_ID"));
-        intent.putExtra("USER_ID", data.get("USER_ID"));
+        Intent intent = new Intent(MyFirebaseMessagingService.this, MainActivity.class);
+        intent.putExtra("MENU_FRAGMENT", data.get("FRAGMENT"));
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
 
@@ -43,6 +42,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         .setSmallIcon(R.mipmap.ic_app_logo)
                         .setContentTitle(title)
                         .setContentText(body)
+                        .setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 })
                         .setContentIntent(pendingIntent)
                         .setAutoCancel(true);
 

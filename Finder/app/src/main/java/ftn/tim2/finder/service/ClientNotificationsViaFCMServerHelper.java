@@ -82,13 +82,13 @@ public class ClientNotificationsViaFCMServerHelper {
         return token;
     }
 
-    private String getFCMNotificationMessage(String title, String msg, String receiverId, String fcmToken) {
+    private String getFCMNotificationMessage(String title, String msg, String fragment, String fcmToken) {
         JsonObject jsonObj = new JsonObject();
         // client registration key is sent as token in the message to FCM server
         jsonObj.addProperty("token", fcmToken);
 
         JsonObject data = new JsonObject();
-        data.addProperty("USER_ID", receiverId);
+        data.addProperty("FRAGMENT", fragment);
         jsonObj.add("data", data);
 
         JsonObject notification = new JsonObject();
@@ -102,12 +102,6 @@ public class ClientNotificationsViaFCMServerHelper {
         message.add("message", jsonObj);
 
         return message.toString();
-    }
-
-    // Firebase SDK registration key from client
-    private String getClientToken() {
-        //return "cFncIYMV3CU:APA91bH1tj6W3KcngMBZDjvQmYGwcOJdfy-4KBKDL2aMZz_CftdYroeLqAtIDoBfjvnmo_kTpEn6k0ylBLhsEVYjC8YdYy8vRy4dA0GPh8-qkPWkTXjsDCbjJ9E7NuoW4veKFhAGTCiN";
-        return "c9fVPD3KrnY:APA91bG679StuPuWkYEPyuhVKxpvTwgrYvGJviBa4IPlB_n0z6RJf5jSgiIWVjrcn09VLkwhpiXKNplK6mVKBc3fkTPS6PcFXPqnbndQZ81md6QhPWTZh2n5cV3gA-krOVSQPYolhrc3";
     }
 
 }

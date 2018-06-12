@@ -157,7 +157,7 @@ public class CommentFragment extends Fragment {
                 usersProfile.getUserProfile().getComments().put(id, comment);
                 databaseUsers.child(getArguments().getString("user_ID")).child("userProfile").child("comments").setValue(usersProfile.getUserProfile().getComments());
 
-                notifyReceiever(firebaseAuth.getCurrentUser().getUid(), usersProfile.getFcmToken());
+                notifyReceiever(usersProfile.getFcmToken());
 
                 comment_content.setText("");
                 final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -171,8 +171,8 @@ public class CommentFragment extends Fragment {
         });
     }
 
-    private void notifyReceiever(String id, String fcmToken) {
+    private void notifyReceiever(String fcmToken) {
         clientNotificationsViaFCMServerHelper
-                .sendNotification("Finder", "You have a new comment.", id, fcmToken);
+                .sendNotification("Finder", "You have a new comment.", "COMMENT_FRAGMENT", fcmToken);
     }
 }

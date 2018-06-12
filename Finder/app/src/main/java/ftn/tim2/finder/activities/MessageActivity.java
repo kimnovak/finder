@@ -219,7 +219,7 @@ public class MessageActivity extends AppCompatActivity {
 
     private void notifyReceiever() {
         clientNotificationsViaFCMServerHelper
-                .sendNotification("Finder", "You have a new message.", me.getId(), receiver.getFcmToken());
+                .sendNotification("Finder", "You have a new message.", "CONVERSATION_FRAGMENT", receiver.getFcmToken());
     }
 
     private void populateMessagesRecyclerView() {

@@ -264,7 +264,7 @@ public class ProfileDetailsFragment extends Fragment {
                 databaseUsers.child(user.getId()).child("userProfile").child("rate").setValue(user.getUserProfile().getRate());
                 databaseUsers.child(user.getId()).child("userProfile").child("rateCalc").setValue(user.getUserProfile().getRateCalc());
 
-                notifyReceiever(firebaseAuth.getCurrentUser().getUid(), user.getFcmToken());
+                notifyReceiever(user.getFcmToken());
 
                 rateDialog.dismiss();
             }
@@ -383,8 +383,8 @@ public class ProfileDetailsFragment extends Fragment {
         startActivity(intent);
     }
 
-    private void notifyReceiever(String id, String fcmToken) {
+    private void notifyReceiever(String fcmToken) {
         clientNotificationsViaFCMServerHelper
-                .sendNotification("Finder", "Your profile is rated.", id, fcmToken);
+                .sendNotification("Finder", "Your profile is rated.", "RATE_FRAGMENT", fcmToken);
     }
 }

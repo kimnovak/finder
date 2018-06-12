@@ -26,6 +26,29 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        String menuFragment = getIntent().getStringExtra("MENU_FRAGMENT");
+
+        if (menuFragment != null) {
+            Fragment selectedFragment = null;
+            String tag = null;
+
+            if (menuFragment.equals("CONVERSATION_FRAGMENT")) {
+                selectedFragment = new ConversationFragment();
+                tag = "CONVERSATION_FRAGMENT";
+            } else if (menuFragment.equals("RATE_FRAGMENT")) {
+                selectedFragment = new ProfileDetailsFragment();
+                tag = "PROFILE_DETAILS_FRAGMENT";
+            } else {
+                selectedFragment = new ProfileDetailsFragment();
+                tag = "PROFILE_DETAILS_FRAGMENT";
+            }
+
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.content_frame, selectedFragment, tag);
+            transaction.commit();
+            return;
+        }
+
         final BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
